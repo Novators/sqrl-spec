@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!-- This template is for creating an Internet Draft using xml2rfc,
+     which is available here: http://xml.resource.org. -->
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!-- One method to get references from the online citation libraries.
+     There has to be one entity for each item to be referenced. 
+     An alternate method (rfc include) is described in the references. --><!ENTITY RFC2104 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2104.xml">
+<!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC3548 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3548.xml">
+<!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
+<!ENTITY RFC4868 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4868.xml">
+<!ENTITY RFC7914 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7914.xml">
+<!ENTITY RFC8031 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8031.xml">
+<!ENTITY RFC8032 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8032.xml">
+]>
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<!-- used by XSLT processors -->
+<!-- For a complete list and description of processing instructions (PIs), 
+     please see http://xml.resource.org/authoring/README.html. -->
+<!-- Below are generally applicable Processing Instructions (PIs) that most I-Ds might want to use.
+     (Here they are set differently than their defaults in xml2rfc v1.32) -->
+<?rfc strict="yes" ?>
+<!-- give errors regarding ID-nits and DTD validation -->
+<!-- control the table of contents (ToC) -->
+<?rfc toc="yes"?>
+<!-- generate a ToC -->
+<?rfc tocdepth="3"?>
+<!-- the number of levels of subsections in ToC. default: 3 -->
+<!-- control references -->
+<?rfc symrefs="yes"?>
+<!-- use symbolic references tags, i.e, [RFC2119] instead of [1] -->
+<?rfc sortrefs="yes" ?>
+<!-- sort the reference entries alphabetically -->
+<!-- control vertical white space 
+     (using these PIs as follows is recommended by the RFC Editor) -->
+<?rfc compact="yes" ?>
+<!-- do not start each main section on a new page -->
+<?rfc subcompact="no" ?>
+<!-- keep one blank line between list items -->
+<!-- end of list of popular I-D processing instructions -->
+<rfc category="info" docName="draft-sqrl-working"><!-- category values: std, bcp, info, exp, and historic
+     ipr values: full3667, noModification3667, noDerivatives3667
+     you can add the attributes updates="NNNN" and obsoletes="NNNN" 
+     they will automatically be output with "(if approved)" --><!-- ***** FRONT MATTER ***** --><front><!-- The abbreviated title is used in the page header - it is only necessary if the 
+         full title is longer than 39 characters --><title abbrev="SQRL">Secure Quick Reliable Login (SQRL), an Authentication and Identity Management Framework</title><!-- add 'role="editor"' below for the editors if appropriate --><!-- Another author who claims to be an editor --><author fullname="Adam Comley" initials="A.C." role="editor" surname="Comley"><address><postal><street/><!-- Reorder these if your country does things differently --><city/><region/><code/><country/></postal><email>adam@novators.net</email><!-- uri and facsimile elements may also be added --></address></author><date month="February" year="2018"/><!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
+         in the current day for you. If only the current year is specified, xml2rfc will fill 
+	 in the current day and month for you. If the year is not the current one, it is 
+	 necessary to specify at least a month (xml2rfc assumes day="1" if not specified for the 
+	 purpose of calculating the expiry date).  With drafts it is normally sufficient to 
+	 specify just the year. --><!-- Meta-data Declarations --><area>General</area><workgroup>Internet Engineering Task Force</workgroup><!-- WG name at the upperleft corner of the doc,
+         IETF is fine for individual submissions.  
+	 If this element is not present, the default is "Network Working Group",
+         which is used by the RFC Editor as a nod to the history of the IETF. --><keyword>sqrl</keyword><!-- Keywords will be incorporated into HTML output
+         files in a meta tag but they have no effect on text or nroff
+         output. If you submit your draft to the RFC Editor, the
+         keywords will be used for the search engine. --><abstract><t>
+        Secure Quick Reliable Login (SQRL) is an authentication method and 
+        identity management framework.  It enables a user to create and manage
+        a single, lifetime identity.  That identity will allow the user to 
+        securely authenticate with any SQRL enabled server without relying on 
+        a third party or disclosing personally identifiable information.
+      </t><t>
+        SQRL's identity management framework gives the user complete control 
+        over their online identity, including provisions for recovering from
+        the loss of their identity file or password and recovering from 
+        potential security breaches.
+      </t></abstract></front><middle><section title="Introduction"><t>
+        Secure Quick Reliable Login (SQRL) is an authentication method and 
+        identity management framework with the following features:
+        <list style="hanging" hangIndent="3"><t hangText="Secure"><vspace/>
+            Through a series of cryptographic signatures, the user can prove 
+            their identity without disclosing any information that would allow 
+            that identity to be compromised.
+          </t><t hangText="Global Password"><vspace/>
+            The user only has to remember a single password, which is used to 
+            locally decrypt their identity during SQRL authentication.  Since 
+            the user no longer has to remember a unique password for each site, 
+            this one global password can be very strong.  This strong password 
+            combined with strong encryption makes it infeasible for even a 
+            state level actor to compromise the user's identity.
+          </t><t hangText="Anonymous"><vspace/>
+            SQRL authentication is anonymous, in that it only provides a 
+            secure, site-specific token to the server.  This token cannot be 
+            directly linked to a user's account at any other server, and 
+            provides no personally identifiable information.
+          </t><t hangText="No Third Party"><vspace/>
+            The user's identity cannot be compromised by a security breach at 
+            a third party authentication provider, protecting it from both 
+            hackers and overreaching authorities.
+          </t><t hangText="User Controlled, Lifetime Identity"><vspace/>
+            SQRL provides an identity management framework which allows the 
+            user to maintain complete control of their identity.  Even in the 
+            event that their password is compromised, the user retains the 
+            ability to retake control of their identity and lock the attacker 
+            out.  Automated rekeying means that the user can maintain a single 
+            SQRL identity indefinately, even after a compromise
+          </t><t hangText="Offline Identity Backup"><vspace/>
+            Since SQRL identities are intended to last a lifetime, and there 
+            is no third party that can help the user recover their identity if 
+            they forget their password, SQRL includes an offline backup 
+            mechanism.  The user can print out or write down their encrypted 
+            identity, along with a secure rescue code, that will allow the user 
+            to recover from a forgotten password.
+          </t><t hangText="Out Of Band Authentication Option"><vspace/>
+            With SQRL, the user can safely authenticate a session on public or 
+            potentially compromised systems by using a second, trusted device 
+            to perform the authentication.  The user just has to scan a QR code 
+            with their trusted mobile device to begin authentication.
+          </t></list>
+      </t><section title="Requirements Language"><t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+        "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+        document are to be interpreted as described in 
+        <xref target="RFC2119">RFC 2119</xref>.</t></section><section title="Definitions"><t>TODO</t></section></section><section title="Algorithms"><t>TODO</t><section title="Standard Algorithms"><t>The following standard algorithms are used in this document:
+          <list style="symbols"><t><xref target="NIST.800-38D">AES-GCM</xref></t><t>
+              base64url: URL safe base64 encoding, as defined in Section 4 of 
+              <xref target="RFC3548"/>, without padding.
+            </t><t><xref target="RFC8031">Curve25519</xref></t><t><xref target="RFC8032">Ed25519</xref></t><t><xref target="RFC2104">HMAC</xref></t><t><xref target="RFC4868">HMAC-SHA256</xref></t><t><xref target="RFC7914">scrypt</xref></t><t><xref target="FIPS.180-4.2015">SHA-256</xref></t><t>
+              urlencode: Percent-Encoding as defined in Section 2.1 of 
+              <xref target="RFC3986"/>.
+            </t></list>
+        </t></section><section anchor="algo-b56c" title="base56check"><t>
+          base56check encoding allows the backup of SQRL identities to a 
+          textual form.  It:
+          <list style="symbols"><t>Accepts an arbitrarily sized payload.</t><t>
+              Uses a set of 56 alphanumeric symbols chosen to be easily 
+              distinguishable in any font.
+            </t><t>
+              Ignores invalid characters and white space to allow readable 
+              formatting.
+            </t><t>
+              Designed to be printed 20 characters per line, in 5 space 
+              separated groups of 4 characters for readability.
+            </t><t>
+              Includes a check character at the end of each line to catch 
+              errors while the user is typing.
+            </t></list>
+          The chosen alphabet is:
+        </t><figure><artwork><![CDATA[
+23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz
+        ]]></artwork></figure><section title="Encoding"><t>
+            To encode a series of bytes to base56check, treat the source bytes 
+            as a single, large, little-endian number and convert using the 
+            normal mathematical steps:
+            <list style="format %d." counter="b56-encode-counter"><t>Divide SOURCE by 56 to yield SOURCE and REMAINDER.</t><t>
+                Append the character in ALPHABET at position REMAINDER to the 
+                BASE string.
+              </t><t>Repeat from step 1, until SOURCE is zero.</t></list>
+            Now, with our converted BASE string, we can calculate the check 
+            digits and produce the final output.
+            <list style="format %d." counter="b56-encode-counter"><t>
+                Split BASE into 19 character CHUNKS (the final chunk may be 
+                smaller).
+              </t><t>
+                For each CHUNK:
+                <list style="letters"><t>Append a single byte zero-based CHUNK-NUMBER to the CHUNK.</t><t>Perform a SHA-256 hash on the CHUNK, yielding HASH.</t><t>
+                    Treating HASH as a single little-endian number, divide 
+                    HASH by 56 to obtain REMAINDER.
+                  </t><t>
+                    Replace the last character in CHUNK with the character in 
+                    ALPHABET at position REMAINDER.
+                  </t><t>Append the CHUNK to OUTPUT.</t></list>
+              </t></list>
+            OUTPUT can then be formatted as desired.  The recommended 
+            formatting is 20 characters per line in space-separated groups of 
+            4 characters each.  This format is easy for humans to read and type, 
+            and allows error checking for each line of input.
+          </t></section><section title="Validation"><t>
+            base56check is designed to provide periodic error checking and 
+            feedback to the user as they are typing.  To perform this validation:
+            <list style="numbers"><t>Remove any characters from INPUT that are invalid (not included in ALPHABET).</t><t>Split INPUT into 20 character CHUNKS (the final chunk may be smaller).</t><t>For each CHUNK:
+                <list style="letters"><t>Store the last character from CHUNK as CHECK.</t><t>Replace the last character in CHUNK with a single byte zero-based CHUNK-NUMBER.</t><t>Perform a SHA-256 hash on the CHUNK, yielding HASH.</t><t>Treating HASH as a single little-endian number, divide HASH by 56 to obtain REMAINDER.</t><t>Compare CHECK with the character from ALPHABET at position REMAINDER.</t><t>If comparison passes (is equal), continue.  Otherwise, there is an error in this CHUNK.</t></list>
+              </t></list>
+          </t></section><section title="Decoding"><t>
+            Decoding base56check is similarly straight-forward:
+            <list style="numbers"><t>
+                Start with an empty BASE string and an zero OUTPUT buffer, to be 
+                treated as a single, large, little-endian number.
+              </t><t>
+                Perform the base56check validation as described above, appending 
+                all but the last character of each validated CHUNK to the 
+                BASE string.
+              </t><t>If any chunk fails validation, abort.</t><t>For each CHARACTER in BASE, from right to left:
+                <list style="letters"><t>Multiply OUTPUT by 56.</t><t>Lookup the INDEX of CHARACTER in ALPHABET.</t><t>Add INDEX to OUTPUT.</t></list>
+              </t></list>
+          </t></section></section><section anchor="algo-enhash" title="EnHash"><figure><preamble>
+            EnHash is an iterated hash used to derive a 256 bit key from 
+            another 256 bit key.  It is performed by chaining 16 iterations 
+            of SHA-256, with each iteration's output XORed to produce the 
+            final output as follows:
+          </preamble><artwork><![CDATA[
+function EnHash ( input := 32 byte key )
+{
+  output := 32 byte buffer;
+
+  set output to all NULL (0) bytes;
+
+  repeat {
+    input = SHA256( input );
+    output = output XOR input;
+  } 16 times;
+
+  return output;
+}
+          ]]></artwork></figure></section><section anchor="algo-enscrypt" title="EnScrypt"><t>
+          EnScrypt is an iterative construct based on the scrypt password based 
+          key derivation function.  It hardens scrypt by allowing for extended 
+          processing time.  The following parameters are used for the scrypt 
+          function:
+        </t><texttable anchor="table_enscrypt_parameters" title="scrypt parameters"><ttcol>dkLen</ttcol><ttcol>N</ttcol><ttcol>r</ttcol><ttcol>p</ttcol><c>32</c><c>512</c><c>256</c><c>1</c></texttable><t>
+          Enscrypt is performed by calling scrypt in multiple rounds, with each 
+          successive round accepting the previous round's output as its salt.  
+          The final output is the XOR of each round's scrypt result.
+        </t><texttable anchor="table_enscrypt_rounds" title="EnScrypt Rounds"><ttcol>Round #</ttcol><ttcol>let salt[n] = </ttcol><ttcol>let out = </ttcol><c>1</c><c>scrypt( password, salt )</c><c>salt[1]</c><c>2</c><c>scrypt( password, salt[1] )</c><c>salt[1] XOR salt[2]</c><c>n</c><c>scrypt( password, salt[n-1] )</c><c>salt[n-1] XOR salt[n]</c></texttable><t>
+          EnScrypt can operate in two different modes, the only difference 
+          being when the calculation is stopped.
+          <list style="hanging" hangIndent="3"><t hangText="Counter Mode:"><vspace/>
+              Stops after a predefined number of iterations.
+            </t><t hangText="Timer Mode:"><vspace/>
+              Stops after a desired amount of time has passed.
+            </t></list>
+        </t></section></section><section title="Cryptographic Keys, Secrets, and Passwords"><t>
+        SQRL uses a wide variety of secrets in various operations.
+      </t><section anchor="secret-class-a" title="Class A Secrets"><t>
+          Class A secrets are absolutely critical to protecting a user's 
+          identity.  A compromised Class A secret may result in the user's 
+          complete loss of control of the identity, with no recourse available.  
+          Due to their highly sensitive nature, the following precautions are 
+          REQUIRED when dealing with Class A secrets:
+          <list style="symbols"><t>
+              The secret MUST be generated using the highest quality entropy 
+              source available to the client.  See <xref target="app-entropy"/> 
+              for recommendations.
+            </t><t>
+              The client MUST prevent the secret from being written to 
+              non-volatile memory in plaintext form, including being swapped to 
+              disk, by any means possible.
+            </t><t>
+              The plaintext secret MUST be securely wiped from RAM as soon as 
+              it is no longer needed.
+            </t><t>
+              If the secret is to be stored, it MUST be stored in an offline 
+              format (printed), OR encrypted using a Class A key.
+            </t><t>
+              The secret SHOULD NOT be transmitted over the network in any form, 
+              and MUST NOT be transmitted unencrypted.
+            </t></list>
+        </t><section title="Identity Unlock Key (IUK)"><figure><artwork><![CDATA[
+IUK = RandomBytes( 32 );]]></artwork></figure><t>
+            The IUK is a Class A 256 bit high entropy random number that 
+            represents a user's identity.  All other identifying keys are 
+            derived from this one.  After identity creation, this key is only 
+            used in emergency situations, such as re-keying an identity in the 
+            event of a possible compromise.
+          </t></section><section title="Unlock Request Signing Key (URSK)"><figure><artwork><![CDATA[
+URSK = curve25519_key_agreement( SUK, curve25519_private_key( IUK ));]]></artwork></figure><t>
+            Used by the client to update the identity association on a server, 
+            the URSK is derived from the SUK and IUK.
+          </t></section><section title="Rescue Code (RC)"><t>
+            The Rescue Code is a Class A, computer generated, high entropy 
+            passcode consisting of 24 numeric digits.  The client SHOULD
+            encourage the user to store the Rescue Code in an offline format 
+            (printed or written).
+          </t></section><section title="Password Derived Keys"><t>
+            Several keys are generated from user input.  Both the user supplied 
+            passwords and the derived keys are to be treated as Class A secrets.  
+            Since these are expected to be low entropy, they must be processed 
+            through EnScrypt (<xref target="algo-enscrypt"/>).  When generating 
+            derived keys, EnScrypt MUST be used in timer mode with a minimum 
+            duration of 1 second.  The table below lists RECOMMENDED durations 
+            for EnScrypt key generation:
+          </t><texttable anchor="table_pw_derived_keys" title="Password Derived Keys and Recommended EnScrypt Times"><ttcol>Key</ttcol><ttcol>Abbreviation</ttcol><ttcol>EnScrypt Time</ttcol><c>Password Derived Key</c><c>PWDK</c><c>5 seconds</c><c>Short Password Derived Key</c><c>SPDK</c><c>1 second</c><c>Rescue Code Derived Key</c><c>RCDK</c><c>60 seconds</c></texttable><t>
+            Clients MAY allow the user to specify the EnScrypt time for the PWDK, 
+            as long as that timer is at least 1 second.  The RCDK is used so 
+            rarely, and is so important to protect, that 60 seconds should not 
+            cause an undue burden on the user.  
+          </t><t>
+            When re-generating derived keys, EnScrypt is used in counter mode 
+            with the iteration count from the original generation operation.
+          </t></section></section><section anchor="secret-class-b" title="Class B Secrets"><t>
+          Class B secrets are used often, and have less strict security 
+          requirements.  A compromised Class B secret may result in an attacker 
+          temporarily gaining the ability to impersonate the user to any server,
+          but the user can regain control of their identity by rekeying followed 
+          by authenticating with each affected server.  The following precautions 
+          are REQUIRED when dealing with Class B secrets:
+          <list style="symbols"><t>
+              The client MUST prevent the secret from being written to non-volatile 
+              memory in plaintext form, including being swapped to disk, by any 
+              means possible.
+            </t><t>
+              The plaintext secret MUST be securely wiped from RAM as soon as it 
+              is no longer needed.
+            </t><t>
+              If the secret is to be stored, it MUST be stored in an encrypted 
+              form.
+            </t><t>
+              The secret SHOULD NOT be transmitted over the network in any form, 
+              and MUST NOT be transmitted unencrypted.
+            </t></list>
+        </t><section title="Previous Identity Unlock Key (PIUK)"><t>
+            A PIUK is an IUK that is no longer in active use.  It has been 
+            replaced by a newly generated IUK, and requires less strict 
+            protection.
+          </t></section><section title="Identity Master Key (IMK)"><figure><artwork><![CDATA[
+IMK = EnHash( IUK );]]></artwork></figure><t>
+            This Class B ) key acts as a proxy for the IUK during normal SQRL 
+            operation.  It is used to generate the unique keys that each site 
+            associates with the user.  The IMK is derived from the IUK using 
+            the EnHash (<xref target="algo-enhash"/>) function.
+          </t></section><section title="Identity Lock Key (ILK)"><figure><artwork><![CDATA[
+ILK = curve25519_public_key( curve25519_private_key( IUK ));]]></artwork></figure><t>
+            The (modified) IUK and ILK together form a Curve25519 key pair.
+          </t></section><section title="Site Specific Secret Key (SSSK)"><figure><artwork><![CDATA[
+SSSK = HMAC-SHA256( IMK, Realm );]]></artwork></figure><t>
+            The Site Specific Secret Key is generated from the IMK and the 
+            Realm (<xref target="section-realm"/>).
+          </t></section><section title="Random Lock Key (RLK)"><figure><artwork><![CDATA[
+RLK = curve25519_private_key( RandomBytes( 32 ));]]></artwork></figure><t>
+            The RLK is generated randomly when the client associates with a 
+            new server.
+          </t></section></section><section anchor="secret-class-c" title="Class C (Public) Keys"><t>
+          Class C keys are not required to be kept secret.
+        </t><section title="Site Specific Public Key (SSPK)"><figure><artwork><![CDATA[
+SSPK = ed25519_public_key( SSSK );]]></artwork></figure><t>
+            The Site Specific Public Key (SSPK) is the public counterpart to 
+            the SSSK.
+          </t></section><section title="Server Unlock Key (SUK)"><figure><artwork><![CDATA[
+SUK = curve25519_public_key( RLK );]]></artwork></figure><t>
+            Created during identity association, the SUK is the public 
+            counterpart of the RLK.
+          </t></section><section title="Verify Unlock Key (VUK)"><figure><artwork><![CDATA[
+VUK = ed25519_public_key( curve25519_key_agreement( ILK, RLK ));]]></artwork></figure><t>
+            Generated during identity association, and stored only on the 
+            server, the VUK is the public key used to verify the client's 
+            URSK.
+          </t></section></section></section><section title="Identity Management"><section title="Identity Lifecycle"><t>
+          TODO
+        </t></section><section title="Identity Creation"><t>TODO</t></section><section title="Identity Storage"><t>TODO</t><section title="Storage Format"><t>TODO</t></section><section title="Storage Blocks"><t>TODO</t></section><section title="Predefined Block Types"><t>TODO</t></section><section title="Encoding"><t>TODO</t></section></section><section title="Importing / Exporting an Identity"><t>TODO</t><section title="Binary File"><t>TODO</t></section><section title="Printed QR Code"><t>TODO</t></section><section title="Printed Text"><t>TODO</t></section></section><section title="Changing the User's Password"><t>TODO</t></section><section title="Identity Recovery"><t>TODO</t></section><section title="Re-Keying and Identity"><t>TODO</t></section></section><section title="Client-Server Protocol"><t>TODO</t><section title="Initiation of SQRL Authentication"><t>TODO</t><section title="The SQRL Scheme"><t>TODO</t></section><section title="QR Codes (Out of Band)"><t>TODO</t></section></section><section anchor="section-realm" title="The SQRL Realm (Domain)"><t>TODO</t></section><section title="Client to Server Requests"><t>TODO</t><section title="Protocol Version"><t>TODO</t></section><section title="Commands"><t>TODO</t></section><section title="Options"><t>TODO</t></section><section title="The server Value"><t>TODO</t></section><section title="The client Value"><t>TODO</t></section><section title="Client Keys"><t>TODO</t></section><section title="Client Signatures"><t>TODO</t></section><section title="Composing the Request"><t>TODO</t></section></section><section title="Server to Client Replies"><t>TODO</t><section title="Required Values"><t>TODO</t></section><section title="Optional Values"><t>TODO</t></section><section title="Additional Values"><t>TODO</t></section><section title="Composing the Reply"><t>TODO</t></section></section></section><section title="Client-Server Interactions"><t>TODO</t><section title="Same Device Authentication"><t>TODO</t></section><section title="Cross Device Authentication"><t>TODO</t></section><section title="Identity Association"><t>TODO</t></section><section title="Updating Identity Association"><t>TODO</t></section><section title="Disabling Site Login"><t>TODO</t></section><section title="Re-Enabling Site Login"><t>TODO</t></section></section><section anchor="IANA" title="IANA Considerations"><t>TODO</t></section><section anchor="Security" title="Security Considerations"><t>TODO</t></section></middle><!--  *****BACK MATTER ***** --><back><!-- References split into informative and normative --><!-- There are 2 ways to insert reference entries from the citation libraries:
+     1. define an ENTITY at the top, and use "ampersand character"RFC2629; here (as shown)
+     2. simply use a PI "less than character"?rfc include="reference.RFC.2119.xml"?> here
+        (for I-Ds: include="reference.I-D.narten-iana-considerations-rfc2434bis.xml")
+
+     Both are cited textually in the same manner: by using xref elements.
+     If you use the PI option, xml2rfc will, by default, try to find included files in the same
+     directory as the including file. You can also define the XML_LIBRARY environment variable
+     with a value containing a set of directories to search.  These can be either in the local
+     filing system or remote ones accessed by http (http://domain/dir/... ).--><references title="Normative References"><!--?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"?-->
+      &RFC2104;
+      &RFC2119;
+      &RFC3548;
+      &RFC3986;
+      &RFC7914;
+      &RFC8031;
+      &RFC8032;
+      <reference anchor="FIPS.180-4.2015"><front><title>Secure Hash Standard</title><author><organization>National Institute of Standards and Technology</organization></author><date year="2015" month="August"/></front></reference>
+      <reference anchor="NIST.800-38D"><front><title>NIST Special Publication 800-38D: Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode (GCM) and GMAC.</title><author initials="M." surname="Dworkin"><organization>U.S. National Institute of Standards and Technology</organization></author><date month="November" year="2007"/></front></reference>
+
+    </references><references title="Informative References">
+      &RFC4868;
+    </references><section anchor="app-client" title="SQRL Client Best Practices"><t>TODO</t></section><section anchor="app-server" title="SQRL Server Best Practices"><t>TODO</t></section><section anchor="app-entropy" title="Harvesting Entropy"><t>TODO</t></section></back></rfc>

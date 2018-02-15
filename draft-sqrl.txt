@@ -1,0 +1,1008 @@
+
+
+
+
+Internet Engineering Task Force                           A. Comley, Ed.
+Internet-Draft                                         February 15, 2018
+Intended status: Informational
+Expires: August 19, 2018
+
+
+   Secure Quick Reliable Login (SQRL), an Authentication and Identity
+                          Management Framework
+                           draft-sqrl-working
+
+Abstract
+
+   Secure Quick Reliable Login (SQRL) is an authentication method and
+   identity management framework.  It enables a user to create and
+   manage a single, lifetime identity.  That identity will allow the
+   user to securely authenticate with any SQRL enabled server without
+   relying on a third party or disclosing personally identifiable
+   information.
+
+   SQRL's identity management framework gives the user complete control
+   over their online identity, including provisions for recovering from
+   the loss of their identity file or password and recovering from
+   potential security breaches.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at http://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on August 19, 2018.
+
+Copyright Notice
+
+   Copyright (c) 2018 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+
+
+
+Comley                   Expires August 19, 2018                [Page 1]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
+     1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   5
+     1.2.  Definitions . . . . . . . . . . . . . . . . . . . . . . .   5
+   2.  Algorithms  . . . . . . . . . . . . . . . . . . . . . . . . .   5
+     2.1.  Standard Algorithms . . . . . . . . . . . . . . . . . . .   5
+     2.2.  base56check . . . . . . . . . . . . . . . . . . . . . . .   5
+       2.2.1.  Encoding  . . . . . . . . . . . . . . . . . . . . . .   6
+       2.2.2.  Validation  . . . . . . . . . . . . . . . . . . . . .   7
+       2.2.3.  Decoding  . . . . . . . . . . . . . . . . . . . . . .   7
+     2.3.  EnHash  . . . . . . . . . . . . . . . . . . . . . . . . .   8
+     2.4.  EnScrypt  . . . . . . . . . . . . . . . . . . . . . . . .   8
+   3.  Cryptographic Keys, Secrets, and Passwords  . . . . . . . . .   9
+     3.1.  Class A Secrets . . . . . . . . . . . . . . . . . . . . .   9
+       3.1.1.  Identity Unlock Key (IUK) . . . . . . . . . . . . . .  10
+       3.1.2.  Unlock Request Signing Key (URSK) . . . . . . . . . .  10
+       3.1.3.  Rescue Code (RC)  . . . . . . . . . . . . . . . . . .  10
+       3.1.4.  Password Derived Keys . . . . . . . . . . . . . . . .  10
+     3.2.  Class B Secrets . . . . . . . . . . . . . . . . . . . . .  11
+       3.2.1.  Previous Identity Unlock Key (PIUK) . . . . . . . . .  11
+       3.2.2.  Identity Master Key (IMK) . . . . . . . . . . . . . .  11
+       3.2.3.  Identity Lock Key (ILK) . . . . . . . . . . . . . . .  11
+       3.2.4.  Site Specific Secret Key (SSSK) . . . . . . . . . . .  12
+       3.2.5.  Random Lock Key (RLK) . . . . . . . . . . . . . . . .  12
+     3.3.  Class C (Public) Keys . . . . . . . . . . . . . . . . . .  12
+       3.3.1.  Site Specific Public Key (SSPK) . . . . . . . . . . .  12
+       3.3.2.  Server Unlock Key (SUK) . . . . . . . . . . . . . . .  12
+       3.3.3.  Verify Unlock Key (VUK) . . . . . . . . . . . . . . .  12
+   4.  Identity Management . . . . . . . . . . . . . . . . . . . . .  12
+     4.1.  Identity Lifecycle  . . . . . . . . . . . . . . . . . . .  12
+     4.2.  Identity Creation . . . . . . . . . . . . . . . . . . . .  13
+     4.3.  Identity Storage  . . . . . . . . . . . . . . . . . . . .  13
+       4.3.1.  Storage Format  . . . . . . . . . . . . . . . . . . .  13
+       4.3.2.  Storage Blocks  . . . . . . . . . . . . . . . . . . .  13
+       4.3.3.  Predefined Block Types  . . . . . . . . . . . . . . .  13
+       4.3.4.  Encoding  . . . . . . . . . . . . . . . . . . . . . .  13
+     4.4.  Importing / Exporting an Identity . . . . . . . . . . . .  13
+       4.4.1.  Binary File . . . . . . . . . . . . . . . . . . . . .  13
+       4.4.2.  Printed QR Code . . . . . . . . . . . . . . . . . . .  13
+
+
+
+Comley                   Expires August 19, 2018                [Page 2]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+       4.4.3.  Printed Text  . . . . . . . . . . . . . . . . . . . .  13
+     4.5.  Changing the User's Password  . . . . . . . . . . . . . .  13
+     4.6.  Identity Recovery . . . . . . . . . . . . . . . . . . . .  14
+     4.7.  Re-Keying and Identity  . . . . . . . . . . . . . . . . .  14
+   5.  Client-Server Protocol  . . . . . . . . . . . . . . . . . . .  14
+     5.1.  Initiation of SQRL Authentication . . . . . . . . . . . .  14
+       5.1.1.  The SQRL Scheme . . . . . . . . . . . . . . . . . . .  14
+       5.1.2.  QR Codes (Out of Band)  . . . . . . . . . . . . . . .  14
+     5.2.  The SQRL Realm (Domain) . . . . . . . . . . . . . . . . .  14
+     5.3.  Client to Server Requests . . . . . . . . . . . . . . . .  14
+       5.3.1.  Protocol Version  . . . . . . . . . . . . . . . . . .  14
+       5.3.2.  Commands  . . . . . . . . . . . . . . . . . . . . . .  14
+       5.3.3.  Options . . . . . . . . . . . . . . . . . . . . . . .  14
+       5.3.4.  The server Value  . . . . . . . . . . . . . . . . . .  15
+       5.3.5.  The client Value  . . . . . . . . . . . . . . . . . .  15
+       5.3.6.  Client Keys . . . . . . . . . . . . . . . . . . . . .  15
+       5.3.7.  Client Signatures . . . . . . . . . . . . . . . . . .  15
+       5.3.8.  Composing the Request . . . . . . . . . . . . . . . .  15
+     5.4.  Server to Client Replies  . . . . . . . . . . . . . . . .  15
+       5.4.1.  Required Values . . . . . . . . . . . . . . . . . . .  15
+       5.4.2.  Optional Values . . . . . . . . . . . . . . . . . . .  15
+       5.4.3.  Additional Values . . . . . . . . . . . . . . . . . .  15
+       5.4.4.  Composing the Reply . . . . . . . . . . . . . . . . .  15
+   6.  Client-Server Interactions  . . . . . . . . . . . . . . . . .  15
+     6.1.  Same Device Authentication  . . . . . . . . . . . . . . .  16
+     6.2.  Cross Device Authentication . . . . . . . . . . . . . . .  16
+     6.3.  Identity Association  . . . . . . . . . . . . . . . . . .  16
+     6.4.  Updating Identity Association . . . . . . . . . . . . . .  16
+     6.5.  Disabling Site Login  . . . . . . . . . . . . . . . . . .  16
+     6.6.  Re-Enabling Site Login  . . . . . . . . . . . . . . . . .  16
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  16
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  16
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  16
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  17
+   Appendix A.  SQRL Client Best Practices . . . . . . . . . . . . .  17
+   Appendix B.  SQRL Server Best Practices . . . . . . . . . . . . .  18
+   Appendix C.  Harvesting Entropy . . . . . . . . . . . . . . . . .  18
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  18
+
+1.  Introduction
+
+   Secure Quick Reliable Login (SQRL) is an authentication method and
+   identity management framework with the following features:
+
+   Secure
+
+
+
+
+
+Comley                   Expires August 19, 2018                [Page 3]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+      Through a series of cryptographic signatures, the user can prove
+      their identity without disclosing any information that would allow
+      that identity to be compromised.
+
+   Global Password
+      The user only has to remember a single password, which is used to
+      locally decrypt their identity during SQRL authentication.  Since
+      the user no longer has to remember a unique password for each
+      site, this one global password can be very strong.  This strong
+      password combined with strong encryption makes it infeasible for
+      even a state level actor to compromise the user's identity.
+
+   Anonymous
+      SQRL authentication is anonymous, in that it only provides a
+      secure, site-specific token to the server.  This token cannot be
+      directly linked to a user's account at any other server, and
+      provides no personally identifiable information.
+
+   No Third Party
+      The user's identity cannot be compromised by a security breach at
+      a third party authentication provider, protecting it from both
+      hackers and overreaching authorities.
+
+   User Controlled, Lifetime Identity
+      SQRL provides an identity management framework which allows the
+      user to maintain complete control of their identity.  Even in the
+      event that their password is compromised, the user retains the
+      ability to retake control of their identity and lock the attacker
+      out.  Automated rekeying means that the user can maintain a single
+      SQRL identity indefinately, even after a compromise
+
+   Offline Identity Backup
+      Since SQRL identities are intended to last a lifetime, and there
+      is no third party that can help the user recover their identity if
+      they forget their password, SQRL includes an offline backup
+      mechanism.  The user can print out or write down their encrypted
+      identity, along with a secure rescue code, that will allow the
+      user to recover from a forgotten password.
+
+   Out Of Band Authentication Option
+      With SQRL, the user can safely authenticate a session on public or
+      potentially compromised systems by using a second, trusted device
+      to perform the authentication.  The user just has to scan a QR
+      code with their trusted mobile device to begin authentication.
+
+
+
+
+
+
+
+Comley                   Expires August 19, 2018                [Page 4]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+1.1.  Requirements Language
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [RFC2119].
+
+1.2.  Definitions
+
+   TODO
+
+2.  Algorithms
+
+   TODO
+
+2.1.  Standard Algorithms
+
+   The following standard algorithms are used in this document:
+
+   o  AES-GCM [NIST.800-38D]
+
+   o  base64url: URL safe base64 encoding, as defined in Section 4 of
+      [RFC3548], without padding.
+
+   o  Curve25519 [RFC8031]
+
+   o  Ed25519 [RFC8032]
+
+   o  HMAC [RFC2104]
+
+   o  HMAC-SHA256 [RFC4868]
+
+   o  scrypt [RFC7914]
+
+   o  SHA-256 [FIPS.180-4.2015]
+
+   o  urlencode: Percent-Encoding as defined in Section 2.1 of
+      [RFC3986].
+
+2.2.  base56check
+
+   base56check encoding allows the backup of SQRL identities to a
+   textual form.  It:
+
+   o  Accepts an arbitrarily sized payload.
+
+   o  Uses a set of 56 alphanumeric symbols chosen to be easily
+      distinguishable in any font.
+
+
+
+
+Comley                   Expires August 19, 2018                [Page 5]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+   o  Ignores invalid characters and white space to allow readable
+      formatting.
+
+   o  Designed to be printed 20 characters per line, in 5 space
+      separated groups of 4 characters for readability.
+
+   o  Includes a check character at the end of each line to catch errors
+      while the user is typing.
+
+   The chosen alphabet is:
+
+   23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz
+
+2.2.1.  Encoding
+
+   To encode a series of bytes to base56check, treat the source bytes as
+   a single, large, little-endian number and convert using the normal
+   mathematical steps:
+
+   1.  Divide SOURCE by 56 to yield SOURCE and REMAINDER.
+
+   2.  Append the character in ALPHABET at position REMAINDER to the
+       BASE string.
+
+   3.  Repeat from step 1, until SOURCE is zero.
+
+   Now, with our converted BASE string, we can calculate the check
+   digits and produce the final output.
+
+   4.  Split BASE into 19 character CHUNKS (the final chunk may be
+       smaller).
+
+   5.  For each CHUNK:
+
+       A.  Append a single byte zero-based CHUNK-NUMBER to the CHUNK.
+
+       B.  Perform a SHA-256 hash on the CHUNK, yielding HASH.
+
+       C.  Treating HASH as a single little-endian number, divide HASH
+           by 56 to obtain REMAINDER.
+
+       D.  Replace the last character in CHUNK with the character in
+           ALPHABET at position REMAINDER.
+
+       E.  Append the CHUNK to OUTPUT.
+
+   OUTPUT can then be formatted as desired.  The recommended formatting
+   is 20 characters per line in space-separated groups of 4 characters
+
+
+
+Comley                   Expires August 19, 2018                [Page 6]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+   each.  This format is easy for humans to read and type, and allows
+   error checking for each line of input.
+
+2.2.2.  Validation
+
+   base56check is designed to provide periodic error checking and
+   feedback to the user as they are typing.  To perform this validation:
+
+   1.  Remove any characters from INPUT that are invalid (not included
+       in ALPHABET).
+
+   2.  Split INPUT into 20 character CHUNKS (the final chunk may be
+       smaller).
+
+   3.  For each CHUNK:
+
+       A.  Store the last character from CHUNK as CHECK.
+
+       B.  Replace the last character in CHUNK with a single byte zero-
+           based CHUNK-NUMBER.
+
+       C.  Perform a SHA-256 hash on the CHUNK, yielding HASH.
+
+       D.  Treating HASH as a single little-endian number, divide HASH
+           by 56 to obtain REMAINDER.
+
+       E.  Compare CHECK with the character from ALPHABET at position
+           REMAINDER.
+
+       F.  If comparison passes (is equal), continue.  Otherwise, there
+           is an error in this CHUNK.
+
+2.2.3.  Decoding
+
+   Decoding base56check is similarly straight-forward:
+
+   1.  Start with an empty BASE string and an zero OUTPUT buffer, to be
+       treated as a single, large, little-endian number.
+
+   2.  Perform the base56check validation as described above, appending
+       all but the last character of each validated CHUNK to the BASE
+       string.
+
+   3.  If any chunk fails validation, abort.
+
+   4.  For each CHARACTER in BASE, from right to left:
+
+       A.  Multiply OUTPUT by 56.
+
+
+
+Comley                   Expires August 19, 2018                [Page 7]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+       B.  Lookup the INDEX of CHARACTER in ALPHABET.
+
+       C.  Add INDEX to OUTPUT.
+
+2.3.  EnHash
+
+   EnHash is an iterated hash used to derive a 256 bit key from another
+   256 bit key.  It is performed by chaining 16 iterations of SHA-256,
+   with each iteration's output XORed to produce the final output as
+   follows:
+
+   function EnHash ( input := 32 byte key )
+   {
+     output := 32 byte buffer;
+
+     set output to all NULL (0) bytes;
+
+     repeat {
+       input = SHA256( input );
+       output = output XOR input;
+     } 16 times;
+
+     return output;
+   }
+
+2.4.  EnScrypt
+
+   EnScrypt is an iterative construct based on the scrypt password based
+   key derivation function.  It hardens scrypt by allowing for extended
+   processing time.  The following parameters are used for the scrypt
+   function:
+
+                         +-------+-----+-----+---+
+                         | dkLen | N   | r   | p |
+                         +-------+-----+-----+---+
+                         | 32    | 512 | 256 | 1 |
+                         +-------+-----+-----+---+
+
+                        Table 1: scrypt parameters
+
+   Enscrypt is performed by calling scrypt in multiple rounds, with each
+   successive round accepting the previous round's output as its salt.
+   The final output is the XOR of each round's scrypt result.
+
+
+
+
+
+
+
+
+Comley                   Expires August 19, 2018                [Page 8]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+    +---------+-------------------------------+-----------------------+
+    | Round # | let salt[n] =                 | let out =             |
+    +---------+-------------------------------+-----------------------+
+    | 1       | scrypt( password, salt )      | salt[1]               |
+    | 2       | scrypt( password, salt[1] )   | salt[1] XOR salt[2]   |
+    | n       | scrypt( password, salt[n-1] ) | salt[n-1] XOR salt[n] |
+    +---------+-------------------------------+-----------------------+
+
+                         Table 2: EnScrypt Rounds
+
+   EnScrypt can operate in two different modes, the only difference
+   being when the calculation is stopped.
+
+   Counter Mode:
+      Stops after a predefined number of iterations.
+
+   Timer Mode:
+      Stops after a desired amount of time has passed.
+
+3.  Cryptographic Keys, Secrets, and Passwords
+
+   SQRL uses a wide variety of secrets in various operations.
+
+3.1.  Class A Secrets
+
+   Class A secrets are absolutely critical to protecting a user's
+   identity.  A compromised Class A secret may result in the user's
+   complete loss of control of the identity, with no recourse available.
+   Due to their highly sensitive nature, the following precautions are
+   REQUIRED when dealing with Class A secrets:
+
+   o  The secret MUST be generated using the highest quality entropy
+      source available to the client.  See Appendix C for
+      recommendations.
+
+   o  The client MUST prevent the secret from being written to non-
+      volatile memory in plaintext form, including being swapped to
+      disk, by any means possible.
+
+   o  The plaintext secret MUST be securely wiped from RAM as soon as it
+      is no longer needed.
+
+   o  If the secret is to be stored, it MUST be stored in an offline
+      format (printed), OR encrypted using a Class A key.
+
+   o  The secret SHOULD NOT be transmitted over the network in any form,
+      and MUST NOT be transmitted unencrypted.
+
+
+
+
+Comley                   Expires August 19, 2018                [Page 9]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+3.1.1.  Identity Unlock Key (IUK)
+
+   IUK = RandomBytes( 32 );
+
+   The IUK is a Class A 256 bit high entropy random number that
+   represents a user's identity.  All other identifying keys are derived
+   from this one.  After identity creation, this key is only used in
+   emergency situations, such as re-keying an identity in the event of a
+   possible compromise.
+
+3.1.2.  Unlock Request Signing Key (URSK)
+
+   URSK = curve25519_key_agreement( SUK, curve25519_private_key( IUK ));
+
+   Used by the client to update the identity association on a server,
+   the URSK is derived from the SUK and IUK.
+
+3.1.3.  Rescue Code (RC)
+
+   The Rescue Code is a Class A, computer generated, high entropy
+   passcode consisting of 24 numeric digits.  The client SHOULD
+   encourage the user to store the Rescue Code in an offline format
+   (printed or written).
+
+3.1.4.  Password Derived Keys
+
+   Several keys are generated from user input.  Both the user supplied
+   passwords and the derived keys are to be treated as Class A secrets.
+   Since these are expected to be low entropy, they must be processed
+   through EnScrypt (Section 2.4).  When generating derived keys,
+   EnScrypt MUST be used in timer mode with a minimum duration of 1
+   second.  The table below lists RECOMMENDED durations for EnScrypt key
+   generation:
+
+       +----------------------------+--------------+---------------+
+       | Key                        | Abbreviation | EnScrypt Time |
+       +----------------------------+--------------+---------------+
+       | Password Derived Key       | PWDK         | 5 seconds     |
+       | Short Password Derived Key | SPDK         | 1 second      |
+       | Rescue Code Derived Key    | RCDK         | 60 seconds    |
+       +----------------------------+--------------+---------------+
+
+       Table 3: Password Derived Keys and Recommended EnScrypt Times
+
+   Clients MAY allow the user to specify the EnScrypt time for the PWDK,
+   as long as that timer is at least 1 second.  The RCDK is used so
+   rarely, and is so important to protect, that 60 seconds should not
+   cause an undue burden on the user.
+
+
+
+Comley                   Expires August 19, 2018               [Page 10]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+   When re-generating derived keys, EnScrypt is used in counter mode
+   with the iteration count from the original generation operation.
+
+3.2.  Class B Secrets
+
+   Class B secrets are used often, and have less strict security
+   requirements.  A compromised Class B secret may result in an attacker
+   temporarily gaining the ability to impersonate the user to any
+   server, but the user can regain control of their identity by rekeying
+   followed by authenticating with each affected server.  The following
+   precautions are REQUIRED when dealing with Class B secrets:
+
+   o  The client MUST prevent the secret from being written to non-
+      volatile memory in plaintext form, including being swapped to
+      disk, by any means possible.
+
+   o  The plaintext secret MUST be securely wiped from RAM as soon as it
+      is no longer needed.
+
+   o  If the secret is to be stored, it MUST be stored in an encrypted
+      form.
+
+   o  The secret SHOULD NOT be transmitted over the network in any form,
+      and MUST NOT be transmitted unencrypted.
+
+3.2.1.  Previous Identity Unlock Key (PIUK)
+
+   A PIUK is an IUK that is no longer in active use.  It has been
+   replaced by a newly generated IUK, and requires less strict
+   protection.
+
+3.2.2.  Identity Master Key (IMK)
+
+   IMK = EnHash( IUK );
+
+   This Class B ) key acts as a proxy for the IUK during normal SQRL
+   operation.  It is used to generate the unique keys that each site
+   associates with the user.  The IMK is derived from the IUK using the
+   EnHash (Section 2.3) function.
+
+3.2.3.  Identity Lock Key (ILK)
+
+   ILK = curve25519_public_key( curve25519_private_key( IUK ));
+
+   The (modified) IUK and ILK together form a Curve25519 key pair.
+
+
+
+
+
+
+Comley                   Expires August 19, 2018               [Page 11]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+3.2.4.  Site Specific Secret Key (SSSK)
+
+   SSSK = HMAC-SHA256( IMK, Realm );
+
+   The Site Specific Secret Key is generated from the IMK and the Realm
+   (Section 5.2).
+
+3.2.5.  Random Lock Key (RLK)
+
+   RLK = curve25519_private_key( RandomBytes( 32 ));
+
+   The RLK is generated randomly when the client associates with a new
+   server.
+
+3.3.  Class C (Public) Keys
+
+   Class C keys are not required to be kept secret.
+
+3.3.1.  Site Specific Public Key (SSPK)
+
+   SSPK = ed25519_public_key( SSSK );
+
+   The Site Specific Public Key (SSPK) is the public counterpart to the
+   SSSK.
+
+3.3.2.  Server Unlock Key (SUK)
+
+   SUK = curve25519_public_key( RLK );
+
+   Created during identity association, the SUK is the public
+   counterpart of the RLK.
+
+3.3.3.  Verify Unlock Key (VUK)
+
+   VUK = ed25519_public_key( curve25519_key_agreement( ILK, RLK ));
+
+   Generated during identity association, and stored only on the server,
+   the VUK is the public key used to verify the client's URSK.
+
+4.  Identity Management
+
+4.1.  Identity Lifecycle
+
+   TODO
+
+
+
+
+
+
+
+Comley                   Expires August 19, 2018               [Page 12]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+4.2.  Identity Creation
+
+   TODO
+
+4.3.  Identity Storage
+
+   TODO
+
+4.3.1.  Storage Format
+
+   TODO
+
+4.3.2.  Storage Blocks
+
+   TODO
+
+4.3.3.  Predefined Block Types
+
+   TODO
+
+4.3.4.  Encoding
+
+   TODO
+
+4.4.  Importing / Exporting an Identity
+
+   TODO
+
+4.4.1.  Binary File
+
+   TODO
+
+4.4.2.  Printed QR Code
+
+   TODO
+
+4.4.3.  Printed Text
+
+   TODO
+
+4.5.  Changing the User's Password
+
+   TODO
+
+
+
+
+
+
+
+
+Comley                   Expires August 19, 2018               [Page 13]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+4.6.  Identity Recovery
+
+   TODO
+
+4.7.  Re-Keying and Identity
+
+   TODO
+
+5.  Client-Server Protocol
+
+   TODO
+
+5.1.  Initiation of SQRL Authentication
+
+   TODO
+
+5.1.1.  The SQRL Scheme
+
+   TODO
+
+5.1.2.  QR Codes (Out of Band)
+
+   TODO
+
+5.2.  The SQRL Realm (Domain)
+
+   TODO
+
+5.3.  Client to Server Requests
+
+   TODO
+
+5.3.1.  Protocol Version
+
+   TODO
+
+5.3.2.  Commands
+
+   TODO
+
+5.3.3.  Options
+
+   TODO
+
+
+
+
+
+
+
+
+Comley                   Expires August 19, 2018               [Page 14]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+5.3.4.  The server Value
+
+   TODO
+
+5.3.5.  The client Value
+
+   TODO
+
+5.3.6.  Client Keys
+
+   TODO
+
+5.3.7.  Client Signatures
+
+   TODO
+
+5.3.8.  Composing the Request
+
+   TODO
+
+5.4.  Server to Client Replies
+
+   TODO
+
+5.4.1.  Required Values
+
+   TODO
+
+5.4.2.  Optional Values
+
+   TODO
+
+5.4.3.  Additional Values
+
+   TODO
+
+5.4.4.  Composing the Reply
+
+   TODO
+
+6.  Client-Server Interactions
+
+   TODO
+
+
+
+
+
+
+
+
+Comley                   Expires August 19, 2018               [Page 15]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+6.1.  Same Device Authentication
+
+   TODO
+
+6.2.  Cross Device Authentication
+
+   TODO
+
+6.3.  Identity Association
+
+   TODO
+
+6.4.  Updating Identity Association
+
+   TODO
+
+6.5.  Disabling Site Login
+
+   TODO
+
+6.6.  Re-Enabling Site Login
+
+   TODO
+
+7.  IANA Considerations
+
+   TODO
+
+8.  Security Considerations
+
+   TODO
+
+9.  References
+
+9.1.  Normative References
+
+   [FIPS.180-4.2015]
+              National Institute of Standards and Technology, "Secure
+              Hash Standard", August 2015.
+
+   [NIST.800-38D]
+              Dworkin, M., "NIST Special Publication 800-38D:
+              Recommendation for Block Cipher Modes of Operation:
+              Galois/Counter Mode (GCM) and GMAC.", November 2007.
+
+
+
+
+
+
+
+Comley                   Expires August 19, 2018               [Page 16]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+   [RFC2104]  Krawczyk, H., Bellare, M., and R. Canetti, "HMAC: Keyed-
+              Hashing for Message Authentication", RFC 2104,
+              DOI 10.17487/RFC2104, February 1997, <https://www.rfc-
+              editor.org/info/rfc2104>.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997, <https://www.rfc-
+              editor.org/info/rfc2119>.
+
+   [RFC3548]  Josefsson, S., Ed., "The Base16, Base32, and Base64 Data
+              Encodings", RFC 3548, DOI 10.17487/RFC3548, July 2003,
+              <https://www.rfc-editor.org/info/rfc3548>.
+
+   [RFC3986]  Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
+              Resource Identifier (URI): Generic Syntax", STD 66,
+              RFC 3986, DOI 10.17487/RFC3986, January 2005,
+              <https://www.rfc-editor.org/info/rfc3986>.
+
+   [RFC7914]  Percival, C. and S. Josefsson, "The scrypt Password-Based
+              Key Derivation Function", RFC 7914, DOI 10.17487/RFC7914,
+              August 2016, <https://www.rfc-editor.org/info/rfc7914>.
+
+   [RFC8031]  Nir, Y. and S. Josefsson, "Curve25519 and Curve448 for the
+              Internet Key Exchange Protocol Version 2 (IKEv2) Key
+              Agreement", RFC 8031, DOI 10.17487/RFC8031, December 2016,
+              <https://www.rfc-editor.org/info/rfc8031>.
+
+   [RFC8032]  Josefsson, S. and I. Liusvaara, "Edwards-Curve Digital
+              Signature Algorithm (EdDSA)", RFC 8032,
+              DOI 10.17487/RFC8032, January 2017, <https://www.rfc-
+              editor.org/info/rfc8032>.
+
+9.2.  Informative References
+
+   [RFC4868]  Kelly, S. and S. Frankel, "Using HMAC-SHA-256, HMAC-SHA-
+              384, and HMAC-SHA-512 with IPsec", RFC 4868,
+              DOI 10.17487/RFC4868, May 2007, <https://www.rfc-
+              editor.org/info/rfc4868>.
+
+Appendix A.  SQRL Client Best Practices
+
+   TODO
+
+
+
+
+
+
+
+
+Comley                   Expires August 19, 2018               [Page 17]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+Appendix B.  SQRL Server Best Practices
+
+   TODO
+
+Appendix C.  Harvesting Entropy
+
+   TODO
+
+Author's Address
+
+   Adam Comley (editor)
+
+   Email: adam@novators.net
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Comley                   Expires August 19, 2018               [Page 18]
