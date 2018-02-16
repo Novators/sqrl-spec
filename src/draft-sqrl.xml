@@ -206,7 +206,14 @@ function EnHash ( input := 32 byte key )
           key derivation function.  It hardens scrypt by allowing for extended 
           processing time.  The following parameters are used for the scrypt 
           function:
-        </t><texttable anchor="table_enscrypt_parameters" title="scrypt parameters"><ttcol>dkLen</ttcol><ttcol>N</ttcol><ttcol>r</ttcol><ttcol>p</ttcol><c>32</c><c>512</c><c>256</c><c>1</c></texttable><t>
+        </t><texttable anchor="table_enscrypt_parameters" title="scrypt parameters"><ttcol>dkLen</ttcol><ttcol>N</ttcol><ttcol>r</ttcol><ttcol>p</ttcol><c>32</c><c>512 (1&lt;&lt;9)</c><c>256</c><c>1</c></texttable><t>
+          In this document, we may refer to an additional parameter, "n-factor" or
+          just "n".  This is simply a shorthand way of storing the N parameter.
+          N is derived from n as follows:
+          <figure><artwork><![CDATA[
+N = (1 << n);
+          ]]></artwork></figure>
+        </t><t>
           Enscrypt is performed by calling scrypt in multiple rounds, with each 
           successive round accepting the previous round's output as its salt.  
           The final output is the XOR of each round's scrypt result.
@@ -335,7 +342,77 @@ VUK = ed25519_public_key( curve25519_key_agreement( ILK, RLK ));]]></artwork></f
             URSK.
           </t></section></section></section><section title="Identity Management"><section title="Identity Lifecycle"><t>
           TODO
-        </t></section><section title="Identity Creation"><t>TODO</t></section><section title="Identity Storage"><t>TODO</t><section title="Storage Format"><t>TODO</t></section><section title="Storage Blocks"><t>TODO</t></section><section title="Predefined Block Types"><t>TODO</t></section><section title="Encoding"><t>TODO</t></section></section><section title="Importing / Exporting an Identity"><t>TODO</t><section title="Binary File"><t>TODO</t></section><section title="Printed QR Code"><t>TODO</t></section><section title="Printed Text"><t>TODO</t></section></section><section title="Changing the User's Password"><t>TODO</t></section><section title="Identity Recovery"><t>TODO</t></section><section title="Re-Keying and Identity"><t>TODO</t></section></section><section title="Client-Server Protocol"><t>TODO</t><section title="Initiation of SQRL Authentication"><t>TODO</t><section title="The SQRL Scheme"><t>TODO</t></section><section title="QR Codes (Out of Band)"><t>TODO</t></section></section><section anchor="section-realm" title="The SQRL Realm (Domain)"><t>TODO</t></section><section title="Client to Server Requests"><t>TODO</t><section title="Protocol Version"><t>TODO</t></section><section title="Commands"><t>TODO</t></section><section title="Options"><t>TODO</t></section><section title="The server Value"><t>TODO</t></section><section title="The client Value"><t>TODO</t></section><section title="Client Keys"><t>TODO</t></section><section title="Client Signatures"><t>TODO</t></section><section title="Composing the Request"><t>TODO</t></section></section><section title="Server to Client Replies"><t>TODO</t><section title="Required Values"><t>TODO</t></section><section title="Optional Values"><t>TODO</t></section><section title="Additional Values"><t>TODO</t></section><section title="Composing the Reply"><t>TODO</t></section></section></section><section title="Client-Server Interactions"><t>TODO</t><section title="Same Device Authentication"><t>TODO</t></section><section title="Cross Device Authentication"><t>TODO</t></section><section title="Identity Association"><t>TODO</t></section><section title="Updating Identity Association"><t>TODO</t></section><section title="Disabling Site Login"><t>TODO</t></section><section title="Re-Enabling Site Login"><t>TODO</t></section></section><section anchor="IANA" title="IANA Considerations"><t>TODO</t></section><section anchor="Security" title="Security Considerations"><t>TODO</t></section></middle><!--  *****BACK MATTER ***** --><back><!-- References split into informative and normative --><!-- There are 2 ways to insert reference entries from the citation libraries:
+        </t></section><section title="Identity Creation"><t>TODO</t></section><section title="User Options"><t>
+          Several user options are available which will affect the operation
+          of compatible SQRL clients:
+          <list style="hanging" hangIndent="3"><t hangText="ShortPass Length:"><vspace/>
+              The number of characters from the user's password to use as the
+              ShortPass.  Clients that implement ShortPass MUST honor the user's
+              choice here.  Valid values are 0 to 255.  A value of 0 disables the
+              ShortPass feature.
+            </t><t hangText="EnScrypt Seconds:"><vspace/>
+              The number of seconds to run EnScrypt when deriving the PWDK.  The
+              RECOMMENDED default is 5 seconds.  The REQUIRED minimum is 1 second.
+            </t><t hangText="Idle Timeout:"><vspace/>
+              If the client implements ShortPass or holds the user's password or keys
+              in memory in any form, and the 0x0080 option flag is set, it MUST 
+              securely erase that memory after this many minutes of system idle time.
+              Valid values are 1-65535.
+            </t><t hangText="Option Flags:"><vspace/>
+              The following binary flags turn on or off various user options:
+            </t></list>
+        </t><texttable title="User Option Flags"><ttcol>Flag</ttcol><ttcol>Description</ttcol><c>0x0001</c><c>Check for updates:  Gives the client permission to periodically check for updates.</c><c>0x0002</c><c>Update Automatically:  Requests that the client automatically update itself when a new version is available.</c><c>0x0004</c><c>Request SQRL only:  Requests that servers disable other means of authentication and only allow SQRL.</c><c>0x0008</c><c>Request no bypass:  Requests that servers not allow non-SQRL account recovery options.</c><c>0x0010</c><c>Warn of possible MITM attack: The client will warn the user if their IP doesn't match the server's expectations.</c><c>0x0020</c><c>Clear ShortPass when screen blanks: The client will securely erase any ShortPass information when the screen saver is activated or the system is going to suspend / sleep modes.</c><c>0x0040</c><c>Clear ShortPass when changing users: The client will securely erase any ShortPass information when the system's active user changes.</c><c>0x0080</c><c>Clear ShortPass after idle timer: The client will securely erase any ShortPass information after the system has been idle for an amount of time specified in the "Idle Timeout" option.</c><c>0x0100</c><c>Warn of non-CPS authentication: The client will warn the user before a non-CPS authentication is attempted.  This flag MUST default to on.</c></texttable></section><section title="Identity Storage"><t>
+          Because SQRL identities are intended to last the user's lifetime, 
+          the user needs to be able to move his identity between clients.
+          Every SQRL client MUST be able to import from and export identities
+          to this standard format, regardless of how they store the identity
+          internally.
+        </t><t>
+          Because identities should be backed up offline (to printed paper),
+          the storage format must be compact enough to reliably fit in a
+          printed QR code, and short enough to not cause undue burden if
+          the user has to type it in by hand.
+        </t><t>
+          Values stored in standard SQRL storage format MUST follow these rules:
+          <list style="symbols"><t>All numeric values are unsigned.</t><t>
+              Multibyte numeric values are stored in little endian byte order,
+              with the least significant byte first.
+            </t><t>
+              String values are stored in natural order, first byte first.
+            </t></list>
+        </t><section title="Encoding"><t>
+            Identities may be stored to file or optical (QR) code in binary
+            format, or in base64url or base56check (<xref target="algo-b56c"/>) 
+            encoded text.  Compatible clients MUST support at least one of 
+            these standard encodings.
+          </t><t>
+            Identities stored in this standard format MUST include an 8 byte
+            header identifying the encoding used for the remainder of the file,
+            with a single exception:  Identities exported to text using base56check
+            encoding do not include a header.  Instead, they are validated by
+            the encoded check characters.  The header itself is not encoded,
+            but indicates that everything following it will be.
+          </t><texttable anchor="table-id-encoding" title="Storage Encodings and Headers"><ttcol>Encoding</ttcol><ttcol>Header (ASCII)</ttcol><c>binary</c><c>sqrldata</c><c>base64url</c><c>SQRLDATA</c><c>base56check</c><c/></texttable></section><section title="Storage Blocks"><t>
+            A stored SQRL identity is composed of any number of blocks.  Each block
+            begins with a four byte header identifying the total length of the block 
+            and the type of data stored in the block.
+          </t><texttable anchor="table-block-format" title="Storage Block Format"><ttcol>Field</ttcol><ttcol>Size (bytes)</ttcol><c>block length in bytes (n+4)</c><c>2</c><c>block type</c><c>2</c><c>block data</c><c>n</c></texttable><t>
+            Standard block types are defined in the next section.  Clients MAY add
+            their own block types to store additional information, but SHOULD
+            consider types 0-255 as reserved for future official block types.
+            Any client reading an identity that encouters a block type unknown to
+            that client MUST simply ignore that block.
+          </t></section><section title="Predefined Block Types"><section title="Block Type 1: Working Identity"><t>
+              The type 1 block contains the user's encrypted IMK and ILK, as well as 
+              user defined options.  The user options are in plain text, but MUST be 
+              regarded as untrusted until authenticated through AES-GCM.  The type 1 
+              block is formatted as follows:
+            </t><texttable title="Type 1 Block"><ttcol>Field</ttcol><ttcol>Default</ttcol><ttcol align="right">Bytes</ttcol><c>Block Length</c><c>125</c><c>2</c><c>Block Type</c><c>1</c><c>2</c><c>AAD Length</c><c>45</c><c>2</c><c>AES-GCM IV</c><c/><c>12</c><c>EnScrypt Salt</c><c/><c>16</c><c>EnScrypt n-factor</c><c>9</c><c>1</c><c>EnScrypt Iteration Count</c><c/><c>4</c><c>User Option Flags</c><c>0x01F3</c><c>2</c><c>ShortPass Length</c><c>4</c><c>1</c><c>EnScrypt Seconds</c><c>5</c><c>1</c><c>Idle Timeout (minutes)</c><c>15</c><c>2</c><c>Encrypted IMK</c><c/><c>32</c><c>Encrypted ILK</c><c/><c>32</c><c>AES-GCM Verification Tag</c><c/><c>16</c></texttable><t>
+              Constructing a type 1 block is relatively straight-forward:
+              <list style="numbers"><t>Allocate a 125 byte buffer.</t><t>Populate the default values (or user chosen options).</t><t>Generate a random 12 byte initialization vector (IV) and store it in the buffer.</t><t>Generate a random 16 byte salt and store it in the buffer.</t><t>Use the salt to run EnScrypt on the user's password for the chosen amount of time (default 5 seconds) to obtain the encryption key.</t><t>Populate the EnScrypt iteration count in the buffer.</t><t>AES-GCM encrypt the IMK and ILK (64 bytes total) using the first "AAD Length" bytes of the buffer as AAD, the IV, and the generated encryption key.</t><t>Populate the ciphertext result and verification tag from AES-GCM.</t><t>Securely wipe the plaintext keys, encryption key, and password from memory if they are no longer needed.</t></list>
+              If the client is updating a type 1 block, and the user's password hasn't changed, 
+              clients SHOULD use the original salt and iteration count to re-encrypt the block.
+            </t></section><section title="Block Type 2: Identity Unlock Key"><t>TODO</t></section><section title="Block Type 3: Previous Identities"><t>TODO</t></section></section></section><section title="Importing / Exporting an Identity"><t>TODO</t><section title="Binary File"><t>TODO</t></section><section title="Printed QR Code"><t>TODO</t></section><section title="Printed Text"><t>TODO</t></section></section><section title="Changing the User's Password"><t>TODO</t></section><section title="Identity Recovery"><t>TODO</t></section><section title="Re-Keying and Identity"><t>TODO</t></section></section><section title="Client-Server Protocol"><t>TODO</t><section title="Initiation of SQRL Authentication"><t>TODO</t><section title="The SQRL Scheme"><t>TODO</t></section><section title="QR Codes (Out of Band)"><t>TODO</t></section></section><section anchor="section-realm" title="The SQRL Realm (Domain)"><t>TODO</t></section><section title="Client to Server Requests"><t>TODO</t><section title="Protocol Version"><t>TODO</t></section><section title="Commands"><t>TODO</t></section><section title="Options"><t>TODO</t></section><section title="The server Value"><t>TODO</t></section><section title="The client Value"><t>TODO</t></section><section title="Client Keys"><t>TODO</t></section><section title="Client Signatures"><t>TODO</t></section><section title="Composing the Request"><t>TODO</t></section></section><section title="Server to Client Replies"><t>TODO</t><section title="Required Values"><t>TODO</t></section><section title="Optional Values"><t>TODO</t></section><section title="Additional Values"><t>TODO</t></section><section title="Composing the Reply"><t>TODO</t></section></section></section><section title="Client-Server Interactions"><t>TODO</t><section title="Same Device Authentication"><t>TODO</t></section><section title="Cross Device Authentication"><t>TODO</t></section><section title="Identity Association"><t>TODO</t></section><section title="Updating Identity Association"><t>TODO</t></section><section title="Disabling Site Login"><t>TODO</t></section><section title="Re-Enabling Site Login"><t>TODO</t></section></section><section anchor="IANA" title="IANA Considerations"><t>TODO</t></section><section anchor="Security" title="Security Considerations"><t>TODO</t></section></middle><!--  *****BACK MATTER ***** --><back><!-- References split into informative and normative --><!-- There are 2 ways to insert reference entries from the citation libraries:
      1. define an ENTITY at the top, and use "ampersand character"RFC2629; here (as shown)
      2. simply use a PI "less than character"?rfc include="reference.RFC.2119.xml"?> here
         (for I-Ds: include="reference.I-D.narten-iana-considerations-rfc2434bis.xml")
@@ -357,4 +434,4 @@ VUK = ed25519_public_key( curve25519_key_agreement( ILK, RLK ));]]></artwork></f
 
     </references><references title="Informative References">
       &RFC4868;
-    </references><section anchor="app-client" title="SQRL Client Best Practices"><t>TODO</t></section><section anchor="app-server" title="SQRL Server Best Practices"><t>TODO</t></section><section anchor="app-entropy" title="Harvesting Entropy"><t>TODO</t></section></back></rfc>
+    </references><section anchor="app-client" title="SQRL Client Best Practices"><t>TODO</t></section><section anchor="app-server" title="SQRL Server Best Practices"><t>TODO</t></section><section anchor="app-shortpass" title="ShortPass"><t>TODO</t></section><section anchor="app-entropy" title="Harvesting Entropy"><t>TODO</t></section></back></rfc>
