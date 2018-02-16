@@ -6,6 +6,7 @@
      There has to be one entity for each item to be referenced. 
      An alternate method (rfc include) is described in the references. --><!ENTITY RFC2104 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2104.xml">
 <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC2898 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2898.xml">
 <!ENTITY RFC3548 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3548.xml">
 <!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
 <!ENTITY RFC4868 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4868.xml">
@@ -56,7 +57,7 @@
          keywords will be used for the search engine. --><abstract><t>
         Secure Quick Reliable Login (SQRL) is an authentication method and 
         identity management framework.  It enables a user to create and manage
-        a single, lifetime identity.  That identity will allow the user to 
+        a single, pseudonymous lifetime identity.  That identity will allow the user to 
         securely authenticate with any SQRL enabled server without relying on 
         a third party or disclosing personally identifiable information.
       </t><t>
@@ -70,16 +71,16 @@
         <list style="hanging" hangIndent="3"><t hangText="Secure"><vspace/>
             Through a series of cryptographic signatures, the user can prove 
             their identity without disclosing any information that would allow 
-            that identity to be compromised.
+            that identity to be compromised or their account hacked.
           </t><t hangText="Global Password"><vspace/>
             The user only has to remember a single password, which is used to 
             locally decrypt their identity during SQRL authentication.  Since 
             the user no longer has to remember a unique password for each site, 
             this one global password can be very strong.  This strong password 
             combined with strong encryption makes it infeasible for even a 
-            state level actor to compromise the user's identity.
+            state level actor to compromise the user's identity. (SQRL apps can alternately use other methods of protection such as biometrics when available on the host device.)
           </t><t hangText="Anonymous"><vspace/>
-            SQRL authentication is anonymous, in that it only provides a 
+            SQRL authentication is pseudonymous, in that it only provides a 
             secure, site-specific token to the server.  This token cannot be 
             directly linked to a user's account at any other server, and 
             provides no personally identifiable information.
@@ -99,13 +100,12 @@
             is no third party that can help the user recover their identity if 
             they forget their password, SQRL includes an offline backup 
             mechanism.  The user can print out or write down their encrypted 
-            identity, along with a secure rescue code, that will allow the user 
+            identity, along with a secure Rescue Code, that will allow the user 
             to recover from a forgotten password.
           </t><t hangText="Out Of Band Authentication Option"><vspace/>
             With SQRL, the user can safely authenticate a session on public or 
-            potentially compromised systems by using a second, trusted device 
-            to perform the authentication.  The user just has to scan a QR code 
-            with their trusted mobile device to begin authentication.
+            potentially compromised systems by scanning a QR code 
+            on a trusted mobile device containing their SQRL identity, without the need to expose that identity to the public system.
           </t></list>
       </t><section title="Requirements Language"><t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
         "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
@@ -114,7 +114,7 @@
           <list style="symbols"><t><xref target="NIST.800-38D">AES-GCM</xref></t><t>
               base64url: URL safe base64 encoding, as defined in Section 4 of 
               <xref target="RFC3548"/>, without padding.
-            </t><t><xref target="RFC8031">Curve25519</xref></t><t><xref target="RFC8032">Ed25519</xref></t><t><xref target="RFC2104">HMAC</xref></t><t><xref target="RFC4868">HMAC-SHA256</xref></t><t><xref target="RFC7914">scrypt</xref></t><t><xref target="FIPS.180-4.2015">SHA-256</xref></t><t>
+            </t><t><xref target="RFC8031">Curve25519</xref></t><t><xref target="RFC8032">Ed25519</xref></t><t><xref target="RFC2104">HMAC</xref></t><t><xref target="RFC4868">HMAC-SHA256</xref></t><t><xref target="RFC2898">PBKDF2</xref></t><t><xref target="RFC7914">scrypt</xref></t><t><xref target="FIPS.180-4.2015">SHA-256</xref></t><t>
               urlencode: Percent-Encoding as defined in Section 2.1 of 
               <xref target="RFC3986"/>.
             </t></list>
@@ -132,7 +132,7 @@
               separated groups of 4 characters for readability.
             </t><t>
               Includes a check character at the end of each line to catch 
-              errors while the user is typing.
+              errors while the user is typing with 98.2% accuracy.
             </t></list>
           The chosen alphabet is:
         </t><figure><artwork><![CDATA[
@@ -202,23 +202,19 @@ function EnHash ( input := 32 byte key )
   return output;
 }
           ]]></artwork></figure></section><section anchor="algo-enscrypt" title="EnScrypt"><t>
-          EnScrypt is an iterative construct based on the scrypt password based 
-          key derivation function.  It hardens scrypt by allowing for extended 
-          processing time.  The following parameters are used for the scrypt 
-          function:
+          EnScrypt is an iterative construct utilizing the scrypt password based 
+          key derivation function as a PRF for PBKDF2.  It allows for extended processing time without increasing memory requirements.  The following parameters are used for the scrypt function:
         </t><texttable anchor="table_enscrypt_parameters" title="scrypt parameters"><ttcol>dkLen</ttcol><ttcol>N</ttcol><ttcol>r</ttcol><ttcol>p</ttcol><c>32</c><c>512</c><c>256</c><c>1</c></texttable><t>
-          Enscrypt is performed by calling scrypt in multiple rounds, with each 
-          successive round accepting the previous round's output as its salt.  
-          The final output is the XOR of each round's scrypt result.
-        </t><texttable anchor="table_enscrypt_rounds" title="EnScrypt Rounds"><ttcol>Round #</ttcol><ttcol>let salt[n] = </ttcol><ttcol>let out = </ttcol><c>1</c><c>scrypt( password, salt )</c><c>salt[1]</c><c>2</c><c>scrypt( password, salt[1] )</c><c>salt[1] XOR salt[2]</c><c>n</c><c>scrypt( password, salt[n-1] )</c><c>salt[n-1] XOR salt[n]</c></texttable><t>
+          Enscrypt is performed by calling scrypt in multiple rounds as in PBKDF2.
+        </t><t>
           EnScrypt can operate in two different modes, the only difference 
           being when the calculation is stopped.
           <list style="hanging" hangIndent="3"><t hangText="Counter Mode:"><vspace/>
               Stops after a predefined number of iterations.
             </t><t hangText="Timer Mode:"><vspace/>
-              Stops after a desired amount of time has passed.
+              Stops after a desired amount of time has passed (5 seconds by default).
             </t></list>
-        </t></section></section><section title="Cryptographic Keys, Secrets, and Passwords"><t>
+        </t><t>Timer Mode is used when creating an encryption key from a password. Once the key is derived and the identity encrypted, the resulting number of iterations is saved with the identity file. Counter Mode is used to recreate this key and decrypt the identity.</t></section></section><section title="Cryptographic Keys, Secrets, and Passwords"><t>
         SQRL uses a wide variety of secrets in various operations.
       </t><section anchor="secret-class-a" title="Class A Secrets"><t>
           Class A secrets are absolutely critical to protecting a user's 
@@ -323,7 +319,7 @@ RLK = curve25519_private_key( RandomBytes( 32 ));]]></artwork></figure><t>
         </t><section title="Site Specific Public Key (SSPK)"><figure><artwork><![CDATA[
 SSPK = ed25519_public_key( SSSK );]]></artwork></figure><t>
             The Site Specific Public Key (SSPK) is the public counterpart to 
-            the SSSK.
+            the SSSK.  It serves as the user's pseudonymous identity on the site.
           </t></section><section title="Server Unlock Key (SUK)"><figure><artwork><![CDATA[
 SUK = curve25519_public_key( RLK );]]></artwork></figure><t>
             Created during identity association, the SUK is the public 
@@ -347,6 +343,7 @@ VUK = ed25519_public_key( curve25519_key_agreement( ILK, RLK ));]]></artwork></f
      filing system or remote ones accessed by http (http://domain/dir/... ).--><references title="Normative References"><!--?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"?-->
       &RFC2104;
       &RFC2119;
+	  &RFC2898;
       &RFC3548;
       &RFC3986;
       &RFC7914;
