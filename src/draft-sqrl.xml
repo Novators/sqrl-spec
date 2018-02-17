@@ -6,6 +6,7 @@
      There has to be one entity for each item to be referenced. 
      An alternate method (rfc include) is described in the references. --><!ENTITY RFC2104 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2104.xml">
 <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC2898 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2898.xml">
 <!ENTITY RFC3548 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3548.xml">
 <!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
 <!ENTITY RFC4868 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4868.xml">
@@ -56,7 +57,7 @@
          keywords will be used for the search engine. --><abstract><t>
         Secure Quick Reliable Login (SQRL) is an authentication method and 
         identity management framework.  It enables a user to create and manage
-        a single, lifetime identity.  That identity will allow the user to 
+        a single, pseudonymous lifetime identity.  That identity will allow the user to 
         securely authenticate with any SQRL enabled server without relying on 
         a third party or disclosing personally identifiable information.
       </t><t>
@@ -70,16 +71,16 @@
         <list style="hanging" hangIndent="3"><t hangText="Secure"><vspace/>
             Through a series of cryptographic signatures, the user can prove 
             their identity without disclosing any information that would allow 
-            that identity to be compromised.
+            that identity to be compromised or their account hacked.
           </t><t hangText="Global Password"><vspace/>
             The user only has to remember a single password, which is used to 
             locally decrypt their identity during SQRL authentication.  Since 
             the user no longer has to remember a unique password for each site, 
             this one global password can be very strong.  This strong password 
             combined with strong encryption makes it infeasible for even a 
-            state level actor to compromise the user's identity.
+            state level actor to compromise the user's identity. (SQRL apps can alternately use other methods of protection such as biometrics when available on the host device.)
           </t><t hangText="Anonymous"><vspace/>
-            SQRL authentication is anonymous, in that it only provides a 
+            SQRL authentication is pseudonymous, in that it only provides a 
             secure, site-specific token to the server.  This token cannot be 
             directly linked to a user's account at any other server, and 
             provides no personally identifiable information.
@@ -99,13 +100,12 @@
             is no third party that can help the user recover their identity if 
             they forget their password, SQRL includes an offline backup 
             mechanism.  The user can print out or write down their encrypted 
-            identity, along with a secure rescue code, that will allow the user 
+            identity, along with a secure Rescue Code, that will allow the user 
             to recover from a forgotten password.
           </t><t hangText="Out Of Band Authentication Option"><vspace/>
             With SQRL, the user can safely authenticate a session on public or 
-            potentially compromised systems by using a second, trusted device 
-            to perform the authentication.  The user just has to scan a QR code 
-            with their trusted mobile device to begin authentication.
+            potentially compromised systems by scanning a QR code 
+            on a trusted mobile device containing their SQRL identity, without the need to expose that identity to the public system.
           </t></list>
       </t><section title="Requirements Language"><t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
         "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
@@ -114,7 +114,7 @@
           <list style="symbols"><t><xref target="NIST.800-38D">AES-GCM</xref></t><t>
               base64url: URL safe base64 encoding, as defined in Section 4 of 
               <xref target="RFC3548"/>, without padding.
-            </t><t><xref target="RFC8031">Curve25519</xref></t><t><xref target="RFC8032">Ed25519</xref></t><t><xref target="RFC2104">HMAC</xref></t><t><xref target="RFC4868">HMAC-SHA256</xref></t><t><xref target="RFC7914">scrypt</xref></t><t><xref target="FIPS.180-4.2015">SHA-256</xref></t><t>
+            </t><t><xref target="RFC8031">Curve25519</xref></t><t><xref target="RFC8032">Ed25519</xref></t><t><xref target="RFC2104">HMAC</xref></t><t><xref target="RFC4868">HMAC-SHA256</xref></t><t><xref target="RFC2898">PBKDF2</xref></t><t><xref target="RFC7914">scrypt</xref></t><t><xref target="FIPS.180-4.2015">SHA-256</xref></t><t>
               urlencode: Percent-Encoding as defined in Section 2.1 of 
               <xref target="RFC3986"/>.
             </t></list>
@@ -132,7 +132,7 @@
               separated groups of 4 characters for readability.
             </t><t>
               Includes a check character at the end of each line to catch 
-              errors while the user is typing.
+              errors while the user is typing with 98.2% accuracy.
             </t></list>
           The chosen alphabet is:
         </t><figure><artwork><![CDATA[
@@ -223,9 +223,9 @@ N = (1 << n);
           <list style="hanging" hangIndent="3"><t hangText="Counter Mode:"><vspace/>
               Stops after a predefined number of iterations.
             </t><t hangText="Timer Mode:"><vspace/>
-              Stops after a desired amount of time has passed.
+              Stops after a desired amount of time has passed (5 seconds by default).
             </t></list>
-        </t></section></section><section title="Cryptographic Keys, Secrets, and Passwords"><t>
+        </t><t>Timer Mode is used when creating an encryption key from a password. Once the key is derived and the identity encrypted, the resulting number of iterations is saved with the identity file. Counter Mode is used to recreate this key and decrypt the identity.</t></section></section><section title="Cryptographic Keys, Secrets, and Passwords"><t>
         SQRL uses a wide variety of secrets in various operations.
       </t><section anchor="secret-class-a" title="Class A Secrets"><t>
           Class A secrets are absolutely critical to protecting a user's 
@@ -330,7 +330,7 @@ RLK = curve25519_private_key( RandomBytes( 32 ));]]></artwork></figure><t>
         </t><section title="Site Specific Public Key (SSPK)"><figure><artwork><![CDATA[
 SSPK = ed25519_public_key( SSSK );]]></artwork></figure><t>
             The Site Specific Public Key (SSPK) is the public counterpart to 
-            the SSSK.
+            the SSSK.  It serves as the user's pseudonymous identity on the site.
           </t></section><section title="Server Unlock Key (SUK)"><figure><artwork><![CDATA[
 SUK = curve25519_public_key( RLK );]]></artwork></figure><t>
             Created during identity association, the SUK is the public 
@@ -424,6 +424,7 @@ VUK = ed25519_public_key( curve25519_key_agreement( ILK, RLK ));]]></artwork></f
      filing system or remote ones accessed by http (http://domain/dir/... ).--><references title="Normative References"><!--?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"?-->
       &RFC2104;
       &RFC2119;
+	  &RFC2898;
       &RFC3548;
       &RFC3986;
       &RFC7914;
@@ -434,4 +435,4 @@ VUK = ed25519_public_key( curve25519_key_agreement( ILK, RLK ));]]></artwork></f
 
     </references><references title="Informative References">
       &RFC4868;
-    </references><section anchor="app-client" title="SQRL Client Best Practices"><t>TODO</t></section><section anchor="app-server" title="SQRL Server Best Practices"><t>TODO</t></section><section anchor="app-shortpass" title="ShortPass"><t>TODO</t></section><section anchor="app-entropy" title="Harvesting Entropy"><t>TODO</t></section></back></rfc>
+    </references><section anchor="app-client" title="SQRL Client Best Practices"><t>TODO</t></section><section anchor="app-server" title="SQRL Server Best Practices"><t>TODO</t></section><section anchor="app-entropy" title="Harvesting Entropy"><t>Secure cryptographic systems depend on the ability to create quality random numbers, and SQRL is no different in this regard. SQRL's needs are meager compared to many other functions and protocols, but critical.</t><t>The use of a pseudo-random function to generate random numbers is only as good as the entropy it is seeded with. As RFC4086 points out, a hacker may find it easier to reproduce the environment a PRF was running in when it produced the secret quantities than to make blind guesses through the search space. [RFC4086]</t><t>Optimally, the numbers used for seeding cryptographic functions such as Curve25519 should be truly random, but what constitutes "truly random" is regarded as much philosophy as computer science. However, a good working definition of "truly random" is one where the amount of entropy in a number is equal to its length; e.g., a 256-bit number that contains 256 bits of entropy.</t><t>Unfortunately, determining the amount of entropy in an information stream is tricky at best. But entropy is never reduced as more information is added; even weak sources of entropy, when added together, can produce sufficient entropy. For that reason, none of the data collected during entropy harvesting should be discarded.</t><t>The method recommended by SQRL is to harvest as much entropy as possible from as many uncorrelated sources as possible in the time available, and run the data stream through SHA-256 or SHA-512, depending on how much randomness is needed. The Secure Hashing Algorithm should change half the bits of the output when just a single bit of the input is changed, so the entropy should be preserved up to the length of the resulting hash. The technique, then, is to hash an amount of data where the entropy content almost certainly far exceeds 256 or 512 bits. These amounts are fairly trivial.</t><t>For more about entropy harvesting, see RFC4086.</t><section title="Entropy Sources"><t>Sources of entropy vary greatly depending on the hardware, operating system, and other aspects of the client device.</t><section title="Operating System"><t>All operating systems have a source of randomness available (e.g., /dev/random on UNIX-like systems), but developers should think twice before relying solely on these. Flaws and backdoors could result in a false sense of security. For example, in 2013 a flaw in Android's SecureRandom function made wallets generated on those devices vulnerable to remote hacking and the theft of funds, even without access to the device. See <eref target="https://android-developers.googleblog.com/2013/08/some-securerandom-thoughts.html">Klyubin, Alex, "Some SecureRandom Thoughts," Android Developers Blog, 14 August 2013.</eref></t><t>Developers should also be advised that many of these use some of the same techniques described below, meaning that utilizing the same technique might not result in as much entropy as estimated.</t></section><section title="Hardware"><t>Hardware sources can be very effective at harvesting entropy, but care must be taken to make sure that they exist on a particular implementation, and that the hardware hasn't failed in some way.</t><t>The system clock has traditionally been used as a source of randomness, although it must be considered that users are more likely to generate the random numbers at some times of the day than others. Subseconds provide the greatest entropy here.</t><t>Some systems come with embedded hardware that produce noise specifically for the purpose of seeding PRFs.</t><t>Wireless networking devices can be polled for signal strength and other data.</t><t>Processor statistics can be a significant source, such as cache hits/misses and other low-level system counters, voltage, fan speed, and thermal data.</t><t>Sound from a microphone could be a source of high-quality entropy in a typical room with air conditioning, fans, and other source of noise, as well as interference on the sound channel. In such a case, a fraction of a second--less than two hundredths--would be sufficient, but as there is no guarantee longer periods should be considered.</t><t>One or two frames from a camera can likewise be a source of high-entropy noise because of the sensor, which is especially the case if the SQRL client can set the camera's ISO to a high number. Most cell phones in particular have cameras that generate sufficient noise in the low-order bits. A single 640x480 frame would likely be sufficient for SQRL's purposes. Care must be taken to ensure the client is getting the raw camera data, not compressed data which may have much of the noise removed.</t><t>Free bytes of memory and storage space can vary quite a bit, adding a not insignificant amount of entropy.</t><t>Network statistics, such as packet arrival time, can be effective, but only if it can be ensured that these are not subject to manipulation.</t></section><section title="User"><t>The user can provide a good measure of entropy, either directly by the client engaging the user, or indirectly.</t><t>Examining mouse movements or keyboard strokes can be a source of entropy, although how much is a matter of some debate.</t><t>Accelerometer data on cell phones and other such devices can pick up minute movements of the user's hand, even if the user is trying to hold it steady.</t></section></section></section></back></rfc>
