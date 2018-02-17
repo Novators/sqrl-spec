@@ -76,7 +76,7 @@ Table of Contents
      2.2.  base56check . . . . . . . . . . . . . . . . . . . . . . .   6
        2.2.1.  Encoding  . . . . . . . . . . . . . . . . . . . . . .   6
        2.2.2.  Validation  . . . . . . . . . . . . . . . . . . . . .   7
-       2.2.3.  Decoding  . . . . . . . . . . . . . . . . . . . . . .   7
+       2.2.3.  Decoding  . . . . . . . . . . . . . . . . . . . . . .   8
      2.3.  EnHash  . . . . . . . . . . . . . . . . . . . . . . . . .   8
      2.4.  EnScrypt  . . . . . . . . . . . . . . . . . . . . . . . .   8
    3.  Cryptographic Keys, Secrets, and Passwords  . . . . . . . . .   9
@@ -311,25 +311,25 @@ Internet-Draft                    SQRL                     February 2018
    a single, large, little-endian number and convert using the normal
    mathematical steps:
 
-   1.  Divide SOURCE by 56 to yield SOURCE and REMAINDER.
+   1.  Calculate BASE_LENGTH: (8.0 / log2(56))
 
-   2.  Append the character in ALPHABET at position REMAINDER to the
+   2.  Divide SOURCE by 56 to yield SOURCE and REMAINDER.
+
+   3.  Append the character in ALPHABET at position REMAINDER to the
        BASE string.
 
-   3.  Repeat from step 1, until SOURCE is zero.
+   4.  Repeat from step 1, until SOURCE is zero.
+
+   5.  Append '2' (character in ALPHABET at position 0) to BASE until
+       BASE is BASE_LENGTH bytes long.
 
    Now, with our converted BASE string, we can calculate the check
    digits and produce the final output.
 
-   4.  Split BASE into 19 character CHUNKS (the final chunk may be
+   6.  Split BASE into 19 character CHUNKS (the final chunk may be
        smaller).
 
-   5.  For each CHUNK:
-
-       A.  Append a single byte zero-based CHUNK-NUMBER to the CHUNK.
-
-       B.  Perform a SHA-256 hash on the CHUNK, yielding HASH.
-
+   7.  For each CHUNK:
 
 
 
@@ -337,6 +337,10 @@ Comley                   Expires August 21, 2018                [Page 6]
 
 Internet-Draft                    SQRL                     February 2018
 
+
+       A.  Append a single byte zero-based CHUNK-NUMBER to the CHUNK.
+
+       B.  Perform a SHA-256 hash on the CHUNK, yielding HASH.
 
        C.  Treating HASH as a single little-endian number, divide HASH
            by 56 to obtain REMAINDER.
@@ -380,12 +384,8 @@ Internet-Draft                    SQRL                     February 2018
        F.  If comparison passes (is equal), continue.  Otherwise, there
            is an error in this CHUNK.
 
-2.2.3.  Decoding
 
-   Decoding base56check is similarly straight-forward:
 
-   1.  Start with an empty BASE string and an zero OUTPUT buffer, to be
-       treated as a single, large, little-endian number.
 
 
 
@@ -393,6 +393,13 @@ Comley                   Expires August 21, 2018                [Page 7]
 
 Internet-Draft                    SQRL                     February 2018
 
+
+2.2.3.  Decoding
+
+   Decoding base56check is similarly straight-forward:
+
+   1.  Start with an empty BASE string and an zero OUTPUT buffer, to be
+       treated as a single, large, little-endian number.
 
    2.  Perform the base56check validation as described above, appending
        all but the last character of each validated CHUNK to the BASE
@@ -435,13 +442,6 @@ Internet-Draft                    SQRL                     February 2018
    key derivation function.  It hardens scrypt by allowing for extended
    processing time.  The following parameters are used for the scrypt
    function:
-
-
-
-
-
-
-
 
 
 

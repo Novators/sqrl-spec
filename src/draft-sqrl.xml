@@ -141,10 +141,10 @@
             To encode a series of bytes to base56check, treat the source bytes 
             as a single, large, little-endian number and convert using the 
             normal mathematical steps:
-            <list style="format %d." counter="b56-encode-counter"><t>Divide SOURCE by 56 to yield SOURCE and REMAINDER.</t><t>
+            <list style="format %d." counter="b56-encode-counter"><t>Calculate BASE_LENGTH:  (8.0 / log2(56))</t><t>Divide SOURCE by 56 to yield SOURCE and REMAINDER.</t><t>
                 Append the character in ALPHABET at position REMAINDER to the 
                 BASE string.
-              </t><t>Repeat from step 1, until SOURCE is zero.</t></list>
+              </t><t>Repeat from step 1, until SOURCE is zero.</t><t>Append '2' (character in ALPHABET at position 0) to BASE until BASE is BASE_LENGTH bytes long.</t></list>
             Now, with our converted BASE string, we can calculate the check 
             digits and produce the final output.
             <list style="format %d." counter="b56-encode-counter"><t>
@@ -160,7 +160,7 @@
                     ALPHABET at position REMAINDER.
                   </t><t>Append the CHUNK to OUTPUT.</t></list>
               </t></list>
-            OUTPUT can then be formatted as desired.  The recommended 
+            OUTPUT can then be formatted as desired.  The RECOMMENDED 
             formatting is 20 characters per line in space-separated groups of 
             4 characters each.  This format is easy for humans to read and type, 
             and allows error checking for each line of input.
