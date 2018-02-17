@@ -3,9 +3,9 @@
 
 
 Internet Engineering Task Force                           A. Comley, Ed.
-Internet-Draft                                         February 15, 2018
+Internet-Draft                                         February 16, 2018
 Intended status: Informational
-Expires: August 19, 2018
+Expires: August 20, 2018
 
 
    Secure Quick Reliable Login (SQRL), an Authentication and Identity
@@ -16,10 +16,10 @@ Abstract
 
    Secure Quick Reliable Login (SQRL) is an authentication method and
    identity management framework.  It enables a user to create and
-   manage a single, lifetime identity.  That identity will allow the
-   user to securely authenticate with any SQRL enabled server without
-   relying on a third party or disclosing personally identifiable
-   information.
+   manage a single, pseudonymous lifetime identity.  That identity will
+   allow the user to securely authenticate with any SQRL enabled server
+   without relying on a third party or disclosing personally
+   identifiable information.
 
    SQRL's identity management framework gives the user complete control
    over their online identity, including provisions for recovering from
@@ -34,14 +34,14 @@ Status of This Memo
    Internet-Drafts are working documents of the Internet Engineering
    Task Force (IETF).  Note that other groups may also distribute
    working documents as Internet-Drafts.  The list of current Internet-
-   Drafts is at http://datatracker.ietf.org/drafts/current/.
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
 
    Internet-Drafts are draft documents valid for a maximum of six months
    and may be updated, replaced, or obsoleted by other documents at any
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 19, 2018.
+   This Internet-Draft will expire on August 20, 2018.
 
 Copyright Notice
 
@@ -53,12 +53,12 @@ Copyright Notice
 
 
 
-Comley                   Expires August 19, 2018                [Page 1]
+Comley                   Expires August 20, 2018                [Page 1]
 
 Internet-Draft                    SQRL                     February 2018
 
 
-   (http://trustee.ietf.org/license-info) in effect on the date of
+   (https://trustee.ietf.org/license-info) in effect on the date of
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
@@ -68,12 +68,12 @@ Internet-Draft                    SQRL                     February 2018
 
 Table of Contents
 
-   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   4
      1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   5
      1.2.  Definitions . . . . . . . . . . . . . . . . . . . . . . .   5
    2.  Algorithms  . . . . . . . . . . . . . . . . . . . . . . . . .   5
      2.1.  Standard Algorithms . . . . . . . . . . . . . . . . . . .   5
-     2.2.  base56check . . . . . . . . . . . . . . . . . . . . . . .   5
+     2.2.  base56check . . . . . . . . . . . . . . . . . . . . . . .   6
        2.2.1.  Encoding  . . . . . . . . . . . . . . . . . . . . . .   6
        2.2.2.  Validation  . . . . . . . . . . . . . . . . . . . . .   7
        2.2.3.  Decoding  . . . . . . . . . . . . . . . . . . . . . .   7
@@ -87,16 +87,16 @@ Table of Contents
        3.1.4.  Password Derived Keys . . . . . . . . . . . . . . . .  10
      3.2.  Class B Secrets . . . . . . . . . . . . . . . . . . . . .  11
        3.2.1.  Previous Identity Unlock Key (PIUK) . . . . . . . . .  11
-       3.2.2.  Identity Master Key (IMK) . . . . . . . . . . . . . .  11
-       3.2.3.  Identity Lock Key (ILK) . . . . . . . . . . . . . . .  11
+       3.2.2.  Identity Master Key (IMK) . . . . . . . . . . . . . .  12
+       3.2.3.  Identity Lock Key (ILK) . . . . . . . . . . . . . . .  12
        3.2.4.  Site Specific Secret Key (SSSK) . . . . . . . . . . .  12
        3.2.5.  Random Lock Key (RLK) . . . . . . . . . . . . . . . .  12
      3.3.  Class C (Public) Keys . . . . . . . . . . . . . . . . . .  12
        3.3.1.  Site Specific Public Key (SSPK) . . . . . . . . . . .  12
        3.3.2.  Server Unlock Key (SUK) . . . . . . . . . . . . . . .  12
-       3.3.3.  Verify Unlock Key (VUK) . . . . . . . . . . . . . . .  12
-   4.  Identity Management . . . . . . . . . . . . . . . . . . . . .  12
-     4.1.  Identity Lifecycle  . . . . . . . . . . . . . . . . . . .  12
+       3.3.3.  Verify Unlock Key (VUK) . . . . . . . . . . . . . . .  13
+   4.  Identity Management . . . . . . . . . . . . . . . . . . . . .  13
+     4.1.  Identity Lifecycle  . . . . . . . . . . . . . . . . . . .  13
      4.2.  Identity Creation . . . . . . . . . . . . . . . . . . . .  13
      4.3.  Identity Storage  . . . . . . . . . . . . . . . . . . . .  13
        4.3.1.  Storage Format  . . . . . . . . . . . . . . . . . . .  13
@@ -105,17 +105,17 @@ Table of Contents
        4.3.4.  Encoding  . . . . . . . . . . . . . . . . . . . . . .  13
      4.4.  Importing / Exporting an Identity . . . . . . . . . . . .  13
        4.4.1.  Binary File . . . . . . . . . . . . . . . . . . . . .  13
-       4.4.2.  Printed QR Code . . . . . . . . . . . . . . . . . . .  13
+       4.4.2.  Printed QR Code . . . . . . . . . . . . . . . . . . .  14
 
 
 
-Comley                   Expires August 19, 2018                [Page 2]
+Comley                   Expires August 20, 2018                [Page 2]
 
 Internet-Draft                    SQRL                     February 2018
 
 
-       4.4.3.  Printed Text  . . . . . . . . . . . . . . . . . . . .  13
-     4.5.  Changing the User's Password  . . . . . . . . . . . . . .  13
+       4.4.3.  Printed Text  . . . . . . . . . . . . . . . . . . . .  14
+     4.5.  Changing the User's Password  . . . . . . . . . . . . . .  14
      4.6.  Identity Recovery . . . . . . . . . . . . . . . . . . . .  14
      4.7.  Re-Keying and Identity  . . . . . . . . . . . . . . . . .  14
    5.  Client-Server Protocol  . . . . . . . . . . . . . . . . . . .  14
@@ -124,9 +124,9 @@ Internet-Draft                    SQRL                     February 2018
        5.1.2.  QR Codes (Out of Band)  . . . . . . . . . . . . . . .  14
      5.2.  The SQRL Realm (Domain) . . . . . . . . . . . . . . . . .  14
      5.3.  Client to Server Requests . . . . . . . . . . . . . . . .  14
-       5.3.1.  Protocol Version  . . . . . . . . . . . . . . . . . .  14
-       5.3.2.  Commands  . . . . . . . . . . . . . . . . . . . . . .  14
-       5.3.3.  Options . . . . . . . . . . . . . . . . . . . . . . .  14
+       5.3.1.  Protocol Version  . . . . . . . . . . . . . . . . . .  15
+       5.3.2.  Commands  . . . . . . . . . . . . . . . . . . . . . .  15
+       5.3.3.  Options . . . . . . . . . . . . . . . . . . . . . . .  15
        5.3.4.  The server Value  . . . . . . . . . . . . . . . . . .  15
        5.3.5.  The client Value  . . . . . . . . . . . . . . . . . .  15
        5.3.6.  Client Keys . . . . . . . . . . . . . . . . . . . . .  15
@@ -135,9 +135,9 @@ Internet-Draft                    SQRL                     February 2018
      5.4.  Server to Client Replies  . . . . . . . . . . . . . . . .  15
        5.4.1.  Required Values . . . . . . . . . . . . . . . . . . .  15
        5.4.2.  Optional Values . . . . . . . . . . . . . . . . . . .  15
-       5.4.3.  Additional Values . . . . . . . . . . . . . . . . . .  15
-       5.4.4.  Composing the Reply . . . . . . . . . . . . . . . . .  15
-   6.  Client-Server Interactions  . . . . . . . . . . . . . . . . .  15
+       5.4.3.  Additional Values . . . . . . . . . . . . . . . . . .  16
+       5.4.4.  Composing the Reply . . . . . . . . . . . . . . . . .  16
+   6.  Client-Server Interactions  . . . . . . . . . . . . . . . . .  16
      6.1.  Same Device Authentication  . . . . . . . . . . . . . . .  16
      6.2.  Cross Device Authentication . . . . . . . . . . . . . . .  16
      6.3.  Identity Association  . . . . . . . . . . . . . . . . . .  16
@@ -146,13 +146,29 @@ Internet-Draft                    SQRL                     February 2018
      6.6.  Re-Enabling Site Login  . . . . . . . . . . . . . . . . .  16
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
    8.  Security Considerations . . . . . . . . . . . . . . . . . . .  16
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  16
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  16
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  17
-   Appendix A.  SQRL Client Best Practices . . . . . . . . . . . . .  17
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  17
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  17
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  18
+   Appendix A.  SQRL Client Best Practices . . . . . . . . . . . . .  18
    Appendix B.  SQRL Server Best Practices . . . . . . . . . . . . .  18
    Appendix C.  Harvesting Entropy . . . . . . . . . . . . . . . . .  18
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  18
+     C.1.  Entropy Sources . . . . . . . . . . . . . . . . . . . . .  19
+       C.1.1.  Operating System  . . . . . . . . . . . . . . . . . .  19
+       C.1.2.  Hardware  . . . . . . . . . . . . . . . . . . . . . .  19
+       C.1.3.  User  . . . . . . . . . . . . . . . . . . . . . . . .  20
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  21
+
+
+
+
+
+
+
+
+Comley                   Expires August 20, 2018                [Page 3]
+
+Internet-Draft                    SQRL                     February 2018
+
 
 1.  Introduction
 
@@ -160,19 +176,9 @@ Internet-Draft                    SQRL                     February 2018
    identity management framework with the following features:
 
    Secure
-
-
-
-
-
-Comley                   Expires August 19, 2018                [Page 3]
-
-Internet-Draft                    SQRL                     February 2018
-
-
       Through a series of cryptographic signatures, the user can prove
       their identity without disclosing any information that would allow
-      that identity to be compromised.
+      that identity to be compromised or their account hacked.
 
    Global Password
       The user only has to remember a single password, which is used to
@@ -180,10 +186,12 @@ Internet-Draft                    SQRL                     February 2018
       the user no longer has to remember a unique password for each
       site, this one global password can be very strong.  This strong
       password combined with strong encryption makes it infeasible for
-      even a state level actor to compromise the user's identity.
+      even a state level actor to compromise the user's identity.  (SQRL
+      apps can alternately use other methods of protection such as
+      biometrics when available on the host device.)
 
    Anonymous
-      SQRL authentication is anonymous, in that it only provides a
+      SQRL authentication is pseudonymous, in that it only provides a
       secure, site-specific token to the server.  This token cannot be
       directly linked to a user's account at any other server, and
       provides no personally identifiable information.
@@ -206,25 +214,22 @@ Internet-Draft                    SQRL                     February 2018
       is no third party that can help the user recover their identity if
       they forget their password, SQRL includes an offline backup
       mechanism.  The user can print out or write down their encrypted
-      identity, along with a secure rescue code, that will allow the
+      identity, along with a secure Rescue Code, that will allow the
       user to recover from a forgotten password.
 
    Out Of Band Authentication Option
-      With SQRL, the user can safely authenticate a session on public or
-      potentially compromised systems by using a second, trusted device
-      to perform the authentication.  The user just has to scan a QR
-      code with their trusted mobile device to begin authentication.
 
 
 
-
-
-
-
-Comley                   Expires August 19, 2018                [Page 4]
+Comley                   Expires August 20, 2018                [Page 4]
 
 Internet-Draft                    SQRL                     February 2018
 
+
+      With SQRL, the user can safely authenticate a session on public or
+      potentially compromised systems by scanning a QR code on a trusted
+      mobile device containing their SQRL identity, without the need to
+      expose that identity to the public system.
 
 1.1.  Requirements Language
 
@@ -257,12 +262,25 @@ Internet-Draft                    SQRL                     February 2018
 
    o  HMAC-SHA256 [RFC4868]
 
+   o  PBKDF2 [RFC2898]
+
    o  scrypt [RFC7914]
 
    o  SHA-256 [FIPS.180-4.2015]
 
    o  urlencode: Percent-Encoding as defined in Section 2.1 of
       [RFC3986].
+
+
+
+
+
+
+
+Comley                   Expires August 20, 2018                [Page 5]
+
+Internet-Draft                    SQRL                     February 2018
+
 
 2.2.  base56check
 
@@ -274,14 +292,6 @@ Internet-Draft                    SQRL                     February 2018
    o  Uses a set of 56 alphanumeric symbols chosen to be easily
       distinguishable in any font.
 
-
-
-
-Comley                   Expires August 19, 2018                [Page 5]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    o  Ignores invalid characters and white space to allow readable
       formatting.
 
@@ -289,7 +299,7 @@ Internet-Draft                    SQRL                     February 2018
       separated groups of 4 characters for readability.
 
    o  Includes a check character at the end of each line to catch errors
-      while the user is typing.
+      while the user is typing with 98.2% accuracy.
 
    The chosen alphabet is:
 
@@ -320,6 +330,14 @@ Internet-Draft                    SQRL                     February 2018
 
        B.  Perform a SHA-256 hash on the CHUNK, yielding HASH.
 
+
+
+
+Comley                   Expires August 20, 2018                [Page 6]
+
+Internet-Draft                    SQRL                     February 2018
+
+
        C.  Treating HASH as a single little-endian number, divide HASH
            by 56 to obtain REMAINDER.
 
@@ -330,14 +348,6 @@ Internet-Draft                    SQRL                     February 2018
 
    OUTPUT can then be formatted as desired.  The recommended formatting
    is 20 characters per line in space-separated groups of 4 characters
-
-
-
-Comley                   Expires August 19, 2018                [Page 6]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    each.  This format is easy for humans to read and type, and allows
    error checking for each line of input.
 
@@ -377,6 +387,13 @@ Internet-Draft                    SQRL                     February 2018
    1.  Start with an empty BASE string and an zero OUTPUT buffer, to be
        treated as a single, large, little-endian number.
 
+
+
+Comley                   Expires August 20, 2018                [Page 7]
+
+Internet-Draft                    SQRL                     February 2018
+
+
    2.  Perform the base56check validation as described above, appending
        all but the last character of each validated CHUNK to the BASE
        string.
@@ -386,13 +403,6 @@ Internet-Draft                    SQRL                     February 2018
    4.  For each CHARACTER in BASE, from right to left:
 
        A.  Multiply OUTPUT by 56.
-
-
-
-Comley                   Expires August 19, 2018                [Page 7]
-
-Internet-Draft                    SQRL                     February 2018
-
 
        B.  Lookup the INDEX of CHARACTER in ALPHABET.
 
@@ -421,10 +431,24 @@ Internet-Draft                    SQRL                     February 2018
 
 2.4.  EnScrypt
 
-   EnScrypt is an iterative construct based on the scrypt password based
-   key derivation function.  It hardens scrypt by allowing for extended
-   processing time.  The following parameters are used for the scrypt
-   function:
+   EnScrypt is an iterative construct utilizing the scrypt password
+   based key derivation function as a PRF for PBKDF2.  It allows for
+   extended processing time without increasing memory requirements.  The
+   following parameters are used for the scrypt function:
+
+
+
+
+
+
+
+
+
+
+Comley                   Expires August 20, 2018                [Page 8]
+
+Internet-Draft                    SQRL                     February 2018
+
 
                          +-------+-----+-----+---+
                          | dkLen | N   | r   | p |
@@ -434,31 +458,8 @@ Internet-Draft                    SQRL                     February 2018
 
                         Table 1: scrypt parameters
 
-   Enscrypt is performed by calling scrypt in multiple rounds, with each
-   successive round accepting the previous round's output as its salt.
-   The final output is the XOR of each round's scrypt result.
-
-
-
-
-
-
-
-
-Comley                   Expires August 19, 2018                [Page 8]
-
-Internet-Draft                    SQRL                     February 2018
-
-
-    +---------+-------------------------------+-----------------------+
-    | Round # | let salt[n] =                 | let out =             |
-    +---------+-------------------------------+-----------------------+
-    | 1       | scrypt( password, salt )      | salt[1]               |
-    | 2       | scrypt( password, salt[1] )   | salt[1] XOR salt[2]   |
-    | n       | scrypt( password, salt[n-1] ) | salt[n-1] XOR salt[n] |
-    +---------+-------------------------------+-----------------------+
-
-                         Table 2: EnScrypt Rounds
+   Enscrypt is performed by calling scrypt in multiple rounds as in
+   PBKDF2.
 
    EnScrypt can operate in two different modes, the only difference
    being when the calculation is stopped.
@@ -467,7 +468,13 @@ Internet-Draft                    SQRL                     February 2018
       Stops after a predefined number of iterations.
 
    Timer Mode:
-      Stops after a desired amount of time has passed.
+      Stops after a desired amount of time has passed (5 seconds by
+      default).
+
+   Timer Mode is used when creating an encryption key from a password.
+   Once the key is derived and the identity encrypted, the resulting
+   number of iterations is saved with the identity file.  Counter Mode
+   is used to recreate this key and decrypt the identity.
 
 3.  Cryptographic Keys, Secrets, and Passwords
 
@@ -492,19 +499,18 @@ Internet-Draft                    SQRL                     February 2018
    o  The plaintext secret MUST be securely wiped from RAM as soon as it
       is no longer needed.
 
+
+
+Comley                   Expires August 20, 2018                [Page 9]
+
+Internet-Draft                    SQRL                     February 2018
+
+
    o  If the secret is to be stored, it MUST be stored in an offline
       format (printed), OR encrypted using a Class A key.
 
    o  The secret SHOULD NOT be transmitted over the network in any form,
       and MUST NOT be transmitted unencrypted.
-
-
-
-
-Comley                   Expires August 19, 2018                [Page 9]
-
-Internet-Draft                    SQRL                     February 2018
-
 
 3.1.1.  Identity Unlock Key (IUK)
 
@@ -540,6 +546,22 @@ Internet-Draft                    SQRL                     February 2018
    second.  The table below lists RECOMMENDED durations for EnScrypt key
    generation:
 
+
+
+
+
+
+
+
+
+
+
+
+Comley                   Expires August 20, 2018               [Page 10]
+
+Internet-Draft                    SQRL                     February 2018
+
+
        +----------------------------+--------------+---------------+
        | Key                        | Abbreviation | EnScrypt Time |
        +----------------------------+--------------+---------------+
@@ -548,19 +570,12 @@ Internet-Draft                    SQRL                     February 2018
        | Rescue Code Derived Key    | RCDK         | 60 seconds    |
        +----------------------------+--------------+---------------+
 
-       Table 3: Password Derived Keys and Recommended EnScrypt Times
+       Table 2: Password Derived Keys and Recommended EnScrypt Times
 
    Clients MAY allow the user to specify the EnScrypt time for the PWDK,
    as long as that timer is at least 1 second.  The RCDK is used so
    rarely, and is so important to protect, that 60 seconds should not
    cause an undue burden on the user.
-
-
-
-Comley                   Expires August 19, 2018               [Page 10]
-
-Internet-Draft                    SQRL                     February 2018
-
 
    When re-generating derived keys, EnScrypt is used in counter mode
    with the iteration count from the original generation operation.
@@ -593,6 +608,16 @@ Internet-Draft                    SQRL                     February 2018
    replaced by a newly generated IUK, and requires less strict
    protection.
 
+
+
+
+
+
+Comley                   Expires August 20, 2018               [Page 11]
+
+Internet-Draft                    SQRL                     February 2018
+
+
 3.2.2.  Identity Master Key (IMK)
 
    IMK = EnHash( IUK );
@@ -607,16 +632,6 @@ Internet-Draft                    SQRL                     February 2018
    ILK = curve25519_public_key( curve25519_private_key( IUK ));
 
    The (modified) IUK and ILK together form a Curve25519 key pair.
-
-
-
-
-
-
-Comley                   Expires August 19, 2018               [Page 11]
-
-Internet-Draft                    SQRL                     February 2018
-
 
 3.2.4.  Site Specific Secret Key (SSSK)
 
@@ -641,7 +656,7 @@ Internet-Draft                    SQRL                     February 2018
    SSPK = ed25519_public_key( SSSK );
 
    The Site Specific Public Key (SSPK) is the public counterpart to the
-   SSSK.
+   SSSK.  It serves as the user's pseudonymous identity on the site.
 
 3.3.2.  Server Unlock Key (SUK)
 
@@ -649,6 +664,15 @@ Internet-Draft                    SQRL                     February 2018
 
    Created during identity association, the SUK is the public
    counterpart of the RLK.
+
+
+
+
+
+Comley                   Expires August 20, 2018               [Page 12]
+
+Internet-Draft                    SQRL                     February 2018
+
 
 3.3.3.  Verify Unlock Key (VUK)
 
@@ -662,17 +686,6 @@ Internet-Draft                    SQRL                     February 2018
 4.1.  Identity Lifecycle
 
    TODO
-
-
-
-
-
-
-
-Comley                   Expires August 19, 2018               [Page 12]
-
-Internet-Draft                    SQRL                     February 2018
-
 
 4.2.  Identity Creation
 
@@ -706,6 +719,17 @@ Internet-Draft                    SQRL                     February 2018
 
    TODO
 
+
+
+
+
+
+
+Comley                   Expires August 20, 2018               [Page 13]
+
+Internet-Draft                    SQRL                     February 2018
+
+
 4.4.2.  Printed QR Code
 
    TODO
@@ -717,18 +741,6 @@ Internet-Draft                    SQRL                     February 2018
 4.5.  Changing the User's Password
 
    TODO
-
-
-
-
-
-
-
-
-Comley                   Expires August 19, 2018               [Page 13]
-
-Internet-Draft                    SQRL                     February 2018
-
 
 4.6.  Identity Recovery
 
@@ -762,6 +774,18 @@ Internet-Draft                    SQRL                     February 2018
 
    TODO
 
+
+
+
+
+
+
+
+Comley                   Expires August 20, 2018               [Page 14]
+
+Internet-Draft                    SQRL                     February 2018
+
+
 5.3.1.  Protocol Version
 
    TODO
@@ -773,18 +797,6 @@ Internet-Draft                    SQRL                     February 2018
 5.3.3.  Options
 
    TODO
-
-
-
-
-
-
-
-
-Comley                   Expires August 19, 2018               [Page 14]
-
-Internet-Draft                    SQRL                     February 2018
-
 
 5.3.4.  The server Value
 
@@ -818,6 +830,18 @@ Internet-Draft                    SQRL                     February 2018
 
    TODO
 
+
+
+
+
+
+
+
+Comley                   Expires August 20, 2018               [Page 15]
+
+Internet-Draft                    SQRL                     February 2018
+
+
 5.4.3.  Additional Values
 
    TODO
@@ -829,18 +853,6 @@ Internet-Draft                    SQRL                     February 2018
 6.  Client-Server Interactions
 
    TODO
-
-
-
-
-
-
-
-
-Comley                   Expires August 19, 2018               [Page 15]
-
-Internet-Draft                    SQRL                     February 2018
-
 
 6.1.  Same Device Authentication
 
@@ -874,6 +886,18 @@ Internet-Draft                    SQRL                     February 2018
 
    TODO
 
+
+
+
+
+
+
+
+Comley                   Expires August 20, 2018               [Page 16]
+
+Internet-Draft                    SQRL                     February 2018
+
+
 9.  References
 
 9.1.  Normative References
@@ -887,26 +911,20 @@ Internet-Draft                    SQRL                     February 2018
               Recommendation for Block Cipher Modes of Operation:
               Galois/Counter Mode (GCM) and GMAC.", November 2007.
 
-
-
-
-
-
-
-Comley                   Expires August 19, 2018               [Page 16]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    [RFC2104]  Krawczyk, H., Bellare, M., and R. Canetti, "HMAC: Keyed-
               Hashing for Message Authentication", RFC 2104,
-              DOI 10.17487/RFC2104, February 1997, <https://www.rfc-
-              editor.org/info/rfc2104>.
+              DOI 10.17487/RFC2104, February 1997,
+              <https://www.rfc-editor.org/info/rfc2104>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997, <https://www.rfc-
-              editor.org/info/rfc2119>.
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+   [RFC2898]  Kaliski, B., "PKCS #5: Password-Based Cryptography
+              Specification Version 2.0", RFC 2898,
+              DOI 10.17487/RFC2898, September 2000,
+              <https://www.rfc-editor.org/info/rfc2898>.
 
    [RFC3548]  Josefsson, S., Ed., "The Base16, Base32, and Base64 Data
               Encodings", RFC 3548, DOI 10.17487/RFC3548, July 2003,
@@ -926,33 +944,36 @@ Internet-Draft                    SQRL                     February 2018
               Agreement", RFC 8031, DOI 10.17487/RFC8031, December 2016,
               <https://www.rfc-editor.org/info/rfc8031>.
 
+
+
+
+
+
+Comley                   Expires August 20, 2018               [Page 17]
+
+Internet-Draft                    SQRL                     February 2018
+
+
    [RFC8032]  Josefsson, S. and I. Liusvaara, "Edwards-Curve Digital
               Signature Algorithm (EdDSA)", RFC 8032,
-              DOI 10.17487/RFC8032, January 2017, <https://www.rfc-
-              editor.org/info/rfc8032>.
+              DOI 10.17487/RFC8032, January 2017,
+              <https://www.rfc-editor.org/info/rfc8032>.
 
 9.2.  Informative References
 
    [RFC4868]  Kelly, S. and S. Frankel, "Using HMAC-SHA-256, HMAC-SHA-
               384, and HMAC-SHA-512 with IPsec", RFC 4868,
-              DOI 10.17487/RFC4868, May 2007, <https://www.rfc-
-              editor.org/info/rfc4868>.
+              DOI 10.17487/RFC4868, May 2007,
+              <https://www.rfc-editor.org/info/rfc4868>.
+
+9.3.  URIs
+
+   [1] https://android-developers.googleblog.com/2013/08/some-
+       securerandom-thoughts.html
 
 Appendix A.  SQRL Client Best Practices
 
    TODO
-
-
-
-
-
-
-
-
-Comley                   Expires August 19, 2018               [Page 17]
-
-Internet-Draft                    SQRL                     February 2018
-
 
 Appendix B.  SQRL Server Best Practices
 
@@ -960,7 +981,146 @@ Appendix B.  SQRL Server Best Practices
 
 Appendix C.  Harvesting Entropy
 
-   TODO
+   Secure cryptographic systems depend on the ability to create quality
+   random numbers, and SQRL is no different in this regard.  SQRL's
+   needs are meager compared to many other functions and protocols, but
+   critical.
+
+   The use of a pseudo-random function to generate random numbers is
+   only as good as the entropy it is seeded with.  As RFC4086 points
+   out, a hacker may find it easier to reproduce the environment a PRF
+   was running in when it produced the secret quantities than to make
+   blind guesses through the search space.  [RFC4086]
+
+   Optimally, the numbers used for seeding cryptographic functions such
+   as Curve25519 should be truly random, but what constitutes "truly
+   random" is regarded as much philosophy as computer science.  However,
+   a good working definition of "truly random" is one where the amount
+   of entropy in a number is equal to its length; e.g., a 256-bit number
+   that contains 256 bits of entropy.
+
+   Unfortunately, determining the amount of entropy in an information
+   stream is tricky at best.  But entropy is never reduced as more
+   information is added; even weak sources of entropy, when added
+
+
+
+Comley                   Expires August 20, 2018               [Page 18]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+   together, can produce sufficient entropy.  For that reason, none of
+   the data collected during entropy harvesting should be discarded.
+
+   The method recommended by SQRL is to harvest as much entropy as
+   possible from as many uncorrelated sources as possible in the time
+   available, and run the data stream through SHA-256 or SHA-512,
+   depending on how much randomness is needed.  The Secure Hashing
+   Algorithm should change half the bits of the output when just a
+   single bit of the input is changed, so the entropy should be
+   preserved up to the length of the resulting hash.  The technique,
+   then, is to hash an amount of data where the entropy content almost
+   certainly far exceeds 256 or 512 bits.  These amounts are fairly
+   trivial.
+
+   For more about entropy harvesting, see RFC4086.
+
+C.1.  Entropy Sources
+
+   Sources of entropy vary greatly depending on the hardware, operating
+   system, and other aspects of the client device.
+
+C.1.1.  Operating System
+
+   All operating systems have a source of randomness available (e.g.,
+   /dev/random on UNIX-like systems), but developers should think twice
+   before relying solely on these.  Flaws and backdoors could result in
+   a false sense of security.  For example, in 2013 a flaw in Android's
+   SecureRandom function made wallets generated on those devices
+   vulnerable to remote hacking and the theft of funds, even without
+   access to the device.  See Klyubin, Alex, "Some SecureRandom
+   Thoughts," Android Developers Blog, 14 August 2013. [1]
+
+   Developers should also be advised that many of these use some of the
+   same techniques described below, meaning that utilizing the same
+   technique might not result in as much entropy as estimated.
+
+C.1.2.  Hardware
+
+   Hardware sources can be very effective at harvesting entropy, but
+   care must be taken to make sure that they exist on a particular
+   implementation, and that the hardware hasn't failed in some way.
+
+   The system clock has traditionally been used as a source of
+   randomness, although it must be considered that users are more likely
+   to generate the random numbers at some times of the day than others.
+   Subseconds provide the greatest entropy here.
+
+
+
+
+
+Comley                   Expires August 20, 2018               [Page 19]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+   Some systems come with embedded hardware that produce noise
+   specifically for the purpose of seeding PRFs.
+
+   Wireless networking devices can be polled for signal strength and
+   other data.
+
+   Processor statistics can be a significant source, such as cache hits/
+   misses and other low-level system counters, voltage, fan speed, and
+   thermal data.
+
+   Sound from a microphone could be a source of high-quality entropy in
+   a typical room with air conditioning, fans, and other source of
+   noise, as well as interference on the sound channel.  In such a case,
+   a fraction of a second--less than two hundredths--would be
+   sufficient, but as there is no guarantee longer periods should be
+   considered.
+
+   One or two frames from a camera can likewise be a source of high-
+   entropy noise because of the sensor, which is especially the case if
+   the SQRL client can set the camera's ISO to a high number.  Most cell
+   phones in particular have cameras that generate sufficient noise in
+   the low-order bits.  A single 640x480 frame would likely be
+   sufficient for SQRL's purposes.  Care must be taken to ensure the
+   client is getting the raw camera data, not compressed data which may
+   have much of the noise removed.
+
+   Free bytes of memory and storage space can vary quite a bit, adding a
+   not insignificant amount of entropy.
+
+   Network statistics, such as packet arrival time, can be effective,
+   but only if it can be ensured that these are not subject to
+   manipulation.
+
+C.1.3.  User
+
+   The user can provide a good measure of entropy, either directly by
+   the client engaging the user, or indirectly.
+
+   Examining mouse movements or keyboard strokes can be a source of
+   entropy, although how much is a matter of some debate.
+
+   Accelerometer data on cell phones and other such devices can pick up
+   minute movements of the user's hand, even if the user is trying to
+   hold it steady.
+
+
+
+
+
+
+
+Comley                   Expires August 20, 2018               [Page 20]
+
+Internet-Draft                    SQRL                     February 2018
+
 
 Author's Address
 
@@ -1005,4 +1165,12 @@ Author's Address
 
 
 
-Comley                   Expires August 19, 2018               [Page 18]
+
+
+
+
+
+
+
+
+Comley                   Expires August 20, 2018               [Page 21]
