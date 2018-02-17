@@ -12,7 +12,9 @@ All are encouraged to contribute to this work.  Contributors will be acknowledge
 
 Github issues will be used to coordinate the efforts of multiple contributors.  Issues will be created for each section that needs to be written or edited, and contributors are encouraged to assign the section they are working on to themselves to prevent duplicated effort.
 
-Submissions will be accepted in the form of pull requests, patches, or text pasted into the relevant issue's comments.  If you'd like push access, let me know.  Contributors with push access should work in a separate branch and only merge to master after peer review.
+Submissions will be accepted in the form of pull requests, patches, or text attached to the relevant issue's comments.  If you'd like push access, let me know.  
+
+Newly written sections may be merged to master immediately.  Revisions should be done in a separate branch or fork, with pull requests reviewed by at least one other contributor before merging.
 
 If you notice a section that needs additional attention, please open an issue.
 
