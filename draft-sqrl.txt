@@ -103,9 +103,9 @@ Table of Contents
        4.4.1.  Encoding  . . . . . . . . . . . . . . . . . . . . . .  15
        4.4.2.  Storage Blocks  . . . . . . . . . . . . . . . . . . .  15
        4.4.3.  Predefined Block Types  . . . . . . . . . . . . . . .  16
-     4.5.  Importing / Exporting an Identity . . . . . . . . . . . .  17
-       4.5.1.  Binary File . . . . . . . . . . . . . . . . . . . . .  17
-       4.5.2.  Printed QR Code . . . . . . . . . . . . . . . . . . .  17
+     4.5.  Importing / Exporting an Identity . . . . . . . . . . . .  18
+       4.5.1.  Binary File . . . . . . . . . . . . . . . . . . . . .  18
+       4.5.2.  Printed QR Code . . . . . . . . . . . . . . . . . . .  18
 
 
 
@@ -114,41 +114,41 @@ Comley                   Expires August 21, 2018                [Page 2]
 Internet-Draft                    SQRL                     February 2018
 
 
-       4.5.3.  Printed Text  . . . . . . . . . . . . . . . . . . . .  17
-     4.6.  Changing the User's Password  . . . . . . . . . . . . . .  17
+       4.5.3.  Printed Text  . . . . . . . . . . . . . . . . . . . .  18
+     4.6.  Changing the User's Password  . . . . . . . . . . . . . .  18
      4.7.  Identity Recovery . . . . . . . . . . . . . . . . . . . .  18
      4.8.  Re-Keying and Identity  . . . . . . . . . . . . . . . . .  18
    5.  Client-Server Protocol  . . . . . . . . . . . . . . . . . . .  18
      5.1.  Initiation of SQRL Authentication . . . . . . . . . . . .  18
        5.1.1.  The SQRL Scheme . . . . . . . . . . . . . . . . . . .  18
        5.1.2.  QR Codes (Out of Band)  . . . . . . . . . . . . . . .  18
-     5.2.  The SQRL Realm (Domain) . . . . . . . . . . . . . . . . .  18
-     5.3.  Client to Server Requests . . . . . . . . . . . . . . . .  18
-       5.3.1.  Protocol Version  . . . . . . . . . . . . . . . . . .  18
-       5.3.2.  Commands  . . . . . . . . . . . . . . . . . . . . . .  18
-       5.3.3.  Options . . . . . . . . . . . . . . . . . . . . . . .  18
+     5.2.  The SQRL Realm (Domain) . . . . . . . . . . . . . . . . .  19
+     5.3.  Client to Server Requests . . . . . . . . . . . . . . . .  19
+       5.3.1.  Protocol Version  . . . . . . . . . . . . . . . . . .  19
+       5.3.2.  Commands  . . . . . . . . . . . . . . . . . . . . . .  19
+       5.3.3.  Options . . . . . . . . . . . . . . . . . . . . . . .  19
        5.3.4.  The server Value  . . . . . . . . . . . . . . . . . .  19
        5.3.5.  The client Value  . . . . . . . . . . . . . . . . . .  19
        5.3.6.  Client Keys . . . . . . . . . . . . . . . . . . . . .  19
        5.3.7.  Client Signatures . . . . . . . . . . . . . . . . . .  19
        5.3.8.  Composing the Request . . . . . . . . . . . . . . . .  19
      5.4.  Server to Client Replies  . . . . . . . . . . . . . . . .  19
-       5.4.1.  Required Values . . . . . . . . . . . . . . . . . . .  19
-       5.4.2.  Optional Values . . . . . . . . . . . . . . . . . . .  19
-       5.4.3.  Additional Values . . . . . . . . . . . . . . . . . .  19
-       5.4.4.  Composing the Reply . . . . . . . . . . . . . . . . .  19
-   6.  Client-Server Interactions  . . . . . . . . . . . . . . . . .  19
+       5.4.1.  Required Values . . . . . . . . . . . . . . . . . . .  20
+       5.4.2.  Optional Values . . . . . . . . . . . . . . . . . . .  20
+       5.4.3.  Additional Values . . . . . . . . . . . . . . . . . .  20
+       5.4.4.  Composing the Reply . . . . . . . . . . . . . . . . .  20
+   6.  Client-Server Interactions  . . . . . . . . . . . . . . . . .  20
      6.1.  Same Device Authentication  . . . . . . . . . . . . . . .  20
      6.2.  Cross Device Authentication . . . . . . . . . . . . . . .  20
      6.3.  Identity Association  . . . . . . . . . . . . . . . . . .  20
      6.4.  Updating Identity Association . . . . . . . . . . . . . .  20
      6.5.  Disabling Site Login  . . . . . . . . . . . . . . . . . .  20
      6.6.  Re-Enabling Site Login  . . . . . . . . . . . . . . . . .  20
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  20
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  20
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  20
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  20
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  21
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  21
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  21
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  21
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  21
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  22
    Appendix A.  SQRL Client Best Practices . . . . . . . . . . . . .  22
    Appendix B.  SQRL Server Best Practices . . . . . . . . . . . . .  22
    Appendix C.  Harvesting Entropy . . . . . . . . . . . . . . . . .  22
@@ -156,7 +156,7 @@ Internet-Draft                    SQRL                     February 2018
        C.1.1.  Operating System  . . . . . . . . . . . . . . . . . .  23
        C.1.2.  Hardware  . . . . . . . . . . . . . . . . . . . . . .  23
        C.1.3.  User  . . . . . . . . . . . . . . . . . . . . . . . .  24
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  24
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  25
 
 
 
@@ -311,7 +311,7 @@ Internet-Draft                    SQRL                     February 2018
    a single, large, little-endian number and convert using the normal
    mathematical steps:
 
-   1.  Calculate BASE_LENGTH: (8.0 / log2(56))
+   1.  Calculate BASE_LENGTH: ceil( SOURCE_LENGTH * 8.0 / log2(56))
 
    2.  Divide SOURCE by 56 to yield SOURCE and REMAINDER.
 
@@ -350,7 +350,7 @@ Internet-Draft                    SQRL                     February 2018
 
        E.  Append the CHUNK to OUTPUT.
 
-   OUTPUT can then be formatted as desired.  The recommended formatting
+   OUTPUT can then be formatted as desired.  The RECOMMENDED formatting
    is 20 characters per line in space-separated groups of 4 characters
    each.  This format is easy for humans to read and type, and allows
    error checking for each line of input.
@@ -855,7 +855,8 @@ Internet-Draft                    SQRL                     February 2018
    The type 1 block contains the user's encrypted IMK and ILK, as well
    as user defined options.  The user options are in plain text, but
    MUST be regarded as untrusted until authenticated through AES-GCM.
-   The type 1 block is formatted as follows:
+   Type 1 blocks are encrypted with AES-GCM using the PWDK.  The type 1
+   block is formatted as follows:
 
               +--------------------------+---------+-------+
               | Field                    | Default | Bytes |
@@ -892,21 +893,19 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-
 Comley                   Expires August 21, 2018               [Page 16]
 
 Internet-Draft                    SQRL                     February 2018
 
 
-   5.  Use the salt to run EnScrypt on the user's password for the
-       chosen amount of time (default 5 seconds) to obtain the
-       encryption key.
+   5.  Use the generated salt, the user's password, and the user's
+       chosen EnScrypt Seconds value to generate the PWDK and Iteration
+       Count.
 
-   6.  Populate the EnScrypt iteration count in the buffer.
+   6.  Populate the Iteration Count in the buffer.
 
    7.  AES-GCM encrypt the IMK and ILK (64 bytes total) using the first
-       "AAD Length" bytes of the buffer as AAD, the IV, and the
-       generated encryption key.
+       "AAD Length" bytes of the buffer as AAD, the IV, the PWDK.
 
    8.  Populate the ciphertext result and verification tag from AES-GCM.
 
@@ -917,13 +916,45 @@ Internet-Draft                    SQRL                     February 2018
    hasn't changed, clients SHOULD use the original salt and iteration
    count to re-encrypt the block.
 
-4.4.3.2.  Block Type 2: Identity Unlock Key
+4.4.3.2.  Block Type 2: Rescue Identity
 
-   TODO
+   The type 2 block contains a single key, the IUK, along with it's
+   encryption parameters.  It is encrypted with AES-GCM using the RCDK.
+
+              +--------------------------+---------+-------+
+              | Field                    | Default | Bytes |
+              +--------------------------+---------+-------+
+              | Block Length             | 73      | 2     |
+              | Block Type               | 2       | 2     |
+              | EnScrypt Salt            |         | 16    |
+              | EnScrypt n-factor        | 9       | 1     |
+              | EnScrypt Iteration Count |         | 4     |
+              | Encrypted IUK            |         | 32    |
+              | AES-GCM Verification Tag |         | 16    |
+              +--------------------------+---------+-------+
+
+                               Type 2 Block
+
+   The type 2 block is constructed the same way as the type 1, with the
+   following exceptions:
+
+   o  To save space in textual exports, we implicitly use a 12 byte, all
+      zero Initialization Vector for AES-GCM.  This means that the type
+      2 block MUST NOT be re-encrypted with different parameters.  This
+      block MUST NOT be changed after identity creation.  It can only be
+      replaced by rekeying.
+
+   o  The RCDK is used in place of the PWDK.
+
+
+
+
+Comley                   Expires August 21, 2018               [Page 17]
+
+Internet-Draft                    SQRL                     February 2018
+
 
 4.4.3.3.  Block Type 3: Previous Identities
-
-   TODO
 
 4.5.  Importing / Exporting an Identity
 
@@ -944,15 +975,6 @@ Internet-Draft                    SQRL                     February 2018
 4.6.  Changing the User's Password
 
    TODO
-
-
-
-
-
-Comley                   Expires August 21, 2018               [Page 17]
-
-Internet-Draft                    SQRL                     February 2018
-
 
 4.7.  Identity Recovery
 
@@ -978,6 +1000,16 @@ Internet-Draft                    SQRL                     February 2018
 
    TODO
 
+
+
+
+
+
+Comley                   Expires August 21, 2018               [Page 18]
+
+Internet-Draft                    SQRL                     February 2018
+
+
 5.2.  The SQRL Realm (Domain)
 
    TODO
@@ -997,18 +1029,6 @@ Internet-Draft                    SQRL                     February 2018
 5.3.3.  Options
 
    TODO
-
-
-
-
-
-
-
-
-Comley                   Expires August 21, 2018               [Page 18]
-
-Internet-Draft                    SQRL                     February 2018
-
 
 5.3.4.  The server Value
 
@@ -1034,6 +1054,18 @@ Internet-Draft                    SQRL                     February 2018
 
    TODO
 
+
+
+
+
+
+
+
+Comley                   Expires August 21, 2018               [Page 19]
+
+Internet-Draft                    SQRL                     February 2018
+
+
 5.4.1.  Required Values
 
    TODO
@@ -1053,18 +1085,6 @@ Internet-Draft                    SQRL                     February 2018
 6.  Client-Server Interactions
 
    TODO
-
-
-
-
-
-
-
-
-Comley                   Expires August 21, 2018               [Page 19]
-
-Internet-Draft                    SQRL                     February 2018
-
 
 6.1.  Same Device Authentication
 
@@ -1090,6 +1110,18 @@ Internet-Draft                    SQRL                     February 2018
 
    TODO
 
+
+
+
+
+
+
+
+Comley                   Expires August 21, 2018               [Page 20]
+
+Internet-Draft                    SQRL                     February 2018
+
+
 7.  IANA Considerations
 
    TODO
@@ -1110,17 +1142,6 @@ Internet-Draft                    SQRL                     February 2018
               Dworkin, M., "NIST Special Publication 800-38D:
               Recommendation for Block Cipher Modes of Operation:
               Galois/Counter Mode (GCM) and GMAC.", November 2007.
-
-
-
-
-
-
-
-Comley                   Expires August 21, 2018               [Page 20]
-
-Internet-Draft                    SQRL                     February 2018
-
 
    [RFC2104]  Krawczyk, H., Bellare, M., and R. Canetti, "HMAC: Keyed-
               Hashing for Message Authentication", RFC 2104,
@@ -1150,6 +1171,13 @@ Internet-Draft                    SQRL                     February 2018
               Key Derivation Function", RFC 7914, DOI 10.17487/RFC7914,
               August 2016, <https://www.rfc-editor.org/info/rfc7914>.
 
+
+
+Comley                   Expires August 21, 2018               [Page 21]
+
+Internet-Draft                    SQRL                     February 2018
+
+
    [RFC8031]  Nir, Y. and S. Josefsson, "Curve25519 and Curve448 for the
               Internet Key Exchange Protocol Version 2 (IKEv2) Key
               Agreement", RFC 8031, DOI 10.17487/RFC8031, December 2016,
@@ -1166,17 +1194,6 @@ Internet-Draft                    SQRL                     February 2018
               384, and HMAC-SHA-512 with IPsec", RFC 4868,
               DOI 10.17487/RFC4868, May 2007, <https://www.rfc-
               editor.org/info/rfc4868>.
-
-
-
-
-
-
-
-Comley                   Expires August 21, 2018               [Page 21]
-
-Internet-Draft                    SQRL                     February 2018
-
 
 9.3.  URIs
 
@@ -1208,6 +1225,15 @@ Appendix C.  Harvesting Entropy
    as Curve25519 should be truly random, but what constitutes "truly
    random" is regarded as much philosophy as computer science.  However,
    a good working definition of "truly random" is one where the amount
+
+
+
+
+Comley                   Expires August 21, 2018               [Page 22]
+
+Internet-Draft                    SQRL                     February 2018
+
+
    of entropy in a number is equal to its length; e.g., a 256-bit number
    that contains 256 bits of entropy.
 
@@ -1225,15 +1251,6 @@ Appendix C.  Harvesting Entropy
    single bit of the input is changed, so the entropy should be
    preserved up to the length of the resulting hash.  The technique,
    then, is to hash an amount of data where the entropy content almost
-
-
-
-
-Comley                   Expires August 21, 2018               [Page 22]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    certainly far exceeds 256 or 512 bits.  These amounts are fairly
    trivial.
 
@@ -1265,6 +1282,14 @@ C.1.2.  Hardware
    care must be taken to make sure that they exist on a particular
    implementation, and that the hardware hasn't failed in some way.
 
+
+
+
+Comley                   Expires August 21, 2018               [Page 23]
+
+Internet-Draft                    SQRL                     February 2018
+
+
    The system clock has traditionally been used as a source of
    randomness, although it must be considered that users are more likely
    to generate the random numbers at some times of the day than others.
@@ -1282,14 +1307,6 @@ C.1.2.  Hardware
 
    Sound from a microphone could be a source of high-quality entropy in
    a typical room with air conditioning, fans, and other source of
-
-
-
-Comley                   Expires August 21, 2018               [Page 23]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    noise, as well as interference on the sound channel.  In such a case,
    a fraction of a second--less than two hundredths--would be
    sufficient, but as there is no guarantee longer periods should be
@@ -1319,6 +1336,16 @@ C.1.3.  User
    Examining mouse movements or keyboard strokes can be a source of
    entropy, although how much is a matter of some debate.
 
+
+
+
+
+
+Comley                   Expires August 21, 2018               [Page 24]
+
+Internet-Draft                    SQRL                     February 2018
+
+
    Accelerometer data on cell phones and other such devices can pick up
    minute movements of the user's hand, even if the user is trying to
    hold it steady.
@@ -1341,4 +1368,33 @@ Author's Address
 
 
 
-Comley                   Expires August 21, 2018               [Page 24]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Comley                   Expires August 21, 2018               [Page 25]
