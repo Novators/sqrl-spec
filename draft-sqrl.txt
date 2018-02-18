@@ -3,9 +3,9 @@
 
 
 Internet Engineering Task Force                           A. Comley, Ed.
-Internet-Draft                                         February 17, 2018
+Internet-Draft                                         February 18, 2018
 Intended status: Informational
-Expires: August 21, 2018
+Expires: August 22, 2018
 
 
    Secure Quick Reliable Login (SQRL), an Authentication and Identity
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 21, 2018.
+   This Internet-Draft will expire on August 22, 2018.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Comley                   Expires August 21, 2018                [Page 1]
+Comley                   Expires August 22, 2018                [Page 1]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -78,12 +78,12 @@ Table of Contents
        2.2.2.  Validation  . . . . . . . . . . . . . . . . . . . . .   7
        2.2.3.  Decoding  . . . . . . . . . . . . . . . . . . . . . .   8
      2.3.  EnHash  . . . . . . . . . . . . . . . . . . . . . . . . .   8
-     2.4.  EnScrypt  . . . . . . . . . . . . . . . . . . . . . . . .   8
-   3.  Cryptographic Keys, Secrets, and Passwords  . . . . . . . . .   9
+     2.4.  EnScrypt  . . . . . . . . . . . . . . . . . . . . . . . .   9
+   3.  Cryptographic Keys, Secrets, and Passwords  . . . . . . . . .  10
      3.1.  Class A Secrets . . . . . . . . . . . . . . . . . . . . .  10
        3.1.1.  Identity Unlock Key (IUK) . . . . . . . . . . . . . .  10
        3.1.2.  Unlock Request Signing Key (URSK) . . . . . . . . . .  10
-       3.1.3.  Rescue Code (RC)  . . . . . . . . . . . . . . . . . .  10
+       3.1.3.  Rescue Code (RC)  . . . . . . . . . . . . . . . . . .  11
        3.1.4.  Password Derived Keys . . . . . . . . . . . . . . . .  11
      3.2.  Class B Secrets . . . . . . . . . . . . . . . . . . . . .  11
        3.2.1.  Previous Identity Unlock Key (PIUK) . . . . . . . . .  12
@@ -91,88 +91,91 @@ Table of Contents
        3.2.3.  Identity Lock Key (ILK) . . . . . . . . . . . . . . .  12
        3.2.4.  Site Specific Secret Key (SSSK) . . . . . . . . . . .  12
        3.2.5.  Random Lock Key (RLK) . . . . . . . . . . . . . . . .  12
-     3.3.  Class C (Public) Keys . . . . . . . . . . . . . . . . . .  12
-       3.3.1.  Site Specific Public Key (SSPK) . . . . . . . . . . .  12
+     3.3.  Class C (Public) Keys . . . . . . . . . . . . . . . . . .  13
+       3.3.1.  Site Specific Public Key (SSPK) . . . . . . . . . . .  13
        3.3.2.  Server Unlock Key (SUK) . . . . . . . . . . . . . . .  13
        3.3.3.  Verify Unlock Key (VUK) . . . . . . . . . . . . . . .  13
    4.  Identity Management . . . . . . . . . . . . . . . . . . . . .  13
      4.1.  Identity Lifecycle  . . . . . . . . . . . . . . . . . . .  13
      4.2.  Identity Creation . . . . . . . . . . . . . . . . . . . .  13
      4.3.  User Options  . . . . . . . . . . . . . . . . . . . . . .  13
-     4.4.  Identity Storage  . . . . . . . . . . . . . . . . . . . .  14
+     4.4.  Identity Storage  . . . . . . . . . . . . . . . . . . . .  15
        4.4.1.  Encoding  . . . . . . . . . . . . . . . . . . . . . .  15
-       4.4.2.  Storage Blocks  . . . . . . . . . . . . . . . . . . .  15
+       4.4.2.  Storage Blocks  . . . . . . . . . . . . . . . . . . .  16
        4.4.3.  Predefined Block Types  . . . . . . . . . . . . . . .  16
      4.5.  Importing / Exporting an Identity . . . . . . . . . . . .  18
        4.5.1.  Binary File . . . . . . . . . . . . . . . . . . . . .  18
-       4.5.2.  Printed QR Code . . . . . . . . . . . . . . . . . . .  18
+       4.5.2.  Printed QR Code . . . . . . . . . . . . . . . . . . .  19
 
 
 
-Comley                   Expires August 21, 2018                [Page 2]
+Comley                   Expires August 22, 2018                [Page 2]
 
 Internet-Draft                    SQRL                     February 2018
 
 
-       4.5.3.  Printed Text  . . . . . . . . . . . . . . . . . . . .  18
-     4.6.  Changing the User's Password  . . . . . . . . . . . . . .  18
-     4.7.  Identity Recovery . . . . . . . . . . . . . . . . . . . .  18
-     4.8.  Re-Keying and Identity  . . . . . . . . . . . . . . . . .  18
-   5.  Client-Server Protocol  . . . . . . . . . . . . . . . . . . .  18
-     5.1.  Initiation of SQRL Authentication . . . . . . . . . . . .  18
-       5.1.1.  The SQRL Scheme . . . . . . . . . . . . . . . . . . .  18
-       5.1.2.  QR Codes (Out of Band)  . . . . . . . . . . . . . . .  18
+       4.5.3.  Printed Text  . . . . . . . . . . . . . . . . . . . .  19
+     4.6.  Changing the User's Password  . . . . . . . . . . . . . .  19
+     4.7.  Identity Recovery . . . . . . . . . . . . . . . . . . . .  19
+     4.8.  Re-Keying and Identity  . . . . . . . . . . . . . . . . .  19
+   5.  Client-Server Protocol  . . . . . . . . . . . . . . . . . . .  19
+     5.1.  Initiation of SQRL Authentication . . . . . . . . . . . .  19
+       5.1.1.  The SQRL Scheme . . . . . . . . . . . . . . . . . . .  19
+       5.1.2.  QR Codes (Out of Band)  . . . . . . . . . . . . . . .  19
      5.2.  The SQRL Realm (Domain) . . . . . . . . . . . . . . . . .  19
      5.3.  Client to Server Requests . . . . . . . . . . . . . . . .  19
-       5.3.1.  Protocol Version  . . . . . . . . . . . . . . . . . .  19
-       5.3.2.  Commands  . . . . . . . . . . . . . . . . . . . . . .  19
-       5.3.3.  Options . . . . . . . . . . . . . . . . . . . . . . .  19
-       5.3.4.  The server Value  . . . . . . . . . . . . . . . . . .  19
-       5.3.5.  The client Value  . . . . . . . . . . . . . . . . . .  19
-       5.3.6.  Client Keys . . . . . . . . . . . . . . . . . . . . .  19
-       5.3.7.  Client Signatures . . . . . . . . . . . . . . . . . .  19
-       5.3.8.  Composing the Request . . . . . . . . . . . . . . . .  19
-     5.4.  Server to Client Replies  . . . . . . . . . . . . . . . .  19
+       5.3.1.  Protocol Version  . . . . . . . . . . . . . . . . . .  20
+       5.3.2.  Commands  . . . . . . . . . . . . . . . . . . . . . .  20
+       5.3.3.  Options . . . . . . . . . . . . . . . . . . . . . . .  20
+       5.3.4.  The server Value  . . . . . . . . . . . . . . . . . .  20
+       5.3.5.  The client Value  . . . . . . . . . . . . . . . . . .  20
+       5.3.6.  Client Keys . . . . . . . . . . . . . . . . . . . . .  20
+       5.3.7.  Client Signatures . . . . . . . . . . . . . . . . . .  20
+       5.3.8.  Composing the Request . . . . . . . . . . . . . . . .  20
+     5.4.  Server to Client Replies  . . . . . . . . . . . . . . . .  20
        5.4.1.  Required Values . . . . . . . . . . . . . . . . . . .  20
        5.4.2.  Optional Values . . . . . . . . . . . . . . . . . . .  20
-       5.4.3.  Additional Values . . . . . . . . . . . . . . . . . .  20
-       5.4.4.  Composing the Reply . . . . . . . . . . . . . . . . .  20
-   6.  Client-Server Interactions  . . . . . . . . . . . . . . . . .  20
-     6.1.  Same Device Authentication  . . . . . . . . . . . . . . .  20
-     6.2.  Cross Device Authentication . . . . . . . . . . . . . . .  20
-     6.3.  Identity Association  . . . . . . . . . . . . . . . . . .  20
-     6.4.  Updating Identity Association . . . . . . . . . . . . . .  20
-     6.5.  Disabling Site Login  . . . . . . . . . . . . . . . . . .  20
-     6.6.  Re-Enabling Site Login  . . . . . . . . . . . . . . . . .  20
+       5.4.3.  Additional Values . . . . . . . . . . . . . . . . . .  21
+       5.4.4.  Composing the Reply . . . . . . . . . . . . . . . . .  21
+   6.  Client-Server Interactions  . . . . . . . . . . . . . . . . .  21
+     6.1.  Same Device Authentication  . . . . . . . . . . . . . . .  21
+     6.2.  Cross Device Authentication . . . . . . . . . . . . . . .  21
+     6.3.  Identity Association  . . . . . . . . . . . . . . . . . .  21
+     6.4.  Updating Identity Association . . . . . . . . . . . . . .  21
+     6.5.  Disabling Site Login  . . . . . . . . . . . . . . . . . .  21
+     6.6.  Re-Enabling Site Login  . . . . . . . . . . . . . . . . .  21
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  21
    8.  Security Considerations . . . . . . . . . . . . . . . . . . .  21
-     8.1.  Phishing  . . . . . . . . . . . . . . . . . . . . . . . .  21
+     8.1.  Phishing  . . . . . . . . . . . . . . . . . . . . . . . .  22
      8.2.  Shoulder-Surfing  . . . . . . . . . . . . . . . . . . . .  23
-     8.3.  Evil Router . . . . . . . . . . . . . . . . . . . . . . .  23
+     8.3.  Evil Router . . . . . . . . . . . . . . . . . . . . . . .  24
      8.4.  Server Compromise . . . . . . . . . . . . . . . . . . . .  24
-     8.5.  CPU Flooding  . . . . . . . . . . . . . . . . . . . . . .  24
-     8.6.  Evil Client . . . . . . . . . . . . . . . . . . . . . . .  24
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  25
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  25
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  26
-   Appendix A.  Recommendations and  Best Practices  . . . . . . . .  27
-     A.1.  For Clients . . . . . . . . . . . . . . . . . . . . . . .  27
-     A.2.  For Servers . . . . . . . . . . . . . . . . . . . . . . .  27
-     A.3.  For Users . . . . . . . . . . . . . . . . . . . . . . . .  27
-   Appendix B.  Harvesting Entropy . . . . . . . . . . . . . . . . .  27
-     B.1.  Entropy Sources . . . . . . . . . . . . . . . . . . . . .  28
-       B.1.1.  Operating System  . . . . . . . . . . . . . . . . . .  28
+     8.5.  CPU Flooding  . . . . . . . . . . . . . . . . . . . . . .  25
+     8.6.  Evil Client . . . . . . . . . . . . . . . . . . . . . . .  25
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  26
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  26
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  27
+   Appendix A.  Recommendations and Best Practices . . . . . . . . .  28
+     A.1.  For Clients . . . . . . . . . . . . . . . . . . . . . . .  28
+     A.2.  For Servers . . . . . . . . . . . . . . . . . . . . . . .  28
+     A.3.  For Users . . . . . . . . . . . . . . . . . . . . . . . .  28
+       A.3.1.  Master Password . . . . . . . . . . . . . . . . . . .  28
+       A.3.2.  Identity Backup . . . . . . . . . . . . . . . . . . .  28
+       A.3.3.  Disaster Recovery . . . . . . . . . . . . . . . . . .  29
 
 
 
-Comley                   Expires August 21, 2018                [Page 3]
+Comley                   Expires August 22, 2018                [Page 3]
 
 Internet-Draft                    SQRL                     February 2018
 
 
-       B.1.2.  Hardware  . . . . . . . . . . . . . . . . . . . . . .  28
-       B.1.3.  User  . . . . . . . . . . . . . . . . . . . . . . . .  29
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  30
+   Appendix B.  Harvesting Entropy . . . . . . . . . . . . . . . . .  29
+     B.1.  Entropy Sources . . . . . . . . . . . . . . . . . . . . .  30
+       B.1.1.  Operating System  . . . . . . . . . . . . . . . . . .  30
+       B.1.2.  Hardware  . . . . . . . . . . . . . . . . . . . . . .  30
+       B.1.3.  User  . . . . . . . . . . . . . . . . . . . . . . . .  31
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  32
 
 1.  Introduction
 
@@ -214,18 +217,19 @@ Internet-Draft                    SQRL                     February 2018
       SQRL identity indefinately, even after a compromise
 
    Offline Identity Backup
-      Since SQRL identities are intended to last a lifetime, and there
-      is no third party that can help the user recover their identity if
-      they forget their password, SQRL includes an offline backup
-      mechanism.  The user can print out or write down their encrypted
 
 
 
-Comley                   Expires August 21, 2018                [Page 4]
+
+Comley                   Expires August 22, 2018                [Page 4]
 
 Internet-Draft                    SQRL                     February 2018
 
 
+      Since SQRL identities are intended to last a lifetime, and there
+      is no third party that can help the user recover their identity if
+      they forget their password, SQRL includes an offline backup
+      mechanism.  The user can print out or write down their encrypted
       identity, along with a secure Rescue Code, that will allow the
       user to recover from a forgotten password.
 
@@ -270,17 +274,18 @@ Internet-Draft                    SQRL                     February 2018
 
    o  scrypt [RFC7914]
 
+
+
+
+Comley                   Expires August 22, 2018                [Page 5]
+
+Internet-Draft                    SQRL                     February 2018
+
+
    o  SHA-256 [FIPS.180-4.2015]
 
    o  urlencode: Percent-Encoding as defined in Section 2.1 of
       [RFC3986].
-
-
-
-Comley                   Expires August 21, 2018                [Page 5]
-
-Internet-Draft                    SQRL                     February 2018
-
 
 2.2.  base56check
 
@@ -326,17 +331,17 @@ Internet-Draft                    SQRL                     February 2018
    Now, with our converted BASE string, we can calculate the check
    digits and produce the final output.
 
+
+
+Comley                   Expires August 22, 2018                [Page 6]
+
+Internet-Draft                    SQRL                     February 2018
+
+
    6.  Split BASE into 19 character CHUNKS (the final chunk may be
        smaller).
 
    7.  For each CHUNK:
-
-
-
-Comley                   Expires August 21, 2018                [Page 6]
-
-Internet-Draft                    SQRL                     February 2018
-
 
        A.  Append a single byte zero-based CHUNK-NUMBER to the CHUNK.
 
@@ -381,18 +386,16 @@ Internet-Draft                    SQRL                     February 2018
        E.  Compare CHECK with the character from ALPHABET at position
            REMAINDER.
 
-       F.  If comparison passes (is equal), continue.  Otherwise, there
-           is an error in this CHUNK.
 
 
 
-
-
-
-Comley                   Expires August 21, 2018                [Page 7]
+Comley                   Expires August 22, 2018                [Page 7]
 
 Internet-Draft                    SQRL                     February 2018
 
+
+       F.  If comparison passes (is equal), continue.  Otherwise, there
+           is an error in this CHUNK.
 
 2.2.3.  Decoding
 
@@ -436,19 +439,23 @@ Internet-Draft                    SQRL                     February 2018
      return output;
    }
 
+
+
+
+
+
+
+Comley                   Expires August 22, 2018                [Page 8]
+
+Internet-Draft                    SQRL                     February 2018
+
+
 2.4.  EnScrypt
 
    EnScrypt is an iterative construct based on the scrypt password based
    key derivation function.  It hardens scrypt by allowing for extended
    processing time.  The following parameters are used for the scrypt
    function:
-
-
-
-Comley                   Expires August 21, 2018                [Page 8]
-
-Internet-Draft                    SQRL                     February 2018
-
 
                      +-------+------------+-----+---+
                      | dkLen | N          | r   | p |
@@ -490,21 +497,21 @@ Internet-Draft                    SQRL                     February 2018
 
    Timer Mode is used when creating an encryption key from a password.
    Once the key is derived and the identity encrypted, the resulting
+
+
+
+
+Comley                   Expires August 22, 2018                [Page 9]
+
+Internet-Draft                    SQRL                     February 2018
+
+
    number of iterations is saved with the identity file.  Counter Mode
    is used to recreate this key and decrypt the identity.
 
 3.  Cryptographic Keys, Secrets, and Passwords
 
    SQRL uses a wide variety of secrets in various operations.
-
-
-
-
-
-Comley                   Expires August 21, 2018                [Page 9]
-
-Internet-Draft                    SQRL                     February 2018
-
 
 3.1.  Class A Secrets
 
@@ -548,19 +555,19 @@ Internet-Draft                    SQRL                     February 2018
    Used by the client to update the identity association on a server,
    the URSK is derived from the SUK and IUK.
 
+
+
+Comley                   Expires August 22, 2018               [Page 10]
+
+Internet-Draft                    SQRL                     February 2018
+
+
 3.1.3.  Rescue Code (RC)
 
    The Rescue Code is a Class A, computer generated, high entropy
    passcode consisting of 24 numeric digits.  The client SHOULD
    encourage the user to store the Rescue Code in an offline format
    (printed or written).
-
-
-
-Comley                   Expires August 21, 2018               [Page 10]
-
-Internet-Draft                    SQRL                     February 2018
-
 
 3.1.4.  Password Derived Keys
 
@@ -603,20 +610,19 @@ Internet-Draft                    SQRL                     February 2018
       volatile memory in plaintext form, including being swapped to
       disk, by any means possible.
 
+
+
+
+Comley                   Expires August 22, 2018               [Page 11]
+
+Internet-Draft                    SQRL                     February 2018
+
+
    o  The plaintext secret MUST be securely wiped from RAM as soon as it
       is no longer needed.
 
    o  If the secret is to be stored, it MUST be stored in an encrypted
       form.
-
-
-
-
-
-Comley                   Expires August 21, 2018               [Page 11]
-
-Internet-Draft                    SQRL                     February 2018
-
 
    o  The secret SHOULD NOT be transmitted over the network in any form,
       and MUST NOT be transmitted unencrypted.
@@ -656,6 +662,18 @@ Internet-Draft                    SQRL                     February 2018
    The RLK is generated randomly when the client associates with a new
    server.
 
+
+
+
+
+
+
+
+Comley                   Expires August 22, 2018               [Page 12]
+
+Internet-Draft                    SQRL                     February 2018
+
+
 3.3.  Class C (Public) Keys
 
    Class C keys are not required to be kept secret.
@@ -666,13 +684,6 @@ Internet-Draft                    SQRL                     February 2018
 
    The Site Specific Public Key (SSPK) is the public counterpart to the
    SSSK.  It serves as the user's pseudonymous identity on the site.
-
-
-
-Comley                   Expires August 21, 2018               [Page 12]
-
-Internet-Draft                    SQRL                     February 2018
-
 
 3.3.2.  Server Unlock Key (SUK)
 
@@ -710,6 +721,15 @@ Internet-Draft                    SQRL                     February 2018
       the ShortPass feature.
 
    EnScrypt Seconds:
+
+
+
+
+Comley                   Expires August 22, 2018               [Page 13]
+
+Internet-Draft                    SQRL                     February 2018
+
+
       The number of seconds to run EnScrypt when deriving the PWDK.  The
       RECOMMENDED default is 5 seconds.  The REQUIRED minimum is 1
       second.
@@ -722,13 +742,6 @@ Internet-Draft                    SQRL                     February 2018
 
    Option Flags:
       The following binary flags turn on or off various user options:
-
-
-
-Comley                   Expires August 21, 2018               [Page 13]
-
-Internet-Draft                    SQRL                     February 2018
-
 
    +--------+----------------------------------------------------------+
    | Flag   | Description                                              |
@@ -763,6 +776,16 @@ Internet-Draft                    SQRL                     February 2018
 
                              User Option Flags
 
+
+
+
+
+
+Comley                   Expires August 22, 2018               [Page 14]
+
+Internet-Draft                    SQRL                     February 2018
+
+
 4.4.  Identity Storage
 
    Because SQRL identities are intended to last the user's lifetime, the
@@ -778,13 +801,6 @@ Internet-Draft                    SQRL                     February 2018
 
    Values stored in standard SQRL storage format MUST follow these
    rules:
-
-
-
-Comley                   Expires August 21, 2018               [Page 14]
-
-Internet-Draft                    SQRL                     February 2018
-
 
    o  All numeric values are unsigned.
 
@@ -817,6 +833,15 @@ Internet-Draft                    SQRL                     February 2018
 
                   Table 4: Storage Encodings and Headers
 
+
+
+
+
+Comley                   Expires August 22, 2018               [Page 15]
+
+Internet-Draft                    SQRL                     February 2018
+
+
 4.4.2.  Storage Blocks
 
    A stored SQRL identity is composed of any number of blocks.  Each
@@ -833,15 +858,6 @@ Internet-Draft                    SQRL                     February 2018
 
                        Table 5: Storage Block Format
 
-
-
-
-
-Comley                   Expires August 21, 2018               [Page 15]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    Standard block types are defined in the next section.  Clients MAY
    add their own block types to store additional information, but SHOULD
    consider types 0-255 as reserved for future official block types.
@@ -857,6 +873,30 @@ Internet-Draft                    SQRL                     February 2018
    MUST be regarded as untrusted until authenticated through AES-GCM.
    Type 1 blocks are encrypted with AES-GCM using the PWDK.  The type 1
    block is formatted as follows:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Comley                   Expires August 22, 2018               [Page 16]
+
+Internet-Draft                    SQRL                     February 2018
+
 
               +--------------------------+---------+-------+
               | Field                    | Default | Bytes |
@@ -890,14 +930,6 @@ Internet-Draft                    SQRL                     February 2018
 
    4.  Generate a random 16 byte salt and store it in the buffer.
 
-
-
-
-Comley                   Expires August 21, 2018               [Page 16]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    5.  Use the generated salt, the user's password, and the user's
        chosen EnScrypt Seconds value to generate the PWDK and Iteration
        Count.
@@ -911,6 +943,16 @@ Internet-Draft                    SQRL                     February 2018
 
    9.  Securely wipe the plaintext keys, encryption key, and password
        from memory if they are no longer needed.
+
+
+
+
+
+
+Comley                   Expires August 22, 2018               [Page 17]
+
+Internet-Draft                    SQRL                     February 2018
+
 
    If the client is updating a type 1 block, and the user's password
    hasn't changed, clients SHOULD use the original salt and iteration
@@ -946,14 +988,6 @@ Internet-Draft                    SQRL                     February 2018
 
    o  The RCDK is used in place of the PWDK.
 
-
-
-
-Comley                   Expires August 21, 2018               [Page 17]
-
-Internet-Draft                    SQRL                     February 2018
-
-
 4.4.3.3.  Block Type 3: Previous Identities
 
 4.5.  Importing / Exporting an Identity
@@ -963,6 +997,18 @@ Internet-Draft                    SQRL                     February 2018
 4.5.1.  Binary File
 
    TODO
+
+
+
+
+
+
+
+
+Comley                   Expires August 22, 2018               [Page 18]
+
+Internet-Draft                    SQRL                     February 2018
+
 
 4.5.2.  Printed QR Code
 
@@ -1000,16 +1046,6 @@ Internet-Draft                    SQRL                     February 2018
 
    TODO
 
-
-
-
-
-
-Comley                   Expires August 21, 2018               [Page 18]
-
-Internet-Draft                    SQRL                     February 2018
-
-
 5.2.  The SQRL Realm (Domain)
 
    TODO
@@ -1017,6 +1053,18 @@ Internet-Draft                    SQRL                     February 2018
 5.3.  Client to Server Requests
 
    TODO
+
+
+
+
+
+
+
+
+Comley                   Expires August 22, 2018               [Page 19]
+
+Internet-Draft                    SQRL                     February 2018
+
 
 5.3.1.  Protocol Version
 
@@ -1054,18 +1102,6 @@ Internet-Draft                    SQRL                     February 2018
 
    TODO
 
-
-
-
-
-
-
-
-Comley                   Expires August 21, 2018               [Page 19]
-
-Internet-Draft                    SQRL                     February 2018
-
-
 5.4.1.  Required Values
 
    TODO
@@ -1073,6 +1109,18 @@ Internet-Draft                    SQRL                     February 2018
 5.4.2.  Optional Values
 
    TODO
+
+
+
+
+
+
+
+
+Comley                   Expires August 22, 2018               [Page 20]
+
+Internet-Draft                    SQRL                     February 2018
+
 
 5.4.3.  Additional Values
 
@@ -1110,18 +1158,6 @@ Internet-Draft                    SQRL                     February 2018
 
    TODO
 
-
-
-
-
-
-
-
-Comley                   Expires August 21, 2018               [Page 20]
-
-Internet-Draft                    SQRL                     February 2018
-
-
 7.  IANA Considerations
 
    TODO
@@ -1135,6 +1171,13 @@ Internet-Draft                    SQRL                     February 2018
 
    It is important to consider the following attack goals:
 
+
+
+Comley                   Expires August 22, 2018               [Page 21]
+
+Internet-Draft                    SQRL                     February 2018
+
+
    1.  Session hijacking
 
    2.  Site credential theft
@@ -1144,7 +1187,7 @@ Internet-Draft                    SQRL                     February 2018
    4.  Master key theft
 
    5.  Breaking of pseudonymous nature of SQRL authentication
-       (association of SQRL identities on various sites)
+   (association of SQRL identities on various sites)
 
 8.1.  Phishing
 
@@ -1171,13 +1214,6 @@ Internet-Draft                    SQRL                     February 2018
    way the real site works, at least up until the point where the
    attacker has stolen the intended data.
 
-
-
-Comley                   Expires August 21, 2018               [Page 21]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    Phishing attacks where the goal is to obtain authentication
    credentials are entirely foiled by SQRL.  Since SQRL uses the domain
    name as the basis for authentication, it will create completely
@@ -1189,6 +1225,15 @@ Internet-Draft                    SQRL                     February 2018
    successfully mimic an e-commerce site such as Amazon or a financial
    site such as PayPal, the user could be tricked into entering account
    data such as a credit card number.  The real domain name is displayed
+
+
+
+
+Comley                   Expires August 22, 2018               [Page 22]
+
+Internet-Draft                    SQRL                     February 2018
+
+
    to the user before authentication, giving him the opportunity to
    realize he is being fooled.
 
@@ -1222,18 +1267,6 @@ Internet-Draft                    SQRL                     February 2018
    running their own internal DNS systems, so it should be an option the
    user can turn off.
 
-
-
-
-
-
-
-
-Comley                   Expires August 21, 2018               [Page 22]
-
-Internet-Draft                    SQRL                     February 2018
-
-
 8.2.  Shoulder-Surfing
 
    Shoulder-surfing is when an attacker reads or scans the display,
@@ -1247,6 +1280,15 @@ Internet-Draft                    SQRL                     February 2018
    he's authenticated to an account controlled by the attacker.  The
    attacker could then get anything the user enters into that web site,
    including credit card numbers and other sensitive information.
+
+
+
+
+
+Comley                   Expires August 22, 2018               [Page 23]
+
+Internet-Draft                    SQRL                     February 2018
+
 
    However, in such a case the user's authentication would fail as the
    nut is no longer valid.  The SQRL client MUST deliver an error
@@ -1282,14 +1324,6 @@ Internet-Draft                    SQRL                     February 2018
 
    Once an attacker gains control of the default gateway, he could
    engage in phishing and DNS spoofing attacks as described above.  More
-
-
-
-Comley                   Expires August 21, 2018               [Page 23]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    significantly, he could insert himself into the TLS handshake and
    commit any number of attacks designed to compromise the security of
    TLS.
@@ -1302,6 +1336,15 @@ Internet-Draft                    SQRL                     February 2018
 
    A server compromise can result in sensitive user data being obtained
    by the attacker without the user even logging in.
+
+
+
+
+
+Comley                   Expires August 22, 2018               [Page 24]
+
+Internet-Draft                    SQRL                     February 2018
+
 
    In the case of SQRL there is less critical data for the attacker to
    get.  There are no passwords or other secrets sent to the server that
@@ -1337,15 +1380,6 @@ Internet-Draft                    SQRL                     February 2018
    the form of its own client, or it may mimic an existing and trusted
    SQRL client.  It may enter the user's computer in the form of
    malware, hijacking the sqrl:// protocol as a new handler and
-
-
-
-
-Comley                   Expires August 21, 2018               [Page 24]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    attaching itself to the localhost:25519 port.  If artfully done, the
    user would have no clue that a substitution has been made.
 
@@ -1359,6 +1393,14 @@ Internet-Draft                    SQRL                     February 2018
    and other important websites.  And although a user can re-key his
    identity, he would first have to understand that his identity has
    been compromised.
+
+
+
+
+Comley                   Expires August 22, 2018               [Page 25]
+
+Internet-Draft                    SQRL                     February 2018
+
 
    The absolute worst case scenario would be when a user uses an evil
    client to create or re-key his identity, which would give the
@@ -1392,16 +1434,6 @@ Internet-Draft                    SQRL                     February 2018
               National Institute of Standards and Technology, "Secure
               Hash Standard", August 2015.
 
-
-
-
-
-
-Comley                   Expires August 21, 2018               [Page 25]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    [NIST.800-38D]
               Dworkin, M., "NIST Special Publication 800-38D:
               Recommendation for Block Cipher Modes of Operation:
@@ -1416,6 +1448,15 @@ Internet-Draft                    SQRL                     February 2018
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997, <https://www.rfc-
               editor.org/info/rfc2119>.
+
+
+
+
+
+Comley                   Expires August 22, 2018               [Page 26]
+
+Internet-Draft                    SQRL                     February 2018
+
 
    [RFC2898]  Kaliski, B., "PKCS #5: Password-Based Cryptography
               Specification Version 2.0", RFC 2898,
@@ -1447,16 +1488,9 @@ Internet-Draft                    SQRL                     February 2018
 
 9.2.  Informative References
 
-
-
-
-
-
-
-Comley                   Expires August 21, 2018               [Page 26]
-
-Internet-Draft                    SQRL                     February 2018
-
+   [doi:10.1145_359168.359176]
+              Shamir, A., "How to share a secret",
+              DOI 10.1145/359168.359176, November 1979.
 
    [RFC4868]  Kelly, S. and S. Frankel, "Using HMAC-SHA-256, HMAC-SHA-
               384, and HMAC-SHA-512 with IPsec", RFC 4868,
@@ -1467,6 +1501,18 @@ Internet-Draft                    SQRL                     February 2018
 
    [1] https://android-developers.googleblog.com/2013/08/some-
        securerandom-thoughts.html
+
+
+
+
+
+
+
+
+Comley                   Expires August 22, 2018               [Page 27]
+
+Internet-Draft                    SQRL                     February 2018
+
 
 Appendix A.  Recommendations and Best Practices
 
@@ -1480,7 +1526,76 @@ A.2.  For Servers
 
 A.3.  For Users
 
-   TODO
+   Disclaimer: None of this is intended to be any sort of legal advice,
+   or indeed any guarantee that problems involving SQRL clients and
+   identities will be minimized.  They are designed to apply to most
+   SQRL users in most situations most of the time.  It should be up to
+   each individual's discretion to determine whether or not particular
+   recommendations make sense to their situation.
+
+A.3.1.  Master Password
+
+   Traditionally, security experts have advised having unique passwords
+   for every resource.  The reason why is so that one resource being
+   compromised will not threaten others.  However, in the case of a
+   single SQRL identity copied to multiple devices, a compromise of any
+   of these identities would give an attacker full access to all SQRL-
+   enabled logins, so the user gains nothing from protecting his SQRL
+   identity on different devices with different passwords.  But when
+   users are asked to create different passwords, they generally pick
+   weaker, formulaic passwords that are easier to remember.
+
+   For this reason, it makes sense to have a single strong password
+   protecting all copies of the user's SQRL identity.
+
+A.3.2.  Identity Backup
+
+   It is crucial that the user not lose his or her identity, as that
+   would lock him out of any and all needed resources.  Keeping a secure
+   backup is essential.
+
+   SQRL clients do not distinguish between exporting and backing up an
+   identity, whether done by file, QR code, or text.  But conceptually,
+   exporting an identity is done with the intent to import it into
+   another client in a timely manner.  Therefore, exporting generally
+   includes the identity encrypted with the Master Password.
+
+   Backups, on the other hand, are intended for longer-term storage.
+   The encryption on them therefore needs to be more secure than perhaps
+
+
+
+Comley                   Expires August 22, 2018               [Page 28]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+   will be the case with the user's Master Password, which may be
+   forgotten in the interim anyway.  Therefore, when making a backup of
+   an identity, it should be made without the Master Password,
+   containing only a copy of the encrypted IUK from which the identity
+   can be regenerated.  The user would therefore need the Rescue Code to
+   restore the backup.
+
+   Note that text backup MUST NOT be exported without the Master
+   Password.
+
+A.3.3.  Disaster Recovery
+
+   A user putting together his Last Will and Testament will want the
+   executor(s) of his estate to be able to easily access all important
+   assets.  Since probate attorneys consider the security of all of this
+   information to be paramount, it is recommended that they be given a
+   hard copy of the SQRL client, exported without password, using the
+   "data entry" method.  The Rescue Code must also be included.  The
+   information must be updated whenever the user creates a new SQRL
+   identity or re-keys an existing one.
+
+   If the use of a probate attorney isn't desirable (e.g., the user
+   lives in a country with no recognition of attorney-client privilege),
+   SQRL's "data entry" export and the associated Rescue Code could be
+   distributed through the person's heirs via Shamir's Secret Sharing.
+   [doi:10.1145_359168.359176]
 
 Appendix B.  Harvesting Entropy
 
@@ -1502,18 +1617,18 @@ Appendix B.  Harvesting Entropy
    of entropy in a number is equal to its length; e.g., a 256-bit number
    that contains 256 bits of entropy.
 
-   Unfortunately, determining the amount of entropy in an information
-   stream is tricky at best.  But entropy is never reduced as more
-   information is added; even weak sources of entropy, when added
 
 
 
 
-Comley                   Expires August 21, 2018               [Page 27]
+Comley                   Expires August 22, 2018               [Page 29]
 
 Internet-Draft                    SQRL                     February 2018
 
 
+   Unfortunately, determining the amount of entropy in an information
+   stream is tricky at best.  But entropy is never reduced as more
+   information is added; even weak sources of entropy, when added
    together, can produce sufficient entropy.  For that reason, none of
    the data collected during entropy harvesting should be discarded.
 
@@ -1558,17 +1673,17 @@ B.1.2.  Hardware
 
    The system clock has traditionally been used as a source of
    randomness, although it must be considered that users are more likely
-   to generate the random numbers at some times of the day than others.
-   Subseconds provide the greatest entropy here.
 
 
 
 
-
-Comley                   Expires August 21, 2018               [Page 28]
+Comley                   Expires August 22, 2018               [Page 30]
 
 Internet-Draft                    SQRL                     February 2018
 
+
+   to generate the random numbers at some times of the day than others.
+   Subseconds provide the greatest entropy here.
 
    Some systems come with embedded hardware that produce noise
    specifically for the purpose of seeding PRFs.
@@ -1618,10 +1733,7 @@ B.1.3.  User
 
 
 
-
-
-
-Comley                   Expires August 21, 2018               [Page 29]
+Comley                   Expires August 22, 2018               [Page 31]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1677,4 +1789,4 @@ Author's Address
 
 
 
-Comley                   Expires August 21, 2018               [Page 30]
+Comley                   Expires August 22, 2018               [Page 32]
