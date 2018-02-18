@@ -146,22 +146,22 @@ Internet-Draft                    SQRL                     February 2018
      6.6.  Re-Enabling Site Login  . . . . . . . . . . . . . . . . .  20
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  21
    8.  Security Considerations . . . . . . . . . . . . . . . . . . .  21
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  21
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  21
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  22
-   Appendix A.  SQRL Client Best Practices . . . . . . . . . . . . .  22
-   Appendix B.  SQRL Server Best Practices . . . . . . . . . . . . .  22
-   Appendix C.  Harvesting Entropy . . . . . . . . . . . . . . . . .  22
-     C.1.  Entropy Sources . . . . . . . . . . . . . . . . . . . . .  23
-       C.1.1.  Operating System  . . . . . . . . . . . . . . . . . .  23
-       C.1.2.  Hardware  . . . . . . . . . . . . . . . . . . . . . .  23
-       C.1.3.  User  . . . . . . . . . . . . . . . . . . . . . . . .  24
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  25
-
-
-
-
-
+     8.1.  Phishing  . . . . . . . . . . . . . . . . . . . . . . . .  21
+     8.2.  Shoulder-Surfing  . . . . . . . . . . . . . . . . . . . .  23
+     8.3.  Evil Router . . . . . . . . . . . . . . . . . . . . . . .  23
+     8.4.  Server Compromise . . . . . . . . . . . . . . . . . . . .  24
+     8.5.  CPU Flooding  . . . . . . . . . . . . . . . . . . . . . .  24
+     8.6.  Evil Client . . . . . . . . . . . . . . . . . . . . . . .  24
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  25
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  25
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  26
+   Appendix A.  SQRL Client Best Practices . . . . . . . . . . . . .  27
+   Appendix B.  SQRL Server Best Practices . . . . . . . . . . . . .  27
+   Appendix C.  Harvesting Entropy . . . . . . . . . . . . . . . . .  27
+     C.1.  Entropy Sources . . . . . . . . . . . . . . . . . . . . .  28
+       C.1.1.  Operating System  . . . . . . . . . . . . . . . . . .  28
+       C.1.2.  Hardware  . . . . . . . . . . . . . . . . . . . . . .  28
+       C.1.3.  User  . . . . . . . . . . . . . . . . . . . . . . . .  29
 
 
 
@@ -169,6 +169,8 @@ Comley                   Expires August 21, 2018                [Page 3]
 
 Internet-Draft                    SQRL                     February 2018
 
+
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  29
 
 1.  Introduction
 
@@ -217,8 +219,6 @@ Internet-Draft                    SQRL                     February 2018
       identity, along with a secure Rescue Code, that will allow the
       user to recover from a forgotten password.
 
-   Out Of Band Authentication Option
-
 
 
 Comley                   Expires August 21, 2018                [Page 4]
@@ -226,6 +226,7 @@ Comley                   Expires August 21, 2018                [Page 4]
 Internet-Draft                    SQRL                     February 2018
 
 
+   Out Of Band Authentication Option
       With SQRL, the user can safely authenticate a session on public or
       potentially compromised systems by scanning a QR code on a trusted
       mobile device containing their SQRL identity, without the need to
@@ -270,7 +271,6 @@ Internet-Draft                    SQRL                     February 2018
 
    o  urlencode: Percent-Encoding as defined in Section 2.1 of
       [RFC3986].
-
 
 
 
@@ -1128,7 +1128,261 @@ Internet-Draft                    SQRL                     February 2018
 
 8.  Security Considerations
 
-   TODO
+   As SQRL aims to protect a single identity that is ultimately used to
+   authenticate a user everywhere, the security of this identity is
+   paramount.  Further, users must face many of the same security issues
+   as with traditional methods of authentication.
+
+   It is important to consider the following attack goals:
+
+   1.  Session hijacking
+
+   2.  Site credential theft
+
+   3.  Association of SQRL identity to site account
+
+   4.  Master key theft
+
+   5.  Breaking of pseudonymous nature of SQRL authentication
+       (association of SQRL identities on various sites)
+
+8.1.  Phishing
+
+   One well-known attack mode is where the user is invited to click on a
+   link appearing to go to a legitimate site, but is in reality directed
+   to an attacker's server.
+
+   One common method of this is a look-alike link.  For example, a user
+   believing he is going to example.com is in reality going to
+   examp1e.com (the lowercase "l" is replaced with a numeral "1").  A
+   historical example is "tvvitter.com" (the letter "v" twice instead of
+   a "w").
+
+   Another method is to use a malformed URL to misdirect a user.  For
+   example, this link:
+
+   https://www.amazon.com@%67%72%63.%63%6f%6d/
+
+   at first glance appears to be a link to Amazon, but in reality takes
+   the user to grc.com.  In reality, the attacker would substitute the
+   name of his phishing site and most users might be fooled entirely.
+
+   The phishing site is generally set up to look and work exactly the
+   way the real site works, at least up until the point where the
+   attacker has stolen the intended data.
+
+
+
+Comley                   Expires August 21, 2018               [Page 21]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+   Phishing attacks where the goal is to obtain authentication
+   credentials are entirely foiled by SQRL.  Since SQRL uses the domain
+   name as the basis for authentication, it will create completely
+   different identity keys.  The SSPK the attacker gets will be a public
+   key specifically for his attack site, useless to him for obtaining
+   access to the real site.
+
+   However, the attacker may have other goals.  If the attacker can
+   successfully mimic an e-commerce site such as Amazon or a financial
+   site such as PayPal, the user could be tricked into entering account
+   data such as a credit card number.  The real domain name is displayed
+   to the user before authentication, giving him the opportunity to
+   realize he is being fooled.
+
+   Many phishing attacks are pass-through attacks, where the phishing
+   site acts as an active Man-In-The-Middle.  It obtains the genuine
+   page from the real site and passes it along to the user, receiving
+   the user's responses and passing them back to the site.  In the case
+   of same-device authentication (Section 6.1), the client will be
+   warned of an IP mismatch, and CPS will redirect the browser to a safe
+   page on the real site.  No such protections exist for cross-device
+   authentication (Section 6.2), but this is only used in the case of
+   untrusted devices where the user will probably be typing in the
+   domain name manually.
+
+   The attacker can get around SQRL's protections with DNS spoofing,
+   where the device's DNS addresses are altered, entries are added to
+   the hosts file, or otherwise made to redirect a host name to an
+   incorrect address, generally the phishing site controlled by the
+   attacker.  In such a case, SQRL would be fooled (as would anything
+   else on the compromised device).
+
+   However, cross-device authentication would foil this, as the user
+   would be using a smartphone or other trusted device that would be
+   doing its own DNS lookup.  Local authentication should take place
+   only on trusted devices.  DNS could only be spoofed on these devices
+   using malware, but malware can compromise any security feature.
+
+   A client developer could also foil such an attack by providing its
+   own internal DNS resolver, bypassing the attacker's spoofing.
+   However, such a feature may not be desired on enterprise networks
+   running their own internal DNS systems, so it should be an option the
+   user can turn off.
+
+
+
+
+
+
+
+
+Comley                   Expires August 21, 2018               [Page 22]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+8.2.  Shoulder-Surfing
+
+   Shoulder-surfing is when an attacker reads or scans the display,
+   keyboard, and other components of the target's device directly,
+   allowing the attacker to see sensitive information, including
+   information entered into forms.
+
+   In the context of SQRL, the danger is of an attacker scanning the QR
+   code of a SQRL-enabled website.  With good timing, the attacker could
+   fool the user into thinking he's logged in as himself when in reality
+   he's authenticated to an account controlled by the attacker.  The
+   attacker could then get anything the user enters into that web site,
+   including credit card numbers and other sensitive information.
+
+   However, in such a case the user's authentication would fail as the
+   nut is no longer valid.  The SQRL client MUST deliver an error
+   message to the user saying that the authentication has failed, and
+   SHOULD advise the user of the dangers of continuing to use the web
+   site, especially if the authentication has the appearance of having
+   worked.
+
+   Care should be taken when authenticating to a website in a public
+   area, or any other place where others could see the QR code, or watch
+   the user type the Master Password on the keyboard.  Keep in mind that
+   these can be picked up using binoculars or seen on a CCTV camera.
+
+   It is absolutely crucial that a new SQRL identity NOT be created, and
+   an existing one NOT be re-keyed, in such an area.  Anyone who can
+   resolve the screen and keyboard can get the Master Password AND the
+   Rescue Code.
+
+8.3.  Evil Router
+
+   In this context, the router in consideration is the one connecting
+   the user's LAN segment to the rest of the Internet.  Home routers
+   have been shown to be lacking in security, and even a well-supported
+   router must be updated when new firmware versions are released,
+   something most users aren't aware of.
+
+   It is also increasingly the case that users connect to Wi-Fi hotspots
+   when travelling, relying on routers whose security they could not
+   evaluate even if they knew to.  Moreover, an attacker on the LAN
+   segment could engage in ARP spoofing to make the attacker's own
+   device the default gateway for the segment, forwarding the packets on
+   to the true router but establishing himself as a Man-In-The-Middle.
+
+   Once an attacker gains control of the default gateway, he could
+   engage in phishing and DNS spoofing attacks as described above.  More
+
+
+
+Comley                   Expires August 21, 2018               [Page 23]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+   significantly, he could insert himself into the TLS handshake and
+   commit any number of attacks designed to compromise the security of
+   TLS.
+
+   SQRL provides no means of defending the user against such an attack,
+   however, at most the attacker will gain access to the specific login
+   sessions the user makes while at that location.
+
+8.4.  Server Compromise
+
+   A server compromise can result in sensitive user data being obtained
+   by the attacker without the user even logging in.
+
+   In the case of SQRL there is less critical data for the attacker to
+   get.  There are no passwords or other secrets sent to the server that
+   have to be hashed and protected.  The attacker can only get the SSPK,
+   SUK, and VUK, which are useless to him.
+
+   If the attacker has gained access to more than one site, the SSPK
+   would be different, meaning that the attacker could not correlate
+   user data between websites (unless, of course, there was other
+   identifying information in common such as an email address).
+
+   All the same, once authenticated the user is subject to all of the
+   harms that can occur regardless of the form of authentication.
+
+8.5.  CPU Flooding
+
+   CPU flooding is where the attacker is able to cause one or more
+   processes to run that take up significant CPU time.  It also can
+   happen without a malicious attacker, when a normal process starts
+   running in the background.
+
+   With SQRL, this can be a vulnerability when running EnScrypt
+   (Section 2.4) in Timer Mode.  After 5 seconds (by default), the timer
+   runs out, and the resulting key is used to encrypt the identity and
+   the number of iterations recorded.  If another process utilizes
+   significant CPU clocks during this process, the total number of
+   iterations will be lower than it would have, meaning that the Master
+   Password has weaker protection against cracking.
+
+8.6.  Evil Client
+
+   An evil client is a maliciously-developed SQRL client.  It may take
+   the form of its own client, or it may mimic an existing and trusted
+   SQRL client.  It may enter the user's computer in the form of
+   malware, hijacking the sqrl:// protocol as a new handler and
+
+
+
+
+Comley                   Expires August 21, 2018               [Page 24]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+   attaching itself to the localhost:25519 port.  If artfully done, the
+   user would have no clue that a substitution has been made.
+
+   The consequences cannot be overstated.  The evil client would be able
+   to gain the unencrypted IMK on its very first use, allowing the
+   attacker to be able to hijack ANY account on ANY website where the
+   user has authenticated using SQRL.
+
+   Moreover, it could keep track of everywhere the user logs in and send
+   to the attacker all of the user's accounts on banking, e-commerce,
+   and other important websites.  And although a user can re-key his
+   identity, he would first have to understand that his identity has
+   been compromised.
+
+   The absolute worst case scenario would be when a user uses an evil
+   client to create or re-key his identity, which would give the
+   attacker access to even the Rescue Code.  All other possible security
+   concerns pale to this.
+
+   SQRL mitigates this possibility by requiring (and advising) only that
+   the user place his SQRL identity on trusted devices, using cross-
+   device authentication on all other devices.  However, this only
+   limits the attack surface.  In the past, fake versions of Firefox and
+   other web browsers, fake Bitcoin wallets, and numerous others have
+   been downloaded by users and even placed inside the trusted app
+   stores for Android and iOS.  A malicious SQRL app, sadly, is not out
+   of the question.
+
+   This issue can be somewhat mitigated by requiring that SQRL apps be
+   certified by trusted authorities.  The reference implementation from
+   GRC not only checks the certificate on every update, but checks the
+   fingerprint on the DigiCert root certificate as well to help ensure
+   that there was no improper substitution.  However, the ultimate
+   protection can only come from complete SQRL integration into web
+   browsers and operating systems, which will refuse to let any other
+   software hijack the sqrl:// protocol and eliminate the need for a
+   localhost connection on port 25519.
 
 9.  References
 
@@ -1137,6 +1391,16 @@ Internet-Draft                    SQRL                     February 2018
    [FIPS.180-4.2015]
               National Institute of Standards and Technology, "Secure
               Hash Standard", August 2015.
+
+
+
+
+
+
+Comley                   Expires August 21, 2018               [Page 25]
+
+Internet-Draft                    SQRL                     February 2018
+
 
    [NIST.800-38D]
               Dworkin, M., "NIST Special Publication 800-38D:
@@ -1171,13 +1435,6 @@ Internet-Draft                    SQRL                     February 2018
               Key Derivation Function", RFC 7914, DOI 10.17487/RFC7914,
               August 2016, <https://www.rfc-editor.org/info/rfc7914>.
 
-
-
-Comley                   Expires August 21, 2018               [Page 21]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    [RFC8031]  Nir, Y. and S. Josefsson, "Curve25519 and Curve448 for the
               Internet Key Exchange Protocol Version 2 (IKEv2) Key
               Agreement", RFC 8031, DOI 10.17487/RFC8031, December 2016,
@@ -1189,6 +1446,17 @@ Internet-Draft                    SQRL                     February 2018
               editor.org/info/rfc8032>.
 
 9.2.  Informative References
+
+
+
+
+
+
+
+Comley                   Expires August 21, 2018               [Page 26]
+
+Internet-Draft                    SQRL                     February 2018
+
 
    [RFC4868]  Kelly, S. and S. Frankel, "Using HMAC-SHA-256, HMAC-SHA-
               384, and HMAC-SHA-512 with IPsec", RFC 4868,
@@ -1225,15 +1493,6 @@ Appendix C.  Harvesting Entropy
    as Curve25519 should be truly random, but what constitutes "truly
    random" is regarded as much philosophy as computer science.  However,
    a good working definition of "truly random" is one where the amount
-
-
-
-
-Comley                   Expires August 21, 2018               [Page 22]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    of entropy in a number is equal to its length; e.g., a 256-bit number
    that contains 256 bits of entropy.
 
@@ -1247,6 +1506,14 @@ Internet-Draft                    SQRL                     February 2018
    possible from as many uncorrelated sources as possible in the time
    available, and run the data stream through SHA-256 or SHA-512,
    depending on how much randomness is needed.  The Secure Hashing
+
+
+
+Comley                   Expires August 21, 2018               [Page 27]
+
+Internet-Draft                    SQRL                     February 2018
+
+
    Algorithm should change half the bits of the output when just a
    single bit of the input is changed, so the entropy should be
    preserved up to the length of the resulting hash.  The technique,
@@ -1282,14 +1549,6 @@ C.1.2.  Hardware
    care must be taken to make sure that they exist on a particular
    implementation, and that the hardware hasn't failed in some way.
 
-
-
-
-Comley                   Expires August 21, 2018               [Page 23]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    The system clock has traditionally been used as a source of
    randomness, although it must be considered that users are more likely
    to generate the random numbers at some times of the day than others.
@@ -1300,6 +1559,16 @@ Internet-Draft                    SQRL                     February 2018
 
    Wireless networking devices can be polled for signal strength and
    other data.
+
+
+
+
+
+
+Comley                   Expires August 21, 2018               [Page 28]
+
+Internet-Draft                    SQRL                     February 2018
+
 
    Processor statistics can be a significant source, such as cache hits/
    misses and other low-level system counters, voltage, fan speed, and
@@ -1336,16 +1605,6 @@ C.1.3.  User
    Examining mouse movements or keyboard strokes can be a source of
    entropy, although how much is a matter of some debate.
 
-
-
-
-
-
-Comley                   Expires August 21, 2018               [Page 24]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    Accelerometer data on cell phones and other such devices can pick up
    minute movements of the user's hand, even if the user is trying to
    hold it steady.
@@ -1362,39 +1621,4 @@ Author's Address
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Comley                   Expires August 21, 2018               [Page 25]
+Comley                   Expires August 21, 2018               [Page 29]
