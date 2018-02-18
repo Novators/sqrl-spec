@@ -155,7 +155,7 @@ Internet-Draft                    SQRL                     February 2018
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  26
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .  26
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  27
-   Appendix A.  Recommendations and Best Practices . . . . . . . . .  28
+   Appendix A.  Recommendations and Best Practices . . . . . . . . .  27
      A.1.  For Clients . . . . . . . . . . . . . . . . . . . . . . .  28
      A.2.  For Servers . . . . . . . . . . . . . . . . . . . . . . .  28
      A.3.  For Users . . . . . . . . . . . . . . . . . . . . . . . .  28
@@ -175,7 +175,7 @@ Internet-Draft                    SQRL                     February 2018
        B.1.1.  Operating System  . . . . . . . . . . . . . . . . . .  30
        B.1.2.  Hardware  . . . . . . . . . . . . . . . . . . . . . .  30
        B.1.3.  User  . . . . . . . . . . . . . . . . . . . . . . . .  31
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  32
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  31
 
 1.  Introduction
 
@@ -1492,16 +1492,16 @@ Internet-Draft                    SQRL                     February 2018
               Shamir, A., "How to share a secret",
               DOI 10.1145/359168.359176, November 1979.
 
+   [Klyubin]  Klyubin, A., "Some SecureRandom Thoughts", August 2013,
+              <https://android-developers.googleblog.com/2013/08/some-
+              securerandom-thoughts.html>.
+
    [RFC4868]  Kelly, S. and S. Frankel, "Using HMAC-SHA-256, HMAC-SHA-
               384, and HMAC-SHA-512 with IPsec", RFC 4868,
               DOI 10.17487/RFC4868, May 2007, <https://www.rfc-
               editor.org/info/rfc4868>.
 
-9.3.  URIs
-
-   [1] https://android-developers.googleblog.com/2013/08/some-
-       securerandom-thoughts.html
-
+Appendix A.  Recommendations and Best Practices
 
 
 
@@ -1513,8 +1513,6 @@ Comley & Killian         Expires August 22, 2018               [Page 27]
 
 Internet-Draft                    SQRL                     February 2018
 
-
-Appendix A.  Recommendations and Best Practices
 
 A.1.  For Clients
 
@@ -1562,6 +1560,8 @@ A.3.2.  Identity Backup
 
    Backups, on the other hand, are intended for longer-term storage.
    The encryption on them therefore needs to be more secure than perhaps
+   will be the case with the user's Master Password, which may be
+   forgotten in the interim anyway.  Therefore, when making a backup of
 
 
 
@@ -1570,8 +1570,6 @@ Comley & Killian         Expires August 22, 2018               [Page 28]
 Internet-Draft                    SQRL                     February 2018
 
 
-   will be the case with the user's Master Password, which may be
-   forgotten in the interim anyway.  Therefore, when making a backup of
    an identity, it should be made without the Master Password,
    containing only a copy of the encrypted IUK from which the identity
    can be regenerated.  The user would therefore need the Rescue Code to
@@ -1617,7 +1615,9 @@ Appendix B.  Harvesting Entropy
    of entropy in a number is equal to its length; e.g., a 256-bit number
    that contains 256 bits of entropy.
 
-
+   Unfortunately, determining the amount of entropy in an information
+   stream is tricky at best.  But entropy is never reduced as more
+   information is added; even weak sources of entropy, when added
 
 
 
@@ -1626,9 +1626,6 @@ Comley & Killian         Expires August 22, 2018               [Page 29]
 Internet-Draft                    SQRL                     February 2018
 
 
-   Unfortunately, determining the amount of entropy in an information
-   stream is tricky at best.  But entropy is never reduced as more
-   information is added; even weak sources of entropy, when added
    together, can produce sufficient entropy.  For that reason, none of
    the data collected during entropy harvesting should be discarded.
 
@@ -1658,8 +1655,7 @@ B.1.1.  Operating System
    a false sense of security.  For example, in 2013 a flaw in Android's
    SecureRandom function made wallets generated on those devices
    vulnerable to remote hacking and the theft of funds, even without
-   access to the device.  See Klyubin, Alex, "Some SecureRandom
-   Thoughts," Android Developers Blog, 14 August 2013. [1]
+   access to the device.  See [Klyubin]
 
    Developers should also be advised that many of these use some of the
    same techniques described below, meaning that utilizing the same
@@ -1673,7 +1669,11 @@ B.1.2.  Hardware
 
    The system clock has traditionally been used as a source of
    randomness, although it must be considered that users are more likely
+   to generate the random numbers at some times of the day than others.
+   Subseconds provide the greatest entropy here.
 
+   Some systems come with embedded hardware that produce noise
+   specifically for the purpose of seeding PRFs.
 
 
 
@@ -1681,12 +1681,6 @@ Comley & Killian         Expires August 22, 2018               [Page 30]
 
 Internet-Draft                    SQRL                     February 2018
 
-
-   to generate the random numbers at some times of the day than others.
-   Subseconds provide the greatest entropy here.
-
-   Some systems come with embedded hardware that produce noise
-   specifically for the purpose of seeding PRFs.
 
    Wireless networking devices can be polled for signal strength and
    other data.
@@ -1730,6 +1724,12 @@ B.1.3.  User
    minute movements of the user's hand, even if the user is trying to
    hold it steady.
 
+Authors' Addresses
+
+   Adam Comley (editor)
+
+   Email: adam@novators.net
+
 
 
 
@@ -1738,16 +1738,16 @@ Comley & Killian         Expires August 22, 2018               [Page 31]
 Internet-Draft                    SQRL                     February 2018
 
 
-Authors' Addresses
-
-   Adam Comley (editor)
-
-   Email: adam@novators.net
-
-
    Shane Killian (editor)
 
    Email: shane@shanekillian.org
+
+
+
+
+
+
+
 
 
 
