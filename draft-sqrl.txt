@@ -3,9 +3,9 @@
 
 
 Internet Engineering Task Force                           A. Comley, Ed.
-Internet-Draft                                         February 18, 2018
-Intended status: Informational
-Expires: August 22, 2018
+Internet-Draft
+Intended status: Informational                           S. Killian, Ed.
+Expires: August 22, 2018                               February 18, 2018
 
 
    Secure Quick Reliable Login (SQRL), an Authentication and Identity
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Comley                   Expires August 22, 2018                [Page 1]
+Comley & Killian         Expires August 22, 2018                [Page 1]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Comley                   Expires August 22, 2018                [Page 2]
+Comley & Killian         Expires August 22, 2018                [Page 2]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -165,7 +165,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018                [Page 3]
+Comley & Killian         Expires August 22, 2018                [Page 3]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -175,7 +175,7 @@ Internet-Draft                    SQRL                     February 2018
        B.1.1.  Operating System  . . . . . . . . . . . . . . . . . .  30
        B.1.2.  Hardware  . . . . . . . . . . . . . . . . . . . . . .  30
        B.1.3.  User  . . . . . . . . . . . . . . . . . . . . . . . .  31
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  32
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  32
 
 1.  Introduction
 
@@ -221,7 +221,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018                [Page 4]
+Comley & Killian         Expires August 22, 2018                [Page 4]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -277,7 +277,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018                [Page 5]
+Comley & Killian         Expires August 22, 2018                [Page 5]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -333,7 +333,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018                [Page 6]
+Comley & Killian         Expires August 22, 2018                [Page 6]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -389,7 +389,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018                [Page 7]
+Comley & Killian         Expires August 22, 2018                [Page 7]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -445,7 +445,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018                [Page 8]
+Comley & Killian         Expires August 22, 2018                [Page 8]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -501,7 +501,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018                [Page 9]
+Comley & Killian         Expires August 22, 2018                [Page 9]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -557,7 +557,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018               [Page 10]
+Comley & Killian         Expires August 22, 2018               [Page 10]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -613,7 +613,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018               [Page 11]
+Comley & Killian         Expires August 22, 2018               [Page 11]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -669,7 +669,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018               [Page 12]
+Comley & Killian         Expires August 22, 2018               [Page 12]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -725,7 +725,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018               [Page 13]
+Comley & Killian         Expires August 22, 2018               [Page 13]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -781,7 +781,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018               [Page 14]
+Comley & Killian         Expires August 22, 2018               [Page 14]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -837,7 +837,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018               [Page 15]
+Comley & Killian         Expires August 22, 2018               [Page 15]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -893,7 +893,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018               [Page 16]
+Comley & Killian         Expires August 22, 2018               [Page 16]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -949,7 +949,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018               [Page 17]
+Comley & Killian         Expires August 22, 2018               [Page 17]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1005,7 +1005,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018               [Page 18]
+Comley & Killian         Expires August 22, 2018               [Page 18]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1061,7 +1061,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018               [Page 19]
+Comley & Killian         Expires August 22, 2018               [Page 19]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1117,7 +1117,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018               [Page 20]
+Comley & Killian         Expires August 22, 2018               [Page 20]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1173,7 +1173,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018               [Page 21]
+Comley & Killian         Expires August 22, 2018               [Page 21]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1229,7 +1229,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018               [Page 22]
+Comley & Killian         Expires August 22, 2018               [Page 22]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1285,7 +1285,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018               [Page 23]
+Comley & Killian         Expires August 22, 2018               [Page 23]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1341,7 +1341,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018               [Page 24]
+Comley & Killian         Expires August 22, 2018               [Page 24]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1397,7 +1397,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018               [Page 25]
+Comley & Killian         Expires August 22, 2018               [Page 25]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1453,7 +1453,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018               [Page 26]
+Comley & Killian         Expires August 22, 2018               [Page 26]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1509,7 +1509,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley                   Expires August 22, 2018               [Page 27]
+Comley & Killian         Expires August 22, 2018               [Page 27]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1565,7 +1565,7 @@ A.3.2.  Identity Backup
 
 
 
-Comley                   Expires August 22, 2018               [Page 28]
+Comley & Killian         Expires August 22, 2018               [Page 28]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1621,7 +1621,7 @@ Appendix B.  Harvesting Entropy
 
 
 
-Comley                   Expires August 22, 2018               [Page 29]
+Comley & Killian         Expires August 22, 2018               [Page 29]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1677,7 +1677,7 @@ B.1.2.  Hardware
 
 
 
-Comley                   Expires August 22, 2018               [Page 30]
+Comley & Killian         Expires August 22, 2018               [Page 30]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1733,18 +1733,21 @@ B.1.3.  User
 
 
 
-Comley                   Expires August 22, 2018               [Page 31]
+Comley & Killian         Expires August 22, 2018               [Page 31]
 
 Internet-Draft                    SQRL                     February 2018
 
 
-Author's Address
+Authors' Addresses
 
    Adam Comley (editor)
 
    Email: adam@novators.net
 
 
+   Shane Killian (editor)
+
+   Email: shane@shanekillian.org
 
 
 
@@ -1786,7 +1789,4 @@ Author's Address
 
 
 
-
-
-
-Comley                   Expires August 22, 2018               [Page 32]
+Comley & Killian         Expires August 22, 2018               [Page 32]
