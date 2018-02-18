@@ -429,12 +429,14 @@ VUK = ed25519_public_key( curve25519_key_agreement( ILK, RLK ));]]></artwork></f
   </t></section></section></section><section title="Importing / Exporting an Identity"><t>TODO</t><section title="Binary File"><t>TODO</t></section><section title="Printed QR Code"><t>TODO</t></section><section title="Printed Text"><t>TODO</t></section></section><section title="Changing the User's Password"><t>TODO</t></section><section title="Identity Recovery"><t>TODO</t></section><section title="Re-Keying and Identity"><t>TODO</t></section></section><section title="Client-Server Protocol"><t>TODO</t><section title="Initiation of SQRL Authentication"><t>TODO</t><section title="The SQRL Scheme"><t>TODO</t></section><section title="QR Codes (Out of Band)"><t>TODO</t></section></section><section anchor="section-realm" title="The SQRL Realm (Domain)"><t>TODO</t></section><section title="Client to Server Requests"><t>TODO</t><section title="Protocol Version"><t>TODO</t></section><section title="Commands"><t>TODO</t></section><section title="Options"><t>TODO</t></section><section title="The server Value"><t>TODO</t></section><section title="The client Value"><t>TODO</t></section><section title="Client Keys"><t>TODO</t></section><section title="Client Signatures"><t>TODO</t></section><section title="Composing the Request"><t>TODO</t></section></section><section title="Server to Client Replies"><t>TODO</t><section title="Required Values"><t>TODO</t></section><section title="Optional Values"><t>TODO</t></section><section title="Additional Values"><t>TODO</t></section><section title="Composing the Reply"><t>TODO</t></section></section></section><section title="Client-Server Interactions"><t>TODO</t><section anchor="same-device" title="Same Device Authentication"><t>TODO</t></section><section anchor="cross-device" title="Cross Device Authentication"><t>TODO</t></section><section title="Identity Association"><t>TODO</t></section><section title="Updating Identity Association"><t>TODO</t></section><section title="Disabling Site Login"><t>TODO</t></section><section title="Re-Enabling Site Login"><t>TODO</t></section></section><section anchor="IANA" title="IANA Considerations"><t>TODO</t></section>
   <section anchor="Security" title="Security Considerations">
     <t>As SQRL aims to protect a single identity that is ultimately used to authenticate a user everywhere, the security of this identity is paramount. Further, users must face many of the same security issues as with traditional methods of authentication.</t>
-    <t>It is important to consider the following attack goals:</t>
-    <t>1. Session hijacking</t>
-    <t>2. Site credential theft</t>
-    <t>3. Association of SQRL identity to site account</t>
-    <t>4. Master key theft</t>
-    <t>5. Breaking of pseudonymous nature of SQRL authentication (association of SQRL identities on various sites)</t>
+    <t>It is important to consider the following attack goals:
+    <list style="numbers">
+      <t>Session hijacking</t>
+      <t>Site credential theft</t>
+      <t>Association of SQRL identity to site account</t>
+      <t>Master key theft</t>
+      <t>Breaking of pseudonymous nature of SQRL authentication (association of SQRL identities on various sites)</t>
+    </list></t>
     <section title="Phishing">
       <t>One well-known attack mode is where the user is invited to click on a link appearing to go to a legitimate site, but is in reality directed to an attacker's server.</t>
       <t>One common method of this is a look-alike link. For example, a user believing he is going to example.com is in reality going to examp1e.com (the lowercase "l" is replaced with a numeral "1"). A historical example is "tvvitter.com" (the letter "v" twice instead of a "w").</t>
