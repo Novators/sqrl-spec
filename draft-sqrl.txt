@@ -1488,10 +1488,6 @@ Internet-Draft                    SQRL                     February 2018
 
 9.2.  Informative References
 
-   [doi:10.1145_359168.359176]
-              Shamir, A., "How to share a secret",
-              DOI 10.1145/359168.359176, November 1979.
-
    [Klyubin]  Klyubin, A., "Some SecureRandom Thoughts", August 2013,
               <https://android-developers.googleblog.com/2013/08/some-
               securerandom-thoughts.html>.
@@ -1501,7 +1497,11 @@ Internet-Draft                    SQRL                     February 2018
               DOI 10.17487/RFC4868, May 2007, <https://www.rfc-
               editor.org/info/rfc4868>.
 
+   [Shamir]   Shamir, A., "How to share a secret",
+              DOI 10.1145/359168.359176, November 1979.
+
 Appendix A.  Recommendations and Best Practices
+
 
 
 
@@ -1593,7 +1593,7 @@ A.3.3.  Disaster Recovery
    lives in a country with no recognition of attorney-client privilege),
    SQRL's "data entry" export and the associated Rescue Code could be
    distributed through the person's heirs via Shamir's Secret Sharing.
-   [doi:10.1145_359168.359176]
+   [Shamir]
 
 Appendix B.  Harvesting Entropy
 
