@@ -14,17 +14,24 @@ Expires: August 23, 2018                               February 19, 2018
 
 Abstract
 
-   Secure Quick Reliable Login (SQRL) is an authentication method and
-   identity management framework.  It enables a user to create and
-   manage a single, pseudonymous lifetime identity.  That identity will
-   allow the user to securely authenticate with any SQRL enabled server
-   without relying on a third party or disclosing personally
-   identifiable information.
+   Secure Quick Reliable Login (SQRL) is an application-level protocol
+   for user authentication and identity management.  It enables a user
+   to create and manage a single pseudonymous lifetime identity.  That
+   identity will allow the user to securely authenticate with any SQRL
+   enabled server without relying on a third party or disclosing
+   personally identifiable information.
 
-   SQRL's identity management framework gives the user complete control
-   over their online identity, including provisions for recovering from
-   the loss of their identity file or password and recovering from
-   potential security breaches.
+   It provides:
+
+   o  Unique pseudonymous identifiers for each site
+
+   o  Separation of identity management from account management
+
+   o  Strong anti-phishing protection
+
+   o  No shared secrets that can be exploited by bad actors
+
+   o  Out-of-band authentication for logging in on untrusted devices
 
 Status of This Memo
 
@@ -43,13 +50,6 @@ Status of This Memo
 
    This Internet-Draft will expire on August 23, 2018.
 
-Copyright Notice
-
-   Copyright (c) 2018 IETF Trust and the persons identified as the
-   document authors.  All rights reserved.
-
-   This document is subject to BCP 78 and the IETF Trust's Legal
-   Provisions Relating to IETF Documents
 
 
 
@@ -58,6 +58,13 @@ Comley & Killian         Expires August 23, 2018                [Page 1]
 Internet-Draft                    SQRL                     February 2018
 
 
+Copyright Notice
+
+   Copyright (c) 2018 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
    (http://trustee.ietf.org/license-info) in effect on the date of
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
@@ -69,43 +76,36 @@ Internet-Draft                    SQRL                     February 2018
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   4
-     1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   5
-     1.2.  Definitions . . . . . . . . . . . . . . . . . . . . . . .   5
-   2.  Algorithms  . . . . . . . . . . . . . . . . . . . . . . . . .   5
-     2.1.  Standard Algorithms . . . . . . . . . . . . . . . . . . .   5
+     1.1.  Purpose . . . . . . . . . . . . . . . . . . . . . . . . .   4
+     1.2.  Features  . . . . . . . . . . . . . . . . . . . . . . . .   4
+     1.3.  Requirements Language . . . . . . . . . . . . . . . . . .   6
+     1.4.  Definitions . . . . . . . . . . . . . . . . . . . . . . .   6
+   2.  Algorithms  . . . . . . . . . . . . . . . . . . . . . . . . .   6
+     2.1.  Standard Algorithms . . . . . . . . . . . . . . . . . . .   6
      2.2.  base56check . . . . . . . . . . . . . . . . . . . . . . .   6
-       2.2.1.  Encoding  . . . . . . . . . . . . . . . . . . . . . .   6
-       2.2.2.  Validation  . . . . . . . . . . . . . . . . . . . . .   7
+       2.2.1.  Encoding  . . . . . . . . . . . . . . . . . . . . . .   7
+       2.2.2.  Validation  . . . . . . . . . . . . . . . . . . . . .   8
        2.2.3.  Decoding  . . . . . . . . . . . . . . . . . . . . . .   8
-     2.3.  EnHash  . . . . . . . . . . . . . . . . . . . . . . . . .   8
+     2.3.  EnHash  . . . . . . . . . . . . . . . . . . . . . . . . .   9
      2.4.  EnScrypt  . . . . . . . . . . . . . . . . . . . . . . . .   9
    3.  Cryptographic Keys, Secrets, and Passwords  . . . . . . . . .  10
-     3.1.  Class A Secrets . . . . . . . . . . . . . . . . . . . . .  10
-       3.1.1.  Identity Unlock Key (IUK) . . . . . . . . . . . . . .  10
-       3.1.2.  Unlock Request Signing Key (URSK) . . . . . . . . . .  10
+     3.1.  Class A Secrets . . . . . . . . . . . . . . . . . . . . .  11
+       3.1.1.  Identity Unlock Key (IUK) . . . . . . . . . . . . . .  11
+       3.1.2.  Unlock Request Signing Key (URSK) . . . . . . . . . .  11
        3.1.3.  Rescue Code (RC)  . . . . . . . . . . . . . . . . . .  11
-       3.1.4.  Password Derived Keys . . . . . . . . . . . . . . . .  11
-     3.2.  Class B Secrets . . . . . . . . . . . . . . . . . . . . .  11
-       3.2.1.  Previous Identity Unlock Key (PIUK) . . . . . . . . .  12
-       3.2.2.  Identity Master Key (IMK) . . . . . . . . . . . . . .  12
-       3.2.3.  Identity Lock Key (ILK) . . . . . . . . . . . . . . .  12
-       3.2.4.  Site Specific Secret Key (SSSK) . . . . . . . . . . .  12
-       3.2.5.  Random Lock Key (RLK) . . . . . . . . . . . . . . . .  12
+       3.1.4.  Password Derived Keys . . . . . . . . . . . . . . . .  12
+     3.2.  Class B Secrets . . . . . . . . . . . . . . . . . . . . .  12
+       3.2.1.  Previous Identity Unlock Key (PIUK) . . . . . . . . .  13
+       3.2.2.  Identity Master Key (IMK) . . . . . . . . . . . . . .  13
+       3.2.3.  Identity Lock Key (ILK) . . . . . . . . . . . . . . .  13
+       3.2.4.  Site Specific Secret Key (SSSK) . . . . . . . . . . .  13
+       3.2.5.  Random Lock Key (RLK) . . . . . . . . . . . . . . . .  13
      3.3.  Class C (Public) Keys . . . . . . . . . . . . . . . . . .  13
        3.3.1.  Site Specific Public Key (SSPK) . . . . . . . . . . .  13
-       3.3.2.  Server Unlock Key (SUK) . . . . . . . . . . . . . . .  13
-       3.3.3.  Verify Unlock Key (VUK) . . . . . . . . . . . . . . .  13
-   4.  Identity Management . . . . . . . . . . . . . . . . . . . . .  13
-     4.1.  Identity Lifecycle  . . . . . . . . . . . . . . . . . . .  13
-     4.2.  User Options  . . . . . . . . . . . . . . . . . . . . . .  13
-     4.3.  Identity Storage  . . . . . . . . . . . . . . . . . . . .  14
-       4.3.1.  Storage Blocks  . . . . . . . . . . . . . . . . . . .  15
-       4.3.2.  Predefined Block Types  . . . . . . . . . . . . . . .  15
-       4.3.3.  Encoding  . . . . . . . . . . . . . . . . . . . . . .  18
-     4.4.  Identity Operations . . . . . . . . . . . . . . . . . . .  18
-       4.4.1.  Identity Creation . . . . . . . . . . . . . . . . . .  19
-       4.4.2.  Importing / Exporting an Identity . . . . . . . . . .  20
-       4.4.3.  Changing the User's Password  . . . . . . . . . . . .  20
+       3.3.2.  Server Unlock Key (SUK) . . . . . . . . . . . . . . .  14
+       3.3.3.  Verify Unlock Key (VUK) . . . . . . . . . . . . . . .  14
+   4.  Identity Management . . . . . . . . . . . . . . . . . . . . .  14
+     4.1.  Identity Lifecycle  . . . . . . . . . . . . . . . . . . .  14
 
 
 
@@ -114,54 +114,54 @@ Comley & Killian         Expires August 23, 2018                [Page 2]
 Internet-Draft                    SQRL                     February 2018
 
 
-       4.4.4.  Identity Recovery . . . . . . . . . . . . . . . . . .  20
-       4.4.5.  Rekeying an Identity  . . . . . . . . . . . . . . . .  21
-   5.  Client-Server Protocol  . . . . . . . . . . . . . . . . . . .  22
-     5.1.  Initiation of SQRL Authentication . . . . . . . . . . . .  22
-       5.1.1.  The SQRL Scheme . . . . . . . . . . . . . . . . . . .  22
-       5.1.2.  QR Codes (Out of Band)  . . . . . . . . . . . . . . .  22
-     5.2.  The SQRL Realm (Domain) . . . . . . . . . . . . . . . . .  22
-     5.3.  Client to Server Requests . . . . . . . . . . . . . . . .  22
-       5.3.1.  Protocol Version  . . . . . . . . . . . . . . . . . .  22
-       5.3.2.  Commands  . . . . . . . . . . . . . . . . . . . . . .  22
-       5.3.3.  Options . . . . . . . . . . . . . . . . . . . . . . .  22
-       5.3.4.  The server Value  . . . . . . . . . . . . . . . . . .  22
-       5.3.5.  The client Value  . . . . . . . . . . . . . . . . . .  22
-       5.3.6.  Client Keys . . . . . . . . . . . . . . . . . . . . .  23
-       5.3.7.  Client Signatures . . . . . . . . . . . . . . . . . .  23
-       5.3.8.  Composing the Request . . . . . . . . . . . . . . . .  23
-     5.4.  Server to Client Replies  . . . . . . . . . . . . . . . .  23
-       5.4.1.  Required Values . . . . . . . . . . . . . . . . . . .  23
-       5.4.2.  Optional Values . . . . . . . . . . . . . . . . . . .  23
-       5.4.3.  Additional Values . . . . . . . . . . . . . . . . . .  23
-       5.4.4.  Composing the Reply . . . . . . . . . . . . . . . . .  23
-   6.  Client-Server Interactions  . . . . . . . . . . . . . . . . .  23
-     6.1.  Same Device Authentication  . . . . . . . . . . . . . . .  23
-     6.2.  Cross Device Authentication . . . . . . . . . . . . . . .  23
-     6.3.  Identity Association  . . . . . . . . . . . . . . . . . .  24
-     6.4.  Updating Identity Association . . . . . . . . . . . . . .  24
-     6.5.  Disabling Site Login  . . . . . . . . . . . . . . . . . .  24
-     6.6.  Re-Enabling Site Login  . . . . . . . . . . . . . . . . .  24
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  24
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  24
-     8.1.  Phishing  . . . . . . . . . . . . . . . . . . . . . . . .  24
-     8.2.  Shoulder-Surfing  . . . . . . . . . . . . . . . . . . . .  26
-     8.3.  Evil Router . . . . . . . . . . . . . . . . . . . . . . .  26
-     8.4.  Server Compromise . . . . . . . . . . . . . . . . . . . .  27
-     8.5.  CPU Flooding  . . . . . . . . . . . . . . . . . . . . . .  27
-     8.6.  Evil Client . . . . . . . . . . . . . . . . . . . . . . .  28
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  29
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  29
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  30
-   Appendix A.  Recommendations and Best Practices . . . . . . . . .  30
-     A.1.  For Clients . . . . . . . . . . . . . . . . . . . . . . .  30
-     A.2.  For Servers . . . . . . . . . . . . . . . . . . . . . . .  30
-     A.3.  For Users . . . . . . . . . . . . . . . . . . . . . . . .  30
-       A.3.1.  Master Password . . . . . . . . . . . . . . . . . . .  30
-       A.3.2.  Identity Backup . . . . . . . . . . . . . . . . . . .  31
-       A.3.3.  Disaster Recovery . . . . . . . . . . . . . . . . . .  31
-   Appendix B.  The Optional ShortPass Feature . . . . . . . . . . .  32
-   Appendix C.  Harvesting Entropy . . . . . . . . . . . . . . . . .  32
+     4.2.  User Options  . . . . . . . . . . . . . . . . . . . . . .  14
+     4.3.  Identity Storage  . . . . . . . . . . . . . . . . . . . .  15
+       4.3.1.  Storage Blocks  . . . . . . . . . . . . . . . . . . .  16
+       4.3.2.  Predefined Block Types  . . . . . . . . . . . . . . .  16
+       4.3.3.  Encoding  . . . . . . . . . . . . . . . . . . . . . .  19
+     4.4.  Identity Operations . . . . . . . . . . . . . . . . . . .  19
+       4.4.1.  Identity Creation . . . . . . . . . . . . . . . . . .  20
+       4.4.2.  Importing / Exporting an Identity . . . . . . . . . .  21
+       4.4.3.  Changing the User's Password  . . . . . . . . . . . .  21
+       4.4.4.  Identity Recovery . . . . . . . . . . . . . . . . . .  21
+       4.4.5.  Rekeying an Identity  . . . . . . . . . . . . . . . .  22
+   5.  Client-Server Protocol  . . . . . . . . . . . . . . . . . . .  23
+     5.1.  Initiation of SQRL Authentication . . . . . . . . . . . .  23
+       5.1.1.  The SQRL Scheme . . . . . . . . . . . . . . . . . . .  23
+       5.1.2.  QR Codes (Out of Band)  . . . . . . . . . . . . . . .  23
+     5.2.  The SQRL Realm (Domain) . . . . . . . . . . . . . . . . .  23
+     5.3.  Client to Server Requests . . . . . . . . . . . . . . . .  23
+       5.3.1.  Protocol Version  . . . . . . . . . . . . . . . . . .  23
+       5.3.2.  Commands  . . . . . . . . . . . . . . . . . . . . . .  23
+       5.3.3.  Options . . . . . . . . . . . . . . . . . . . . . . .  23
+       5.3.4.  The server Value  . . . . . . . . . . . . . . . . . .  23
+       5.3.5.  The client Value  . . . . . . . . . . . . . . . . . .  23
+       5.3.6.  Client Keys . . . . . . . . . . . . . . . . . . . . .  24
+       5.3.7.  Client Signatures . . . . . . . . . . . . . . . . . .  24
+       5.3.8.  Composing the Request . . . . . . . . . . . . . . . .  24
+     5.4.  Server to Client Replies  . . . . . . . . . . . . . . . .  24
+       5.4.1.  Required Values . . . . . . . . . . . . . . . . . . .  24
+       5.4.2.  Optional Values . . . . . . . . . . . . . . . . . . .  24
+       5.4.3.  Additional Values . . . . . . . . . . . . . . . . . .  24
+       5.4.4.  Composing the Reply . . . . . . . . . . . . . . . . .  24
+   6.  Client-Server Interactions  . . . . . . . . . . . . . . . . .  24
+     6.1.  Same Device Authentication  . . . . . . . . . . . . . . .  24
+     6.2.  Cross Device Authentication . . . . . . . . . . . . . . .  24
+     6.3.  Identity Association  . . . . . . . . . . . . . . . . . .  25
+     6.4.  Updating Identity Association . . . . . . . . . . . . . .  25
+     6.5.  Disabling Site Login  . . . . . . . . . . . . . . . . . .  25
+     6.6.  Re-Enabling Site Login  . . . . . . . . . . . . . . . . .  25
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  25
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  25
+     8.1.  Phishing  . . . . . . . . . . . . . . . . . . . . . . . .  25
+     8.2.  Shoulder-Surfing  . . . . . . . . . . . . . . . . . . . .  27
+     8.3.  Evil Router . . . . . . . . . . . . . . . . . . . . . . .  27
+     8.4.  Server Compromise . . . . . . . . . . . . . . . . . . . .  28
+     8.5.  CPU Flooding  . . . . . . . . . . . . . . . . . . . . . .  28
+     8.6.  Evil Client . . . . . . . . . . . . . . . . . . . . . . .  29
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  30
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  30
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  31
 
 
 
@@ -170,54 +170,54 @@ Comley & Killian         Expires August 23, 2018                [Page 3]
 Internet-Draft                    SQRL                     February 2018
 
 
-     C.1.  Entropy Sources . . . . . . . . . . . . . . . . . . . . .  32
-       C.1.1.  Operating System  . . . . . . . . . . . . . . . . . .  33
-       C.1.2.  Hardware  . . . . . . . . . . . . . . . . . . . . . .  33
-       C.1.3.  User  . . . . . . . . . . . . . . . . . . . . . . . .  34
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  34
+   Appendix A.  Recommendations and Best Practices . . . . . . . . .  31
+     A.1.  For Clients . . . . . . . . . . . . . . . . . . . . . . .  31
+     A.2.  For Servers . . . . . . . . . . . . . . . . . . . . . . .  31
+     A.3.  For Users . . . . . . . . . . . . . . . . . . . . . . . .  31
+       A.3.1.  Master Password . . . . . . . . . . . . . . . . . . .  31
+       A.3.2.  Identity Backup . . . . . . . . . . . . . . . . . . .  32
+       A.3.3.  Disaster Recovery . . . . . . . . . . . . . . . . . .  32
+   Appendix B.  The Optional ShortPass Feature . . . . . . . . . . .  33
+   Appendix C.  Harvesting Entropy . . . . . . . . . . . . . . . . .  33
+     C.1.  Entropy Sources . . . . . . . . . . . . . . . . . . . . .  33
+       C.1.1.  Operating System  . . . . . . . . . . . . . . . . . .  34
+       C.1.2.  Hardware  . . . . . . . . . . . . . . . . . . . . . .  34
+       C.1.3.  User  . . . . . . . . . . . . . . . . . . . . . . . .  35
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  35
 
 1.  Introduction
 
+1.1.  Purpose
+
    Secure Quick Reliable Login (SQRL) is an authentication method and
-   identity management framework with the following features:
+   identity management framework which gives the user complete control
+   over their online identity, including provisions for recovering from
+   the loss of their identity file or password and recovering from
+   potential security breaches.
+
+1.2.  Features
 
    Secure
       Through a series of cryptographic signatures, the user can prove
       their identity without disclosing any information that would allow
-      that identity to be compromised or their account hacked.
+      that identity to be compromised or their account hacked.  SQRL
+      also provides strong anti-phishing features.
+
+   Identity Management
+      SQRL separates and delineates the concepts of account and
+      identity.  The user is given full control over their identity and
+      its full life cycle, while leaving servers with complete control
+      over account issues.  SQRL provides a full identity lifecycle
+      management framework which allows the user to maintain complete
+      control of their identity.  Even in the event of a compromise, the
+      user retains the ability to retake control of their identity and
+      lock the attacker out.  Automated rekeying means that the user can
+      maintain a single SQRL identity indefinitely, even after a
+      compromise.
 
    Global Password
       The user only has to remember a single password, which is used to
       locally decrypt their identity during SQRL authentication.  Since
-      the user no longer has to remember a unique password for each
-      site, this one global password can be very strong.  This strong
-      password combined with strong encryption makes it infeasible for
-      even a state level actor to compromise the user's identity.  (SQRL
-      apps can alternately use other methods of protection such as
-      biometrics when available on the host device.)
-
-   Anonymous
-      SQRL authentication is pseudonymous, in that it only provides a
-      secure, site-specific token to the server.  This token cannot be
-      directly linked to a user's account at any other server, and
-      provides no personally identifiable information.
-
-   No Third Party
-      The user's identity cannot be compromised by a security breach at
-      a third party authentication provider, protecting it from both
-      hackers and overreaching authorities.
-
-   User Controlled, Lifetime Identity
-      SQRL provides an identity management framework which allows the
-      user to maintain complete control of their identity.  Even in the
-      event that their password is compromised, the user retains the
-      ability to retake control of their identity and lock the attacker
-      out.  Automated rekeying means that the user can maintain a single
-      SQRL identity indefinately, even after a compromise
-
-   Offline Identity Backup
-      Since SQRL identities are intended to last a lifetime, and there
-      is no third party that can help the user recover their identity if
 
 
 
@@ -226,6 +226,41 @@ Comley & Killian         Expires August 23, 2018                [Page 4]
 Internet-Draft                    SQRL                     February 2018
 
 
+      the user no longer has to remember a unique password for each
+      site, this one global password can be very strong.  This strong
+      password combined with strong encryption makes it infeasible for
+      even a state level actor to compromise the user's identity.  (SQRL
+      apps can alternately use other methods of protection such as
+      biometrics when available on the host device.)
+
+   Pseudononymous
+      SQRL authentication is pseudonymous, in that it only provides a
+      secure, site-specific token to the server.  This token cannot be
+      directly linked to a user's account at any other server, and
+      provides no personally identifiable information.
+
+   No Shared Secrets
+      Passwords, time-based authenticators, and other authentication
+      methods work through shared secrets.  These secrets can
+      conceivably be stolen by hackers or rogue employees and used to
+      impersonate the user.  SQRL does not operate through shared
+      secrets, and even if the server's account database is stolen the
+      attacker is not given any means to impersonate the user.
+
+   No Third Party
+      The user's identity cannot be compromised by a security breach at
+      a third party authentication provider, protecting it from both
+      hackers and overreaching authorities.
+
+   No Per-Site Settings
+      Unlike password managers, SQRL does not require any information
+      about specific websites to be saved, preventing potential privacy
+      issues stemming from information leaks as well as keeping its
+      database size small.
+
+   Offline Identity Backup
+      Since SQRL identities are intended to last a lifetime, and there
+      is no third party that can help the user recover their identity if
       they forget their password, SQRL includes an offline backup
       mechanism.  The user can print out or write down their encrypted
       identity, along with a secure Rescue Code, that will allow the
@@ -237,13 +272,23 @@ Internet-Draft                    SQRL                     February 2018
       mobile device containing their SQRL identity, without the need to
       expose that identity to the public system.
 
-1.1.  Requirements Language
+
+
+
+
+
+Comley & Killian         Expires August 23, 2018                [Page 5]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+1.3.  Requirements Language
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
    document are to be interpreted as described in RFC 2119 [RFC2119].
 
-1.2.  Definitions
+1.4.  Definitions
 
    TODO
 
@@ -274,14 +319,6 @@ Internet-Draft                    SQRL                     February 2018
 
    o  SHA-256 [FIPS.180-4.2015]
 
-
-
-
-Comley & Killian         Expires August 23, 2018                [Page 5]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    o  urlencode: Percent-Encoding as defined in Section 2.1 of
       [RFC3986].
 
@@ -291,6 +328,15 @@ Internet-Draft                    SQRL                     February 2018
    textual form.  It:
 
    o  Accepts an arbitrarily sized payload.
+
+
+
+
+
+Comley & Killian         Expires August 23, 2018                [Page 6]
+
+Internet-Draft                    SQRL                     February 2018
+
 
    o  Uses a set of 56 alphanumeric symbols chosen to be easily
       distinguishable in any font.
@@ -329,15 +375,6 @@ Internet-Draft                    SQRL                     February 2018
    Now, with our converted BASE string, we can calculate the check
    digits and produce the final output.
 
-
-
-
-
-Comley & Killian         Expires August 23, 2018                [Page 6]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    6.  Split BASE into 19 character CHUNKS (the final chunk may be
        smaller).
 
@@ -349,6 +386,13 @@ Internet-Draft                    SQRL                     February 2018
 
        C.  Treating HASH as a single little-endian number, divide HASH
            by 56 to obtain REMAINDER.
+
+
+
+Comley & Killian         Expires August 23, 2018                [Page 7]
+
+Internet-Draft                    SQRL                     February 2018
+
 
        D.  Replace the last character in CHUNK with the character in
            ALPHABET at position REMAINDER.
@@ -386,14 +430,6 @@ Internet-Draft                    SQRL                     February 2018
        E.  Compare CHECK with the character from ALPHABET at position
            REMAINDER.
 
-
-
-
-Comley & Killian         Expires August 23, 2018                [Page 7]
-
-Internet-Draft                    SQRL                     February 2018
-
-
        F.  If comparison passes (is equal), continue.  Otherwise, there
            is an error in this CHUNK.
 
@@ -403,6 +439,16 @@ Internet-Draft                    SQRL                     February 2018
 
    1.  Start with an empty BASE string and an zero OUTPUT buffer, to be
        treated as a single, large, little-endian number.
+
+
+
+
+
+
+Comley & Killian         Expires August 23, 2018                [Page 8]
+
+Internet-Draft                    SQRL                     February 2018
+
 
    2.  Perform the base56check validation as described above, appending
        all but the last character of each validated CHUNK to the BASE
@@ -439,23 +485,26 @@ Internet-Draft                    SQRL                     February 2018
      return output;
    }
 
-
-
-
-
-
-
-Comley & Killian         Expires August 23, 2018                [Page 8]
-
-Internet-Draft                    SQRL                     February 2018
-
-
 2.4.  EnScrypt
 
    EnScrypt is an iterative construct based on the scrypt password based
    key derivation function.  It hardens scrypt by allowing for extended
    processing time.  The following parameters are used for the scrypt
    function:
+
+
+
+
+
+
+
+
+
+
+Comley & Killian         Expires August 23, 2018                [Page 9]
+
+Internet-Draft                    SQRL                     February 2018
+
 
                      +-------+------------+-----+---+
                      | dkLen | N          | r   | p |
@@ -497,21 +546,21 @@ Internet-Draft                    SQRL                     February 2018
 
    Timer Mode is used when creating an encryption key from a password.
    Once the key is derived and the identity encrypted, the resulting
-
-
-
-
-Comley & Killian         Expires August 23, 2018                [Page 9]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    number of iterations is saved with the identity file.  Counter Mode
    is used to recreate this key and decrypt the identity.
 
 3.  Cryptographic Keys, Secrets, and Passwords
 
    SQRL uses a wide variety of secrets in various operations.
+
+
+
+
+
+Comley & Killian         Expires August 23, 2018               [Page 10]
+
+Internet-Draft                    SQRL                     February 2018
+
 
 3.1.  Class A Secrets
 
@@ -555,19 +604,19 @@ Internet-Draft                    SQRL                     February 2018
    Used by the client to update the identity association on a server,
    the URSK is derived from the SUK and IUK.
 
-
-
-Comley & Killian         Expires August 23, 2018               [Page 10]
-
-Internet-Draft                    SQRL                     February 2018
-
-
 3.1.3.  Rescue Code (RC)
 
    The Rescue Code is a Class A, computer generated, high entropy
    passcode consisting of 24 numeric digits.  The client SHOULD
    encourage the user to store the Rescue Code in an offline format
    (printed or written).
+
+
+
+Comley & Killian         Expires August 23, 2018               [Page 11]
+
+Internet-Draft                    SQRL                     February 2018
+
 
 3.1.4.  Password Derived Keys
 
@@ -610,19 +659,20 @@ Internet-Draft                    SQRL                     February 2018
       volatile memory in plaintext form, including being swapped to
       disk, by any means possible.
 
-
-
-
-Comley & Killian         Expires August 23, 2018               [Page 11]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    o  The plaintext secret MUST be securely wiped from RAM as soon as it
       is no longer needed.
 
    o  If the secret is to be stored, it MUST be stored in an encrypted
       form.
+
+
+
+
+
+Comley & Killian         Expires August 23, 2018               [Page 12]
+
+Internet-Draft                    SQRL                     February 2018
+
 
    o  The secret SHOULD NOT be transmitted over the network in any form,
       and MUST NOT be transmitted unencrypted.
@@ -662,18 +712,6 @@ Internet-Draft                    SQRL                     February 2018
    The RLK is generated randomly when the client associates with a new
    server.
 
-
-
-
-
-
-
-
-Comley & Killian         Expires August 23, 2018               [Page 12]
-
-Internet-Draft                    SQRL                     February 2018
-
-
 3.3.  Class C (Public) Keys
 
    Class C keys are not required to be kept secret.
@@ -684,6 +722,13 @@ Internet-Draft                    SQRL                     February 2018
 
    The Site Specific Public Key (SSPK) is the public counterpart to the
    SSSK.  It serves as the user's pseudonymous identity on the site.
+
+
+
+Comley & Killian         Expires August 23, 2018               [Page 13]
+
+Internet-Draft                    SQRL                     February 2018
+
 
 3.3.2.  Server Unlock Key (SUK)
 
@@ -722,14 +767,6 @@ Internet-Draft                    SQRL                     February 2018
       second.
 
    Idle Timeout:
-
-
-
-Comley & Killian         Expires August 23, 2018               [Page 13]
-
-Internet-Draft                    SQRL                     February 2018
-
-
       If the client implements ShortPass or holds the user's password or
       keys in memory in any form, and the 0x0080 option flag is set, it
       MUST securely erase that memory after this many minutes of system
@@ -737,6 +774,17 @@ Internet-Draft                    SQRL                     February 2018
 
    Option Flags:
       The following binary flags turn on or off various user options:
+
+
+
+
+
+
+
+Comley & Killian         Expires August 23, 2018               [Page 14]
+
+Internet-Draft                    SQRL                     February 2018
+
 
    +--------+----------------------------------------------------------+
    | Flag   | Description                                              |
@@ -779,13 +827,6 @@ Internet-Draft                    SQRL                     February 2018
    standard format.  The format described here is RECOMMENDED for both
    non-volatile and in-memory storage.
 
-
-
-Comley & Killian         Expires August 23, 2018               [Page 14]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    Because identities should be backed up offline (to printed paper),
    the storage format must be compact enough to reliably fit in a
    printed QR code, and short enough to not cause undue burden if the
@@ -793,6 +834,13 @@ Internet-Draft                    SQRL                     February 2018
 
    Values stored in standard SQRL storage format MUST follow these
    rules:
+
+
+
+Comley & Killian         Expires August 23, 2018               [Page 15]
+
+Internet-Draft                    SQRL                     February 2018
+
 
    o  All numeric values are unsigned.
 
@@ -837,7 +885,15 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 23, 2018               [Page 15]
+
+
+
+
+
+
+
+
+Comley & Killian         Expires August 23, 2018               [Page 16]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -893,7 +949,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 23, 2018               [Page 16]
+Comley & Killian         Expires August 23, 2018               [Page 17]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -949,7 +1005,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 23, 2018               [Page 17]
+Comley & Killian         Expires August 23, 2018               [Page 18]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1005,7 +1061,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 23, 2018               [Page 18]
+Comley & Killian         Expires August 23, 2018               [Page 19]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1061,7 +1117,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 23, 2018               [Page 19]
+Comley & Killian         Expires August 23, 2018               [Page 20]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1117,7 +1173,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 23, 2018               [Page 20]
+Comley & Killian         Expires August 23, 2018               [Page 21]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1173,7 +1229,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 23, 2018               [Page 21]
+Comley & Killian         Expires August 23, 2018               [Page 22]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1229,7 +1285,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 23, 2018               [Page 22]
+Comley & Killian         Expires August 23, 2018               [Page 23]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1285,7 +1341,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 23, 2018               [Page 23]
+Comley & Killian         Expires August 23, 2018               [Page 24]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1341,7 +1397,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 23, 2018               [Page 24]
+Comley & Killian         Expires August 23, 2018               [Page 25]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1397,7 +1453,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 23, 2018               [Page 25]
+Comley & Killian         Expires August 23, 2018               [Page 26]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1453,7 +1509,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 23, 2018               [Page 26]
+Comley & Killian         Expires August 23, 2018               [Page 27]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1509,7 +1565,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 23, 2018               [Page 27]
+Comley & Killian         Expires August 23, 2018               [Page 28]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1565,7 +1621,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 23, 2018               [Page 28]
+Comley & Killian         Expires August 23, 2018               [Page 29]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1621,7 +1677,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 23, 2018               [Page 29]
+Comley & Killian         Expires August 23, 2018               [Page 30]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1677,7 +1733,7 @@ A.3.1.  Master Password
 
 
 
-Comley & Killian         Expires August 23, 2018               [Page 30]
+Comley & Killian         Expires August 23, 2018               [Page 31]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1733,7 +1789,7 @@ A.3.3.  Disaster Recovery
 
 
 
-Comley & Killian         Expires August 23, 2018               [Page 31]
+Comley & Killian         Expires August 23, 2018               [Page 32]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1789,7 +1845,7 @@ C.1.  Entropy Sources
 
 
 
-Comley & Killian         Expires August 23, 2018               [Page 32]
+Comley & Killian         Expires August 23, 2018               [Page 33]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1845,7 +1901,7 @@ C.1.2.  Hardware
 
 
 
-Comley & Killian         Expires August 23, 2018               [Page 33]
+Comley & Killian         Expires August 23, 2018               [Page 34]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1901,4 +1957,4 @@ Authors' Addresses
 
 
 
-Comley & Killian         Expires August 23, 2018               [Page 34]
+Comley & Killian         Expires August 23, 2018               [Page 35]
