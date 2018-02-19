@@ -54,63 +54,67 @@
          which is used by the RFC Editor as a nod to the history of the IETF. --><keyword>sqrl</keyword><!-- Keywords will be incorporated into HTML output
          files in a meta tag but they have no effect on text or nroff
          output. If you submit your draft to the RFC Editor, the
-         keywords will be used for the search engine. --><abstract><t>
-        Secure Quick Reliable Login (SQRL) is an authentication method and 
-        identity management framework.  It enables a user to create and manage
-        a single, pseudonymous lifetime identity.  That identity will allow the user to 
-        securely authenticate with any SQRL enabled server without relying on 
-        a third party or disclosing personally identifiable information.
-      </t><t>
-        SQRL's identity management framework gives the user complete control 
-        over their online identity, including provisions for recovering from
-        the loss of their identity file or password and recovering from 
-        potential security breaches.
-      </t></abstract></front><middle><section title="Introduction"><t>
-        Secure Quick Reliable Login (SQRL) is an authentication method and 
-        identity management framework with the following features:
-        <list style="hanging" hangIndent="3"><t hangText="Secure"><vspace/>
-            Through a series of cryptographic signatures, the user can prove 
-            their identity without disclosing any information that would allow 
-            that identity to be compromised or their account hacked.
-          </t><t hangText="Global Password"><vspace/>
-            The user only has to remember a single password, which is used to 
-            locally decrypt their identity during SQRL authentication.  Since 
-            the user no longer has to remember a unique password for each site, 
-            this one global password can be very strong.  This strong password 
-            combined with strong encryption makes it infeasible for even a 
-            state level actor to compromise the user's identity. (SQRL apps can alternately use other methods of protection such as biometrics when available on the host device.)
-          </t><t hangText="Anonymous"><vspace/>
-            SQRL authentication is pseudonymous, in that it only provides a 
-            secure, site-specific token to the server.  This token cannot be 
-            directly linked to a user's account at any other server, and 
-            provides no personally identifiable information.
-          </t><t hangText="No Third Party"><vspace/>
-            The user's identity cannot be compromised by a security breach at 
-            a third party authentication provider, protecting it from both 
-            hackers and overreaching authorities.
-          </t><t hangText="User Controlled, Lifetime Identity"><vspace/>
-            SQRL provides an identity management framework which allows the 
-            user to maintain complete control of their identity.  Even in the 
-            event that their password is compromised, the user retains the 
-            ability to retake control of their identity and lock the attacker 
-            out.  Automated rekeying means that the user can maintain a single 
-            SQRL identity indefinately, even after a compromise
-          </t><t hangText="Offline Identity Backup"><vspace/>
-            Since SQRL identities are intended to last a lifetime, and there 
-            is no third party that can help the user recover their identity if 
-            they forget their password, SQRL includes an offline backup 
-            mechanism.  The user can print out or write down their encrypted 
-            identity, along with a secure Rescue Code, that will allow the user 
-            to recover from a forgotten password.
-          </t><t hangText="Out Of Band Authentication Option"><vspace/>
-            With SQRL, the user can safely authenticate a session on public or 
-            potentially compromised systems by scanning a QR code 
-            on a trusted mobile device containing their SQRL identity, without the need to expose that identity to the public system.
-          </t></list>
-      </t><section title="Requirements Language"><t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+         keywords will be used for the search engine. -->
+      <abstract>
+        <t>Secure Quick Reliable Login (SQRL) is an application-level protocol for user authentication and identity management.  It enables a user to create and manage a single pseudonymous lifetime identity.  That identity will allow the user to securely authenticate with any SQRL enabled server without relying on a third party or disclosing personally identifiable information.</t>
+        <t></t>
+        <t>It provides:<list style="symbols">
+          <t>Unique pseudonymous identifiers for each site</t>
+          <t>Separation of identity management from account management</t>
+          <t>Strong anti-phishing protection</t>
+          <t>No shared secrets that can be exploited by bad actors</t>
+          <t>Out-of-band authentication for logging in on untrusted devices</t>
+        </list></t>
+      </abstract>
+      </front><middle>
+      <section title="Introduction">
+        <section title="Purpose"><t>Secure Quick Reliable Login (SQRL) is an authentication method and identity management framework which gives the user complete control over their online identity, including provisions for recovering from the loss of their identity file or password and recovering from potential security breaches.</t></section>
+        <section title="Features">
+          <t><list style="hanging" hangIndent="3"><t hangText="Secure"><vspace/>
+              Through a series of cryptographic signatures, the user can prove 
+              their identity without disclosing any information that would allow 
+              that identity to be compromised or their account hacked. SQRL also provides strong anti-phishing features.
+            </t><t hangText="Identity Management"><vspace/>
+              SQRL separates and delineates the concepts of account and identity. The user is given full control over their identity and its full life cycle, while leaving servers with complete control over account issues. SQRL provides a full identity lifecycle management framework which allows the user to maintain complete control of their identity.  Even in the event of a compromise, the user retains the ability to retake control of their identity and lock the attacker out.  Automated rekeying means that the user can maintain a single SQRL identity indefinitely, even after a compromise.
+            </t><t hangText="Global Password"><vspace/>
+              The user only has to remember a single password, which is used to 
+              locally decrypt their identity during SQRL authentication.  Since 
+              the user no longer has to remember a unique password for each site, 
+              this one global password can be very strong.  This strong password 
+              combined with strong encryption makes it infeasible for even a 
+              state level actor to compromise the user's identity. (SQRL apps can alternately use other methods of protection such as biometrics when available on the host device.)
+            </t><t hangText="Pseudononymous"><vspace/>
+              SQRL authentication is pseudonymous, in that it only provides a 
+              secure, site-specific token to the server.  This token cannot be 
+              directly linked to a user's account at any other server, and 
+              provides no personally identifiable information.
+            </t><t hangText="No Shared Secrets"><vspace/>
+              Passwords, time-based authenticators, and other authentication methods work through shared secrets. These secrets can conceivably be stolen by hackers or rogue employees and used to impersonate the user. SQRL does not operate through shared secrets, and even if the server's account database is stolen the attacker is not given any means to impersonate the user.
+            </t><t hangText="No Third Party"><vspace/>
+              The user's identity cannot be compromised by a security breach at 
+              a third party authentication provider, protecting it from both 
+              hackers and overreaching authorities.
+            </t><t hangText="No Per-Site Settings"><vspace/>
+              Unlike password managers, SQRL does not require any information about specific websites to be saved, preventing potential privacy issues stemming from information leaks as well as keeping its database size small.
+            </t><t hangText="Offline Identity Backup"><vspace/>
+              Since SQRL identities are intended to last a lifetime, and there 
+              is no third party that can help the user recover their identity if 
+              they forget their password, SQRL includes an offline backup 
+              mechanism.  The user can print out or write down their encrypted 
+              identity, along with a secure Rescue Code, that will allow the user 
+              to recover from a forgotten password.
+            </t><t hangText="Out Of Band Authentication Option"><vspace/>
+              With SQRL, the user can safely authenticate a session on public or 
+              potentially compromised systems by scanning a QR code 
+              on a trusted mobile device containing their SQRL identity, without the need to expose that identity to the public system.
+            </t>
+          </list></t>
+        </section>
+        <section title="Requirements Language"><t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
         "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
         document are to be interpreted as described in 
-        <xref target="RFC2119">RFC 2119</xref>.</t></section><section title="Definitions"><t>TODO</t></section></section><section title="Algorithms"><t>TODO</t><section title="Standard Algorithms"><t>The following standard algorithms are used in this document:
+        <xref target="RFC2119">RFC 2119</xref>.</t></section><section title="Definitions"><t>TODO</t></section></section>
+        <section title="Algorithms"><t>TODO</t><section title="Standard Algorithms"><t>The following standard algorithms are used in this document:
           <list style="symbols"><t><xref target="NIST.800-38D">AES-GCM</xref></t><t>
               base64url: URL safe base64 encoding, as defined in Section 4 of 
               <xref target="RFC3548"/>, without padding.
