@@ -112,7 +112,7 @@
         </section>
         <section title="Requirements Language"><t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
         "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-        document are to be interpreted as described in 
+        document are to be interpreted as described in master
         <xref target="RFC2119">RFC 2119</xref>.</t></section>
         <section title="Definitions">
           <t><list style="hanging" hangIndent="3">
