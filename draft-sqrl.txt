@@ -2,9 +2,9 @@
 
 
 
-Internet Engineering Task Force                           A. Comley, Ed.
+Internet Engineering Task Force                                A. Comley
 Internet-Draft
-Intended status: Informational                           S. Killian, Ed.
+Intended status: Informational                                S. Killian
 Expires: August 24, 2018                               February 20, 2018
 
 
@@ -151,17 +151,17 @@ Internet-Draft                    SQRL                     February 2018
      6.4.  Updating Identity Association . . . . . . . . . . . . . .  27
      6.5.  Disabling Site Login  . . . . . . . . . . . . . . . . . .  27
      6.6.  Re-Enabling Site Login  . . . . . . . . . . . . . . . . .  27
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  27
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  27
-     8.1.  Phishing  . . . . . . . . . . . . . . . . . . . . . . . .  27
-     8.2.  Shoulder-Surfing  . . . . . . . . . . . . . . . . . . . .  29
-     8.3.  Evil Router . . . . . . . . . . . . . . . . . . . . . . .  29
-     8.4.  Server Compromise . . . . . . . . . . . . . . . . . . . .  30
-     8.5.  CPU Flooding  . . . . . . . . . . . . . . . . . . . . . .  30
-     8.6.  Evil Client . . . . . . . . . . . . . . . . . . . . . . .  31
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  32
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  32
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  33
+   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  27
+   8.  Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  27
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  27
+   10. Security Considerations . . . . . . . . . . . . . . . . . . .  27
+     10.1.  Phishing . . . . . . . . . . . . . . . . . . . . . . . .  28
+     10.2.  Shoulder-Surfing . . . . . . . . . . . . . . . . . . . .  29
+     10.3.  Evil Router  . . . . . . . . . . . . . . . . . . . . . .  30
+     10.4.  Server Compromise  . . . . . . . . . . . . . . . . . . .  30
+     10.5.  CPU Flooding . . . . . . . . . . . . . . . . . . . . . .  31
+     10.6.  Evil Client  . . . . . . . . . . . . . . . . . . . . . .  31
+   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  32
 
 
 
@@ -170,16 +170,18 @@ Comley & Killian         Expires August 24, 2018                [Page 3]
 Internet-Draft                    SQRL                     February 2018
 
 
+     11.1.  Normative References . . . . . . . . . . . . . . . . . .  32
+     11.2.  Informative References . . . . . . . . . . . . . . . . .  33
    Appendix A.  Recommendations and Best Practices . . . . . . . . .  33
      A.1.  For Clients . . . . . . . . . . . . . . . . . . . . . . .  33
      A.2.  For Servers . . . . . . . . . . . . . . . . . . . . . . .  33
      A.3.  For Users . . . . . . . . . . . . . . . . . . . . . . . .  33
-       A.3.1.  Master Password . . . . . . . . . . . . . . . . . . .  33
+       A.3.1.  Master Password . . . . . . . . . . . . . . . . . . .  34
        A.3.2.  Identity Backup . . . . . . . . . . . . . . . . . . .  34
        A.3.3.  Disaster Recovery . . . . . . . . . . . . . . . . . .  34
    Appendix B.  The Optional ShortPass Feature . . . . . . . . . . .  35
    Appendix C.  Harvesting Entropy . . . . . . . . . . . . . . . . .  35
-     C.1.  Entropy Sources . . . . . . . . . . . . . . . . . . . . .  35
+     C.1.  Entropy Sources . . . . . . . . . . . . . . . . . . . . .  36
        C.1.1.  Operating System  . . . . . . . . . . . . . . . . . .  36
        C.1.2.  Hardware  . . . . . . . . . . . . . . . . . . . . . .  36
        C.1.3.  User  . . . . . . . . . . . . . . . . . . . . . . . .  37
@@ -216,8 +218,6 @@ Internet-Draft                    SQRL                     February 2018
       compromise.
 
    Global Password
-      The user only has to remember a single password, which is used to
-      locally decrypt their identity during SQRL authentication.  Since
 
 
 
@@ -226,6 +226,8 @@ Comley & Killian         Expires August 24, 2018                [Page 4]
 Internet-Draft                    SQRL                     February 2018
 
 
+      The user only has to remember a single password, which is used to
+      locally decrypt their identity during SQRL authentication.  Since
       the user no longer has to remember a unique password for each
       site, this one global password can be very strong.  This strong
       password combined with strong encryption makes it infeasible for
@@ -271,8 +273,6 @@ Internet-Draft                    SQRL                     February 2018
       potentially compromised systems by scanning a QR code on a trusted
       mobile device containing their SQRL identity, without the need to
       expose that identity to the public system.
-
-
 
 
 
@@ -1474,11 +1474,20 @@ Internet-Draft                    SQRL                     February 2018
 
    TODO
 
-7.  IANA Considerations
+7.  Acknowledgements
+
+   TODO: Acknowledge Steve and the newsgroup...
+
+8.  Contributors
+
+   TODO: Acknowledge contributors to this text, if they are not included
+   as authors or editors...
+
+9.  IANA Considerations
 
    TODO
 
-8.  Security Considerations
+10.  Security Considerations
 
    As SQRL aims to protect a single identity that is ultimately used to
    authenticate a user everywhere, the security of this identity is
@@ -1498,15 +1507,6 @@ Internet-Draft                    SQRL                     February 2018
    5.  Breaking of pseudonymous nature of SQRL authentication
    (association of SQRL identities on various sites)
 
-8.1.  Phishing
-
-   One well-known attack mode is where the user is invited to click on a
-   link appearing to go to a legitimate site, but is in reality directed
-   to an attacker's server.
-
-   One common method of this is a look-alike link.  For example, a user
-   believing he is going to example.com is in reality going to
-
 
 
 Comley & Killian         Expires August 24, 2018               [Page 27]
@@ -1514,6 +1514,14 @@ Comley & Killian         Expires August 24, 2018               [Page 27]
 Internet-Draft                    SQRL                     February 2018
 
 
+10.1.  Phishing
+
+   One well-known attack mode is where the user is invited to click on a
+   link appearing to go to a legitimate site, but is in reality directed
+   to an attacker's server.
+
+   One common method of this is a look-alike link.  For example, a user
+   believing he is going to example.com is in reality going to
    examp1e.com (the lowercase "l" is replaced with a numeral "1").  A
    historical example is "tvvitter.com" (the letter "v" twice instead of
    a "w").
@@ -1553,6 +1561,15 @@ Internet-Draft                    SQRL                     February 2018
    warned of an IP mismatch, and CPS will redirect the browser to a safe
    page on the real site.  No such protections exist for cross-device
    authentication (Section 6.2), but this is only used in the case of
+
+
+
+
+Comley & Killian         Expires August 24, 2018               [Page 28]
+
+Internet-Draft                    SQRL                     February 2018
+
+
    untrusted devices where the user will probably be typing in the
    domain name manually.
 
@@ -1562,13 +1579,6 @@ Internet-Draft                    SQRL                     February 2018
    incorrect address, generally the phishing site controlled by the
    attacker.  In such a case, SQRL would be fooled (as would anything
    else on the compromised device).
-
-
-
-Comley & Killian         Expires August 24, 2018               [Page 28]
-
-Internet-Draft                    SQRL                     February 2018
-
 
    However, cross-device authentication would foil this, as the user
    would be using a smartphone or other trusted device that would be
@@ -1582,7 +1592,7 @@ Internet-Draft                    SQRL                     February 2018
    running their own internal DNS systems, so it should be an option the
    user can turn off.
 
-8.2.  Shoulder-Surfing
+10.2.  Shoulder-Surfing
 
    Shoulder-surfing is when an attacker reads or scans the display,
    keyboard, and other components of the target's device directly,
@@ -1608,16 +1618,6 @@ Internet-Draft                    SQRL                     February 2018
    the user type the Master Password on the keyboard.  Keep in mind that
    these can be picked up using binoculars or seen on a CCTV camera.
 
-   It is absolutely crucial that a new SQRL identity NOT be created, and
-   an existing one NOT be rekeyed, in such an area.  Anyone who can
-   resolve the screen and keyboard can get the Master Password AND the
-   Rescue Code.
-
-8.3.  Evil Router
-
-   In this context, the router in consideration is the one connecting
-   the user's LAN segment to the rest of the Internet.  Home routers
-   have been shown to be lacking in security, and even a well-supported
 
 
 
@@ -1626,6 +1626,16 @@ Comley & Killian         Expires August 24, 2018               [Page 29]
 Internet-Draft                    SQRL                     February 2018
 
 
+   It is absolutely crucial that a new SQRL identity NOT be created, and
+   an existing one NOT be rekeyed, in such an area.  Anyone who can
+   resolve the screen and keyboard can get the Master Password AND the
+   Rescue Code.
+
+10.3.  Evil Router
+
+   In this context, the router in consideration is the one connecting
+   the user's LAN segment to the rest of the Internet.  Home routers
+   have been shown to be lacking in security, and even a well-supported
    router must be updated when new firmware versions are released,
    something most users aren't aware of.
 
@@ -1646,7 +1656,7 @@ Internet-Draft                    SQRL                     February 2018
    however, at most the attacker will gain access to the specific login
    sessions the user makes while at that location.
 
-8.4.  Server Compromise
+10.4.  Server Compromise
 
    A server compromise can result in sensitive user data being obtained
    by the attacker without the user even logging in.
@@ -1664,7 +1674,15 @@ Internet-Draft                    SQRL                     February 2018
    All the same, once authenticated the user is subject to all of the
    harms that can occur regardless of the form of authentication.
 
-8.5.  CPU Flooding
+
+
+
+Comley & Killian         Expires August 24, 2018               [Page 30]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+10.5.  CPU Flooding
 
    CPU flooding is where the attacker is able to cause one or more
    processes to run that take up significant CPU time.  It also can
@@ -1674,20 +1692,12 @@ Internet-Draft                    SQRL                     February 2018
    With SQRL, this can be a vulnerability when running EnScrypt
    (Section 2.4) in Timer Mode.  After 5 seconds (by default), the timer
    runs out, and the resulting key is used to encrypt the identity and
-
-
-
-Comley & Killian         Expires August 24, 2018               [Page 30]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    the number of iterations recorded.  If another process utilizes
    significant CPU clocks during this process, the total number of
    iterations will be lower than it would have, meaning that the Master
    Password has weaker protection against cracking.
 
-8.6.  Evil Client
+10.6.  Evil Client
 
    An evil client is a maliciously-developed SQRL client.  It may take
    the form of its own client, or it may mimic an existing and trusted
@@ -1721,6 +1731,13 @@ Internet-Draft                    SQRL                     February 2018
    stores for Android and iOS.  A malicious SQRL app, sadly, is not out
    of the question.
 
+
+
+Comley & Killian         Expires August 24, 2018               [Page 31]
+
+Internet-Draft                    SQRL                     February 2018
+
+
    This issue can be somewhat mitigated by requiring that SQRL apps be
    certified by trusted authorities.  The reference implementation from
    GRC not only checks the certificate on every update, but checks the
@@ -1731,16 +1748,9 @@ Internet-Draft                    SQRL                     February 2018
    software hijack the sqrl:// protocol and eliminate the need for a
    localhost connection on port 25519.
 
+11.  References
 
-
-Comley & Killian         Expires August 24, 2018               [Page 31]
-
-Internet-Draft                    SQRL                     February 2018
-
-
-9.  References
-
-9.1.  Normative References
+11.1.  Normative References
 
    [FIPS.180-4.2015]
               National Institute of Standards and Technology, "Secure
@@ -1775,16 +1785,6 @@ Internet-Draft                    SQRL                     February 2018
               RFC 3986, DOI 10.17487/RFC3986, January 2005,
               <https://www.rfc-editor.org/info/rfc3986>.
 
-   [RFC7914]  Percival, C. and S. Josefsson, "The scrypt Password-Based
-              Key Derivation Function", RFC 7914, DOI 10.17487/RFC7914,
-              August 2016, <https://www.rfc-editor.org/info/rfc7914>.
-
-   [RFC8031]  Nir, Y. and S. Josefsson, "Curve25519 and Curve448 for the
-              Internet Key Exchange Protocol Version 2 (IKEv2) Key
-              Agreement", RFC 8031, DOI 10.17487/RFC8031, December 2016,
-              <https://www.rfc-editor.org/info/rfc8031>.
-
-
 
 
 
@@ -1794,12 +1794,21 @@ Comley & Killian         Expires August 24, 2018               [Page 32]
 Internet-Draft                    SQRL                     February 2018
 
 
+   [RFC7914]  Percival, C. and S. Josefsson, "The scrypt Password-Based
+              Key Derivation Function", RFC 7914, DOI 10.17487/RFC7914,
+              August 2016, <https://www.rfc-editor.org/info/rfc7914>.
+
+   [RFC8031]  Nir, Y. and S. Josefsson, "Curve25519 and Curve448 for the
+              Internet Key Exchange Protocol Version 2 (IKEv2) Key
+              Agreement", RFC 8031, DOI 10.17487/RFC8031, December 2016,
+              <https://www.rfc-editor.org/info/rfc8031>.
+
    [RFC8032]  Josefsson, S. and I. Liusvaara, "Edwards-Curve Digital
               Signature Algorithm (EdDSA)", RFC 8032,
               DOI 10.17487/RFC8032, January 2017, <https://www.rfc-
               editor.org/info/rfc8032>.
 
-9.2.  Informative References
+11.2.  Informative References
 
    [Klyubin]  Klyubin, A., "Some SecureRandom Thoughts", August 2013,
               <https://android-developers.googleblog.com/2013/08/some-
@@ -1832,15 +1841,6 @@ A.3.  For Users
    each individual's discretion to determine whether or not particular
    recommendations make sense to their situation.
 
-A.3.1.  Master Password
-
-   Traditionally, security experts have advised having unique passwords
-   for every resource.  The reason why is so that one resource being
-   compromised will not threaten others.  However, in the case of a
-   single SQRL identity copied to multiple devices, a compromise of any
-   of these identities would give an attacker full access to all SQRL-
-   enabled logins, so the user gains nothing from protecting his SQRL
-   identity on different devices with different passwords.  But when
 
 
 
@@ -1850,6 +1850,15 @@ Comley & Killian         Expires August 24, 2018               [Page 33]
 Internet-Draft                    SQRL                     February 2018
 
 
+A.3.1.  Master Password
+
+   Traditionally, security experts have advised having unique passwords
+   for every resource.  The reason why is so that one resource being
+   compromised will not threaten others.  However, in the case of a
+   single SQRL identity copied to multiple devices, a compromise of any
+   of these identities would give an attacker full access to all SQRL-
+   enabled logins, so the user gains nothing from protecting his SQRL
+   identity on different devices with different passwords.  But when
    users are asked to create different passwords, they generally pick
    weaker, formulaic passwords that are easier to remember.
 
@@ -1888,15 +1897,6 @@ A.3.3.  Disaster Recovery
    information to be paramount, it is recommended that they be given a
    hard copy of the SQRL client, exported without password, using the
    "data entry" method.  The Rescue Code must also be included.  The
-   information must be updated whenever the user creates a new SQRL
-   identity or rekeys an existing one.
-
-   If the use of a probate attorney isn't desirable (e.g., the user
-   lives in a country with no recognition of attorney-client privilege),
-   SQRL's "data entry" export and the associated Rescue Code could be
-   distributed through the person's heirs via Shamir's Secret Sharing.
-   [Shamir]
-
 
 
 
@@ -1905,6 +1905,15 @@ Comley & Killian         Expires August 24, 2018               [Page 34]
 
 Internet-Draft                    SQRL                     February 2018
 
+
+   information must be updated whenever the user creates a new SQRL
+   identity or rekeys an existing one.
+
+   If the use of a probate attorney isn't desirable (e.g., the user
+   lives in a country with no recognition of attorney-client privilege),
+   SQRL's "data entry" export and the associated Rescue Code could be
+   distributed through the person's heirs via Shamir's Secret Sharing.
+   [Shamir]
 
 Appendix B.  The Optional ShortPass Feature
 
@@ -1944,6 +1953,15 @@ Appendix C.  Harvesting Entropy
    single bit of the input is changed, so the entropy should be
    preserved up to the length of the resulting hash.  The technique,
    then, is to hash an amount of data where the entropy content almost
+
+
+
+
+Comley & Killian         Expires August 24, 2018               [Page 35]
+
+Internet-Draft                    SQRL                     February 2018
+
+
    certainly far exceeds 256 or 512 bits.  These amounts are fairly
    trivial.
 
@@ -1953,14 +1971,6 @@ C.1.  Entropy Sources
 
    Sources of entropy vary greatly depending on the hardware, operating
    system, and other aspects of the client device.
-
-
-
-
-Comley & Killian         Expires August 24, 2018               [Page 35]
-
-Internet-Draft                    SQRL                     February 2018
-
 
 C.1.1.  Operating System
 
@@ -2000,6 +2010,14 @@ C.1.2.  Hardware
    Sound from a microphone could be a source of high-quality entropy in
    a typical room with air conditioning, fans, and other source of
    noise, as well as interference on the sound channel.  In such a case,
+
+
+
+Comley & Killian         Expires August 24, 2018               [Page 36]
+
+Internet-Draft                    SQRL                     February 2018
+
+
    a fraction of a second--less than two hundredths--would be
    sufficient, but as there is no guarantee longer periods should be
    considered.
@@ -2010,14 +2028,6 @@ C.1.2.  Hardware
    phones in particular have cameras that generate sufficient noise in
    the low-order bits.  A single 640x480 frame would likely be
    sufficient for SQRL's purposes.  Care must be taken to ensure the
-
-
-
-Comley & Killian         Expires August 24, 2018               [Page 36]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    client is getting the raw camera data, not compressed data which may
    have much of the noise removed.
 
@@ -2042,24 +2052,14 @@ C.1.3.  User
 
 Authors' Addresses
 
-   Adam Comley (editor)
+   Adam Comley
 
    Email: adam@novators.net
 
 
-   Shane Killian (editor)
+   Shane Killian
 
    Email: shane@shanekillian.org
-
-
-
-
-
-
-
-
-
-
 
 
 
