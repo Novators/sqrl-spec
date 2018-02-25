@@ -185,10 +185,9 @@ function EnHash ( input := 32 byte key )
   return output;
 }
           ]]></artwork></figure></section><section anchor="algo-enscrypt" title="EnScrypt"><t>
-          EnScrypt is an iterative construct based on the scrypt password based 
-          key derivation function.  It hardens scrypt by allowing for extended 
-          processing time.  The following parameters are used for the scrypt 
-          function:
+          EnScrypt is an implementation of PBKDF2 using scrypt as a PRF.  It hardens scrypt by allowing for extended 
+          processing time while keeping memory requirements low but still effective.</t>
+          <t>The following parameters are used for the scrypt           function:
         </t><texttable anchor="table_enscrypt_parameters" title="scrypt parameters"><ttcol>dkLen</ttcol><ttcol>N</ttcol><ttcol>r</ttcol><ttcol>p</ttcol><c>32</c><c>512 (1&lt;&lt;9)</c><c>256</c><c>1</c></texttable><t>
           In this document, we may refer to an additional parameter, "n-factor" or
           just "n".  This is simply a shorthand way of storing the N parameter.
@@ -197,10 +196,8 @@ function EnHash ( input := 32 byte key )
 N = (1 << n);
           ]]></artwork></figure>
         </t><t>
-          Enscrypt is performed by calling scrypt in multiple rounds, with each 
-          successive round accepting the previous round's output as its salt.  
-          The final output is the XOR of each round's scrypt result.
-        </t><texttable anchor="table_enscrypt_rounds" title="EnScrypt Rounds"><ttcol>Round #</ttcol><ttcol>let salt[n] = </ttcol><ttcol>let out = </ttcol><c>1</c><c>scrypt( password, salt )</c><c>salt[1]</c><c>2</c><c>scrypt( password, salt[1] )</c><c>salt[1] XOR salt[2]</c><c>n</c><c>scrypt( password, salt[n-1] )</c><c>salt[n-1] XOR salt[n]</c></texttable><t>
+          Enscrypt is performed by calling scrypt via multiple rounds of PBKDF2.
+        </t><t>
           EnScrypt can operate in two different modes, the only difference 
           being when the calculation is stopped.
           <list style="hanging" hangIndent="3"><t hangText="Counter Mode:"><vspace/>
@@ -208,7 +205,7 @@ N = (1 << n);
             </t><t hangText="Timer Mode:"><vspace/>
               Stops after a desired amount of time has passed (5 seconds by default).
             </t></list>
-        </t><t>Timer Mode is used when creating an encryption key from a password. Once the key is derived and the identity encrypted, the resulting number of iterations is saved with the identity file. Counter Mode is used to recreate this key and decrypt the identity.</t></section></section><section title="Cryptographic Keys, Secrets, and Passwords"><t>
+        </t><t>Timer Mode is used when creating an encryption key from a password. Successive rounds of PBKDF2 are computed until the specified time elapses. The result is used as the key to encrypt the identity, and the resulting number of iterations is saved with the identity file. Counter Mode is used to recreate this key and decrypt the identity.</t></section></section><section title="Cryptographic Keys, Secrets, and Passwords"><t>
         SQRL uses a wide variety of secrets in various operations.
       </t><section anchor="secret-class-a" title="Class A Secrets"><t>
           Class A secrets are absolutely critical to protecting a user's 
