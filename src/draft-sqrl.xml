@@ -59,7 +59,7 @@
               their identity without disclosing any information that would allow 
               that identity to be compromised or their account hacked. SQRL also provides strong anti-phishing features.
             </t><t hangText="Identity Management"><vspace/>
-              SQRL separates and delineates the concepts of account and identity. The user is given full control over their identity and its full life cycle, while leaving servers with complete control over account issues. SQRL provides a full identity lifecycle management framework which allows the user to maintain complete control of their identity.  Even in the event of a compromise, the user retains the ability to retake control of their identity and lock the attacker out.  Automated rekeying means that the user can maintain a single SQRL identity indefinitely, even after a compromise.
+              SQRL separates and delineates the concepts of account and identity. SQRL provides a full identity lifecycle management framework which allows the user to maintain complete control of their identity, while leaving servers with complete control over account issues.  Even in the event of a compromise, the user retains the ability to retake control of their identity and lock the attacker out.  Automated rekeying means that the user can maintain a single SQRL identity indefinitely, even after a compromise.
             </t><t hangText="Global Password"><vspace/>
               The user only has to remember a single password, which is used to 
               locally decrypt their identity during SQRL authentication.  Since 
