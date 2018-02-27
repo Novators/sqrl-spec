@@ -1060,6 +1060,12 @@ VUK = ed25519_public_key( curve25519_key_agreement( ILK, RLK ));]]></artwork>
           </author><date month="August" year="2013"/></front></reference>
     </references>
     <section title="Recommendations and Best Practices">
+      <section title="Logo">
+        <t>For ease of user understanding and recognition, a SQRL logo has been designed and released into the public domain. Clients SHOULD use this as the program logo, and servers SHOULD use this for the clickable link. The standard colors are a white SQRL figure against a background color of #007CC3 (CMYK: 100/20/0/0). Clients and servers MAY recolor the logo to suit the look of themes and skins. <eref target="https://www.grc.com/sqrl/logo.htm"></eref></t>
+      </section>
+      <section title="Font">
+        <t>Museo Slab can be used by client and server developers desiring a consistent look across disparate SQRL implementations. <eref target="https://www.exljbris.com/museoslab.html"></eref></t>
+      </section>
       <section anchor="app-client" title="For Clients">
         <t>TODO</t>
       </section>
