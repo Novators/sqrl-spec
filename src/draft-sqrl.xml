@@ -916,10 +916,10 @@ VUK = ed25519_public_key( curve25519_key_agreement( ILK, RLK ));]]></artwork>
           <t>SQRL protocol versions are specified by integers starting at 1.</t>
           <t>Both client and server MUST declare the set of SQRL protocol versions it understands, supports, and is willing to use. This protocol version declaration MUST be the first name=value pair appearing in the argument list and MUST be one of the following formats:
           <list style="symbols">
-            <t>A single supported version (e.g., "ver=1", signifying that only version 1 of the SQRL protocol is supported).</t>
-            <t>Multiple supported versions via a comma-separated list (e.g., "ver=1,3", signifying that versions 1 and 3 of the SQRL protocol are supported, but not 2).</t>
-            <t>A range of versions via hyphenation (e.g., "ver=1-3", signifying that versions 1, 2, and 3 of the SQRL protocol are supported).</t>
-            <t>A combination of these techniques (e.g., "ver=1-3,5", signifying that versions 1, 2, 3, and 5 of the SQRL protocol are supported, but not 4).</t>
+            <t>A single supported version (e.g., "ver=1", signifying that only version 1 of the SQRL protocol is supported)</t>
+            <t>Multiple supported versions via a comma-separated list (e.g., "ver=1,3", signifying that versions 1 and 3 of the SQRL protocol are supported, but not 2)</t>
+            <t>A range of versions via hyphenation (e.g., "ver=1-3", signifying that versions 1, 2, and 3 of the SQRL protocol are supported)</t>
+            <t>A combination of these techniques (e.g., "ver=1-3,5", signifying that versions 1, 2, 3, and 5 of the SQRL protocol are supported, but not 4)</t>
           </list></t>
           <t>Once both client and server have declared their supported version sets, the version used MUST be the highest version number in the intersection of these sets.</t>
         </section>
