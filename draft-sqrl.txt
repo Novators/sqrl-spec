@@ -5,7 +5,7 @@
 Internet Engineering Task Force                                A. Comley
 Internet-Draft
 Intended status: Informational                                S. Killian
-Expires: August 31, 2018                               February 27, 2018
+Expires: August 5, 2018                                    February 2018
 
 
    Secure Quick Reliable Login (SQRL), an Authentication and Identity
@@ -48,12 +48,12 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 31, 2018.
+   This Internet-Draft will expire on August 5, 2018.
 
 
 
 
-Comley & Killian         Expires August 31, 2018                [Page 1]
+Comley & Killian         Expires August 5, 2018                 [Page 1]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Comley & Killian         Expires August 31, 2018                [Page 2]
+Comley & Killian         Expires August 5, 2018                 [Page 2]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -132,60 +132,60 @@ Internet-Draft                    SQRL                     February 2018
      5.2.  The SQRL Realm (Domain) . . . . . . . . . . . . . . . . .  25
      5.3.  Client to Server Requests . . . . . . . . . . . . . . . .  25
        5.3.1.  Protocol Version  . . . . . . . . . . . . . . . . . .  25
-       5.3.2.  Commands  . . . . . . . . . . . . . . . . . . . . . .  25
-       5.3.3.  Options . . . . . . . . . . . . . . . . . . . . . . .  25
-       5.3.4.  The server Value  . . . . . . . . . . . . . . . . . .  25
-       5.3.5.  The client Value  . . . . . . . . . . . . . . . . . .  25
-       5.3.6.  Client Keys . . . . . . . . . . . . . . . . . . . . .  26
-       5.3.7.  Client Signatures . . . . . . . . . . . . . . . . . .  26
-       5.3.8.  Composing the Request . . . . . . . . . . . . . . . .  26
-     5.4.  Server to Client Replies  . . . . . . . . . . . . . . . .  26
-       5.4.1.  Required Values . . . . . . . . . . . . . . . . . . .  26
-       5.4.2.  Optional Values . . . . . . . . . . . . . . . . . . .  26
-       5.4.3.  Additional Values . . . . . . . . . . . . . . . . . .  26
-       5.4.4.  Composing the Reply . . . . . . . . . . . . . . . . .  26
-   6.  Client-Server Interactions  . . . . . . . . . . . . . . . . .  26
-     6.1.  Same Device Authentication  . . . . . . . . . . . . . . .  26
-     6.2.  Cross Device Authentication . . . . . . . . . . . . . . .  26
-     6.3.  Identity Association  . . . . . . . . . . . . . . . . . .  27
-     6.4.  Updating Identity Association . . . . . . . . . . . . . .  27
-     6.5.  Disabling Site Login  . . . . . . . . . . . . . . . . . .  27
-     6.6.  Re-Enabling Site Login  . . . . . . . . . . . . . . . . .  27
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  27
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  27
-     8.1.  Phishing  . . . . . . . . . . . . . . . . . . . . . . . .  27
-     8.2.  Shoulder-Surfing  . . . . . . . . . . . . . . . . . . . .  29
-     8.3.  Evil Router . . . . . . . . . . . . . . . . . . . . . . .  30
-     8.4.  Server Compromise . . . . . . . . . . . . . . . . . . . .  30
-     8.5.  CPU Flooding  . . . . . . . . . . . . . . . . . . . . . .  31
-     8.6.  Evil Client . . . . . . . . . . . . . . . . . . . . . . .  31
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  32
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  32
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  33
+       5.3.2.  Commands  . . . . . . . . . . . . . . . . . . . . . .  26
+       5.3.3.  Options . . . . . . . . . . . . . . . . . . . . . . .  26
+       5.3.4.  The Server Value  . . . . . . . . . . . . . . . . . .  26
+       5.3.5.  The Client Value  . . . . . . . . . . . . . . . . . .  29
+       5.3.6.  Client Keys . . . . . . . . . . . . . . . . . . . . .  32
+       5.3.7.  Client Signatures . . . . . . . . . . . . . . . . . .  32
+       5.3.8.  Composing the Request . . . . . . . . . . . . . . . .  32
+     5.4.  Server to Client Replies  . . . . . . . . . . . . . . . .  32
+       5.4.1.  Required Values . . . . . . . . . . . . . . . . . . .  33
+       5.4.2.  Optional Values . . . . . . . . . . . . . . . . . . .  33
+       5.4.3.  Additional Values . . . . . . . . . . . . . . . . . .  33
+       5.4.4.  Composing the Reply . . . . . . . . . . . . . . . . .  33
+   6.  Client-Server Interactions  . . . . . . . . . . . . . . . . .  33
+     6.1.  Same Device Authentication  . . . . . . . . . . . . . . .  33
+     6.2.  Cross Device Authentication . . . . . . . . . . . . . . .  33
+     6.3.  Identity Association  . . . . . . . . . . . . . . . . . .  33
+     6.4.  Updating Identity Association . . . . . . . . . . . . . .  33
+     6.5.  Disabling Site Login  . . . . . . . . . . . . . . . . . .  33
+     6.6.  Re-Enabling Site Login  . . . . . . . . . . . . . . . . .  33
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  34
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  34
+     8.1.  Phishing  . . . . . . . . . . . . . . . . . . . . . . . .  34
+     8.2.  Shoulder-Surfing  . . . . . . . . . . . . . . . . . . . .  36
+     8.3.  Evil Router . . . . . . . . . . . . . . . . . . . . . . .  36
+     8.4.  Server Compromise . . . . . . . . . . . . . . . . . . . .  37
+     8.5.  CPU Flooding  . . . . . . . . . . . . . . . . . . . . . .  37
+     8.6.  Evil Client . . . . . . . . . . . . . . . . . . . . . . .  38
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  39
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  39
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  40
 
 
 
-Comley & Killian         Expires August 31, 2018                [Page 3]
+Comley & Killian         Expires August 5, 2018                 [Page 3]
 
 Internet-Draft                    SQRL                     February 2018
 
 
-   Appendix A.  Recommendations and Best Practices . . . . . . . . .  33
-     A.1.  Logo  . . . . . . . . . . . . . . . . . . . . . . . . . .  33
-     A.2.  Font  . . . . . . . . . . . . . . . . . . . . . . . . . .  33
-     A.3.  For Clients . . . . . . . . . . . . . . . . . . . . . . .  34
-     A.4.  For Servers . . . . . . . . . . . . . . . . . . . . . . .  34
-     A.5.  For Users . . . . . . . . . . . . . . . . . . . . . . . .  34
-       A.5.1.  Master Password . . . . . . . . . . . . . . . . . . .  34
-       A.5.2.  Identity Backup . . . . . . . . . . . . . . . . . . .  34
-       A.5.3.  Disaster Recovery . . . . . . . . . . . . . . . . . .  35
-   Appendix B.  The Optional ShortPass Feature . . . . . . . . . . .  35
-   Appendix C.  Harvesting Entropy . . . . . . . . . . . . . . . . .  35
-     C.1.  Entropy Sources . . . . . . . . . . . . . . . . . . . . .  36
-       C.1.1.  Operating System  . . . . . . . . . . . . . . . . . .  36
-       C.1.2.  Hardware  . . . . . . . . . . . . . . . . . . . . . .  36
-       C.1.3.  User  . . . . . . . . . . . . . . . . . . . . . . . .  37
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  38
+   Appendix A.  Recommendations and Best Practices . . . . . . . . .  40
+     A.1.  Logo  . . . . . . . . . . . . . . . . . . . . . . . . . .  40
+     A.2.  Font  . . . . . . . . . . . . . . . . . . . . . . . . . .  40
+     A.3.  For Clients . . . . . . . . . . . . . . . . . . . . . . .  41
+     A.4.  For Servers . . . . . . . . . . . . . . . . . . . . . . .  41
+     A.5.  For Users . . . . . . . . . . . . . . . . . . . . . . . .  41
+       A.5.1.  Master Password . . . . . . . . . . . . . . . . . . .  41
+       A.5.2.  Identity Backup . . . . . . . . . . . . . . . . . . .  41
+       A.5.3.  Disaster Recovery . . . . . . . . . . . . . . . . . .  42
+   Appendix B.  The Optional ShortPass Feature . . . . . . . . . . .  42
+   Appendix C.  Harvesting Entropy . . . . . . . . . . . . . . . . .  42
+     C.1.  Entropy Sources . . . . . . . . . . . . . . . . . . . . .  43
+       C.1.1.  Operating System  . . . . . . . . . . . . . . . . . .  43
+       C.1.2.  Hardware  . . . . . . . . . . . . . . . . . . . . . .  43
+       C.1.3.  User  . . . . . . . . . . . . . . . . . . . . . . . .  44
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  45
 
 1.  Introduction
 
@@ -221,7 +221,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 31, 2018                [Page 4]
+Comley & Killian         Expires August 5, 2018                 [Page 4]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -277,7 +277,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 31, 2018                [Page 5]
+Comley & Killian         Expires August 5, 2018                 [Page 5]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -317,6 +317,11 @@ Internet-Draft                    SQRL                     February 2018
       (generally out of fear the user's IMK may be compromised) for
       later unlocking with Rescue Code or rekeyed identity
 
+   IDK
+      IDentity Key: a secure, irreversible, and collision-resistant
+      public key used to identify the user in a specific realm; unique
+      to both the realm and the user's IMK
+
    ILK
       Identity Lock Key: public key counterpart to the IUK
 
@@ -325,18 +330,19 @@ Internet-Draft                    SQRL                     February 2018
       of a user's identity for each realm
 
    Import
+
+
+
+Comley & Killian         Expires August 5, 2018                 [Page 6]
+
+Internet-Draft                    SQRL                     February 2018
+
+
       To load an exported or backed up identity into a client
 
    IUK
       Identity Unlock Key: the master key from which all aspects of a
       user's identity are derived
-
-
-
-Comley & Killian         Expires August 31, 2018                [Page 6]
-
-Internet-Draft                    SQRL                     February 2018
-
 
    Master Password
       A password created by the user that is used to derive the
@@ -374,11 +380,6 @@ Internet-Draft                    SQRL                     February 2018
       Password; used to verify the user after the Master Password has
       been used to start a session
 
-   SSPK
-      Site-Specific Public Key: a secure, irreversible, and collision-
-      resistant public key used to identify the user in a specific
-      realm; unique to both the realm and the user's IMK
-
    SUK
       Server Unlock Key: public key counterpart to the RLK; sent by the
       user to the server on account creation and used to unlock an
@@ -388,8 +389,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-
-Comley & Killian         Expires August 31, 2018                [Page 7]
+Comley & Killian         Expires August 5, 2018                 [Page 7]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -445,7 +445,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 31, 2018                [Page 8]
+Comley & Killian         Expires August 5, 2018                 [Page 8]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -501,7 +501,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 31, 2018                [Page 9]
+Comley & Killian         Expires August 5, 2018                 [Page 9]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -557,7 +557,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 31, 2018               [Page 10]
+Comley & Killian         Expires August 5, 2018                [Page 10]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -613,7 +613,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 31, 2018               [Page 11]
+Comley & Killian         Expires August 5, 2018                [Page 11]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -669,7 +669,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 31, 2018               [Page 12]
+Comley & Killian         Expires August 5, 2018                [Page 12]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -725,7 +725,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 31, 2018               [Page 13]
+Comley & Killian         Expires August 5, 2018                [Page 13]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -781,7 +781,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 31, 2018               [Page 14]
+Comley & Killian         Expires August 5, 2018                [Page 14]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -837,7 +837,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 31, 2018               [Page 15]
+Comley & Killian         Expires August 5, 2018                [Page 15]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -893,7 +893,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 31, 2018               [Page 16]
+Comley & Killian         Expires August 5, 2018                [Page 16]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -949,7 +949,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 31, 2018               [Page 17]
+Comley & Killian         Expires August 5, 2018                [Page 17]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1005,7 +1005,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 31, 2018               [Page 18]
+Comley & Killian         Expires August 5, 2018                [Page 18]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1061,7 +1061,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 31, 2018               [Page 19]
+Comley & Killian         Expires August 5, 2018                [Page 19]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1117,7 +1117,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 31, 2018               [Page 20]
+Comley & Killian         Expires August 5, 2018                [Page 20]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1173,7 +1173,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 31, 2018               [Page 21]
+Comley & Killian         Expires August 5, 2018                [Page 21]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1229,7 +1229,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 31, 2018               [Page 22]
+Comley & Killian         Expires August 5, 2018                [Page 22]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1285,7 +1285,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 31, 2018               [Page 23]
+Comley & Killian         Expires August 5, 2018                [Page 23]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1341,7 +1341,7 @@ Internet-Draft                    SQRL                     February 2018
 
 
 
-Comley & Killian         Expires August 31, 2018               [Page 24]
+Comley & Killian         Expires August 5, 2018                [Page 24]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1375,7 +1375,40 @@ Internet-Draft                    SQRL                     February 2018
 
 5.3.1.  Protocol Version
 
-   TODO
+   SQRL protocol versions are specified by integers starting at 1.
+
+   Both client and server MUST declare the set of SQRL protocol versions
+   it understands, supports, and is willing to use.  This protocol
+   version declaration MUST be the first name=value pair appearing in
+   the argument list and MUST be one of the following formats:
+
+   o  A single supported version (e.g., "ver=1", signifying that only
+      version 1 of the SQRL protocol is supported)
+
+   o  Multiple supported versions via a comma-separated list (e.g.,
+      "ver=1,3", signifying that versions 1 and 3 of the SQRL protocol
+      are supported, but not 2)
+
+   o  A range of versions via hyphenation (e.g., "ver=1-3", signifying
+      that versions 1, 2, and 3 of the SQRL protocol are supported)
+
+
+
+
+
+
+Comley & Killian         Expires August 5, 2018                [Page 25]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+   o  A combination of these techniques (e.g., "ver=1-3,5", signifying
+      that versions 1, 2, 3, and 5 of the SQRL protocol are supported,
+      but not 4)
+
+   Once both client and server have declared their supported version
+   sets, the version used MUST be the highest version number in the
+   intersection of these sets.
 
 5.3.2.  Commands
 
@@ -1385,22 +1418,355 @@ Internet-Draft                    SQRL                     February 2018
 
    TODO
 
-5.3.4.  The server Value
+5.3.4.  The Server Value
 
-   TODO
+   The server gives data to the client in two ways: encoded into the
+   SQRL URL, where it provides the "nut=" session identifier and the
+   optional "x=" domain extension, and the HTTP response bodies where
+   any of the following parameters may be used.
 
-5.3.5.  The client Value
+   When appearing in a URL, name=value pairs MUST be URL-safe and
+   ampersand separated as per standard HTTP GET syntax.  When returned
+   as a response to a client's query, the name=value pairs occupy the
+   body, one per line with each (including the last one) terminated by
+   CRLF.
 
-   TODO
+   There MUST NOT be any space between either the name or value and the
+   equal sign.
+
+   ver
+      The server MUST declare the set of supported protocol versions,
+      and this declaration MUST be first in the client's argument list.
+      See Section 5.3.1.
+
+   nut
+      Base64url-encoded opaque token that is a never-repeating
+      cryptographically-strong nonce.  The nut MAY contain reversibly
+      encrypted data to help the server associate and maintain state.
+      It MUST be included with every response to prevent reuse/replay
+      and hijacking attacks.  As with all of SQRL's base64 values, any
+      trailing equals signs must be stripped. [add xref here once
+      section on nut is complete]
+
+   tif
 
 
 
 
-
-Comley & Killian         Expires August 31, 2018               [Page 25]
+Comley & Killian         Expires August 5, 2018                [Page 26]
 
 Internet-Draft                    SQRL                     February 2018
 
+
+      Transaction Information Flags.  A single hexadecimal-encoded
+      integer that MUST be included in every server response.  The "0x"
+      prefix is included here for clarity, but they are not needed or
+      used in the TIF's value.
+
+   +-------+-----------------------------------------------------------+
+   |  Flag | Description                                               |
+   +-------+-----------------------------------------------------------+
+   |  0x01 | (Current) ID Match. Indicates that the server has found   |
+   |       | an identity association for the user based on the current |
+   |       | IDK and IDS supplied by the client.                       |
+   +-------+-----------------------------------------------------------+
+   |  0x02 | Previous ID Match. Indicates that the server has found an |
+   |       | identity association for the user based on the PIDK and   |
+   |       | PIDS. When neither of the ID bits are set, none of the    |
+   |       | credentials supplied are known to the web server.         |
+   +-------+-----------------------------------------------------------+
+   |  0x04 | IP Match. Indicates that the IP address of the client     |
+   |       | matches the IP address of the initial logon page          |
+   |       | containing the SQRL URL.                                  |
+   +-------+-----------------------------------------------------------+
+   |  0x08 | SQRL Disabled. Indicates that the SQRL authentication for |
+   |       | this identity has previously been disabled. While this    |
+   |       | bit is set, any attempt at authentication MUST fail. This |
+   |       | bit can ONLY be reset, and the identity re-enabled, by    |
+   |       | the "enable=" parameter from the client signed by the URS |
+   |       | for the identity known to the server.                     |
+   +-------+-----------------------------------------------------------+
+   |  0x10 | Function(s) Not Supported. The client requested one or    |
+   |       | more SQRL functions that the server does not currently    |
+   |       | support. The server MUST also fail the query by setting   |
+   |       | 0x40 Command Failed.                                      |
+   +-------+-----------------------------------------------------------+
+   |  0x20 | Transient Error. Indicates that the client signature(s)   |
+   |       | are correct, but something about the query prevented the  |
+   |       | command from completing. MUST be accompanied by a fresh   |
+   |       | "nut=" and a new "qry=" parameter. The server is          |
+   |       | requesting that the client retry and reissue the command  |
+   |       | with the new nut and query values. The server MUST also   |
+   |       | fail the query by setting 0x40 Command Failed.            |
+   +-------+-----------------------------------------------------------+
+   |  0x40 | Command Failed. Indicates that the server has had a       |
+   |       | problem processing the client's query. No change is made  |
+   |       | to the user's account or login status. With SQRL, either  |
+   |       | everything succeeds, or nothing happens. When set without |
+   |       | 0x80 Client Failure, the trouble was not with the         |
+   |       | client's data, protocol, etc. but with some other aspect  |
+   |       | of the request failing. The server MAY use the "ask="     |
+
+
+
+Comley & Killian         Expires August 5, 2018                [Page 27]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+   |       | parameter to explain the problem to the client's user.    |
+   |       | When this flag is activated, the client MUST consider all |
+   |       | other TIFs other than 0x80 to be invalid.                 |
+   +-------+-----------------------------------------------------------+
+   |  0x80 | Client Failure. Some aspect of the client's submitted     |
+   |       | query (other than expired but otherwise valid state       |
+   |       | information) was incorrect and prevented the server from  |
+   |       | understanding and/or completing the requested action.     |
+   |       | Moreover, this is not an issue the server expects could   |
+   |       | be fixed by having the client reissue the command with a  |
+   |       | fresh nut. The server MUST also set 0x40 Command Failed.  |
+   +-------+-----------------------------------------------------------+
+   | 0x100 | Bad ID Association. The server may request reverification |
+   |       | of the user's SQRL identity after a successful            |
+   |       | authentication. If it then receives a SQRL query using    |
+   |       | that nut but with a different SQRL identity, the server   |
+   |       | MUST reply with 0x100 Bad ID Association along with 0x40  |
+   |       | Command Failed and 0x80 Client Failure.                   |
+   +-------+-----------------------------------------------------------+
+
+                   Transaction Information Flags (TIFs)
+
+   Note that the number of characters in the "tif=" value may vary
+   depending on the number of characters required to represent the most
+   significant bit set within the value.  Later versions of the SQRL
+   protocol may expand this list as needed.  Therefore, there MUST NOT
+   be any restrictions on or assumptions about the length of the "tif="
+   value.
+
+   SQRL clients MUST immediately terminate any connection and abort any
+   authentication operation with any SQRL server that includes TIF bits
+   not defined.
+
+   qry
+      The query path.  Instructs the client to query the provided server
+      object in its next query (if any).  MUST be included in every
+      reply.  MUST contain the full path from the root ("/"), and MUST
+      NOT contain the scheme, domain name, or port.
+
+   url
+      Redirection URL.  MUST be provided in response to any command
+      other than "query" when the SQRL client's query includes the
+      "opt=cps" parameter.  The server MUST NOT authenticate the current
+      web browser sessio, but instead uset his parameter to provide the
+      client with a URL taking the user to a page showing the result of
+      the authentication.
+
+   sin
+
+
+
+Comley & Killian         Expires August 5, 2018                [Page 28]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+      The Secret INdex.  The server MAY include this parameter to
+      request an identity-based, high-entropy, 256-bit indexed secret
+      from the client.  The client will hash this value via a secondary
+      identity-keyed HMAC256.  Servers MAY request any number of indexed
+      secret values.  SHOULD contain a cryptographically-secure degree
+      of entropy.
+
+   suk
+      Server Unlock Key. When the server receives a successful
+      authentication on a PIDK, or when the existing SQRL account is
+      disabled, the server MUST provide the SUK to the client so that
+      the client may either re-enable the user's account, update the
+      user's identity, or remove the user's account entirely.
+
+   ask
+      A simple but flexible means for a remote server to gain a response
+      from the SQRL client's user.  The value MUST contain the
+      base64url-encoded text to display to the user, and MAY contain one
+      or two button parameters separated by tildes.  If no buttons are
+      specified, a simple "OK" button will be displayed to the user.  A
+      button parameter consists of base64url-encoded text to display in
+      the button, and MAY be followed by a semicolon delimiting a URL.
+      If the user selects a button where a URL is provided, the SQRL
+      client will submit the link to its host operating system for
+      handling.  All text MUST be UTF-8 encoded to support international
+      characters.
+
+   can
+      OPTIONAL CANcellation redirection URL.  If "opt=cps" is set but
+      the authentication is aborted by the user and this value is
+      present, the SQRL client will redirect the pending browser page to
+      the URL specified in this parameter.
+
+   The server MAY include additional name=value pairs not defined to
+   support extensions to the SQRL protocol.  Any undefined "name="
+   parameter SHOULD simply be ignored.
+
+5.3.5.  The Client Value
+
+   The "client=" parameter contains a base64url encoded list of
+   name=value pairs, one per line, with each line terminated by a CRLF
+   character pair.  The client assembles a list of the name=value pairs
+   to return data to the web server, to specify one or more command
+   actions it is requesting from the server, and to provide any
+   cryptographic keying material required to authorize the requested
+   actions and/or authenticate its user's identity.
+
+   ver
+
+
+
+Comley & Killian         Expires August 5, 2018                [Page 29]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+      The client MUST declare the set of supported protocol versions,
+      and this declaration MUST be first in the client's argument list.
+      See Section 5.3.1.
+
+   cmd
+      Specifies the action the client is requesting from the server.
+      See Command Tokens.
+
+   opt
+      An unordered list of transaction options, separated by tildes.
+      See Options.
+
+   btn
+      When receiving an "ask" query from the server, the client displays
+      the query to the user.  Once the user responds, the client MUST
+      include the "btn" parameter with the character "1" or "2"
+      depending on which button the user selected.  If the prompt was
+      acknowledged without selecting either button, "btn=3" is returned.
+
+   idk
+      The IDentity Key. This is the user's SSPK which uniquely
+      identifies them to the realm.  See .
+
+   pidk
+      The Previous IDentity Key. When a user has rekeyed their identity,
+      it must be updated on any server the user has not visited since
+      the rekeying.  During one or more queries, the client will present
+      the server with the user's current IDK and the previous PIDK along
+      with its matching signature.  This process MUST be repeated for
+      each PIDK until either the authentication is successful and the
+      IDK updated, or until the client runs out of PIDKs, causing the
+      authentication to fail.
+
+   suk
+      The Server Unlock Key (Paragraph 22).  Included in every query
+      where the immediately previous server reply did not have the 0x01
+      bit of its TIF flags set.  See Transaction Information Flags
+      (TIFs) (Paragraph 3).
+
+   vuk  The Verify Unlock Key (Paragraph 23).  Generated along with and
+      always accompanies the SUK.  [Add reference to TIF once that
+      section is written]
+
+   ins
+      The INdex Secret.  When the immediately previous server reply
+      contains a "sin" parameter, the user's SSSK (Section 3.2.4) is
+      passed through EnHash (Section 2.3) and used to key a secondary
+
+
+
+
+Comley & Killian         Expires August 5, 2018                [Page 30]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+      HMAC256 to hash the server's "sin" value.  The output is base64url
+      encoded and sent as the value for the "ins" parameter.
+
+   pins
+      The Previous INdex Secret.  When the authentication was made using
+      a PIDK, the client MUST include the corresponding PINS, calculated
+      the same way as the INS, in its query.
+
+   ids
+      The IDentity Signature.  Authenticates the contents of the query
+      block to the server.  The SSSK is used to sign the concatenated
+      values of the client and server prarameters.
+
+   pids
+      The Previous IDentity Signature.  Used when authentication was
+      made using a PIDK.
+
+   URS
+      Unlock Request Signature.  When an account is locked, the server
+      sends the SUK to the client, the client's IUK is used to generate
+      the unlock request.  The URS is the result of DHKA ( SUK, IUK ).
+
+   The client MAY include additional name=value pairs not defined to
+   support extensions to the SQRL protocol.  Any undefined "name="
+   parameter SHOULD simply be ignored.
+
+5.3.5.1.  Command Tokens
+
+   query
+      Queries are generally initiated after the user verifies the domain
+      name and decrypts his identity with his Master Password.  The
+      client uses the query to provide the user's IDK and optionally one
+      or more PIDKs.  The server response with TIF codes indicating the
+      status of the request.
+
+   ident
+      A query is usually followed by an ident.  The query allows the
+      client to obtain requested information from the server; the ident
+      requests that the web server accept the user's identity assertion.
+
+   disable
+      Activates the SQRL Identity Lock feature for this server.
+
+   enable
+      Re-enables the user's SQRL identity after it has been locked.  The
+      client will receive the SUK in a server response so that it can
+      generate the Unlock Request Signature necessary to unlock the
+      identity.
+
+
+
+Comley & Killian         Expires August 5, 2018                [Page 31]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+   remove
+      Instructs the server to immediately remove all trace of this SQRL
+      identity from the server.  Different from disable in that it
+      allows a change to an unassociated identity.
+
+5.3.5.2.  Options
+
+   noiptest
+      Instructs the server to disable same-IP verification.  Results in
+      the 0x04 "IPs matched" TIF to be activated even if the IP
+      addresses did not match.  Used when the client knows the link was
+      received from a remote device (e.g., when a QR code was scanned).
+
+   sqrlonly
+      Requests that the server disable any alternative non-SQRL
+      autentication methods such as username/password authentication.
+
+   hardlock
+      Disables "out of band" changes to the user's SQRL identity such as
+      security questions and email resets.
+
+   cps
+      Client Provided Session.  Informs the server that the client has a
+      secure and private means of returning a server-supplied URL to the
+      web browser after successful authentication.
+
+   suk
+      Requests that the server return the user's Server Unlock Key so
+      that the identity can be unlocked or rekeyed.
 
 5.3.6.  Client Keys
 
@@ -1417,6 +1783,16 @@ Internet-Draft                    SQRL                     February 2018
 5.4.  Server to Client Replies
 
    TODO
+
+
+
+
+
+
+Comley & Killian         Expires August 5, 2018                [Page 32]
+
+Internet-Draft                    SQRL                     February 2018
+
 
 5.4.1.  Required Values
 
@@ -1446,18 +1822,6 @@ Internet-Draft                    SQRL                     February 2018
 
    TODO
 
-
-
-
-
-
-
-
-Comley & Killian         Expires August 31, 2018               [Page 26]
-
-Internet-Draft                    SQRL                     February 2018
-
-
 6.3.  Identity Association
 
    TODO
@@ -1473,6 +1837,18 @@ Internet-Draft                    SQRL                     February 2018
 6.6.  Re-Enabling Site Login
 
    TODO
+
+
+
+
+
+
+
+
+Comley & Killian         Expires August 5, 2018                [Page 33]
+
+Internet-Draft                    SQRL                     February 2018
+
 
 7.  IANA Considerations
 
@@ -1506,14 +1882,6 @@ Internet-Draft                    SQRL                     February 2018
 
    One common method of this is a look-alike link.  For example, a user
    believing he is going to example.com is in reality going to
-
-
-
-Comley & Killian         Expires August 31, 2018               [Page 27]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    examp1e.com (the lowercase "l" is replaced with a numeral "1").  A
    historical example is "tvvitter.com" (the letter "v" twice instead of
    a "w").
@@ -1528,23 +1896,42 @@ Internet-Draft                    SQRL                     February 2018
    substitute the name of his phishing site and most users might be
    fooled entirely.
 
+   Another technique known as "Punycode" exploits the display of UTF-8
+   characters to hide the true ASCII text of the domain name.  For
+
+
+
+Comley & Killian         Expires August 5, 2018                [Page 34]
+
+Internet-Draft                    SQRL                     February 2018
+
+
+   example, it might substitute Cyrillic characters (e.g., U+430 which
+   looks similar or identical to the ASCII "a", U+0061), or it may use
+   the ASCII equivalent of the bytes making up the unicode string (e.g.,
+   a domain appearing as "apple.com" is really "xn-80ak6aa92e.com").
+   Browsers may even show the bogus domain in the address bar, giving
+   the user no opportunity to realize they are being fooled.  For more
+   information, see Xudong Zheng, "Phishing with Unicode Domains."
+   [Zheng]
+
    The phishing site is generally set up to look and work exactly the
    way the real site works, at least up until the point where the
-   attacker has stolen the intended data.
+   attacker has stolen the desired data.
 
    Phishing attacks where the goal is to obtain authentication
    credentials are entirely foiled by SQRL.  Since SQRL uses the domain
    name as the basis for authentication, it will create completely
-   different identity keys.  The SSPK the attacker gets will be a public
+   different identity keys.  The IDK the attacker gets will be a public
    key specifically for his attack site, useless to him for obtaining
    access to the real site.
 
    However, the attacker may have other goals.  If the attacker can
    successfully mimic a banking or e-commerce site, the user could be
-   tricked into entering account data such as a credit card number.  The
-   real domain name is displayed to the user in a font with unambiguous
-   glyphs before any authentication occurs, giving him the opportunity
-   to realize he is being fooled.
+   tricked into entering account data such as a credit card number.
+   SQRL clients MUST display the real domain name to the user in a font
+   with unambiguous glyphs before any authentication occurs, giving them
+   the opportunity to realize they are being fooled.
 
    Many phishing attacks are pass-through attacks, where the phishing
    site acts as an active Man-In-The-Middle.  It obtains the genuine
@@ -1561,36 +1948,31 @@ Internet-Draft                    SQRL                     February 2018
    where the device's DNS addresses are altered, entries are added to
    the hosts file, or otherwise made to redirect a host name to an
    incorrect address, generally the phishing site controlled by the
-
-
-
-
-Comley & Killian         Expires August 31, 2018               [Page 28]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    attacker.  In such a case, SQRL would be fooled (as would anything
    else on the compromised device).
 
    However, cross-device authentication would foil this, as the user
    would be using a smartphone or other trusted device that would be
    doing its own DNS lookup.  Local authentication should take place
+
+
+
+Comley & Killian         Expires August 5, 2018                [Page 35]
+
+Internet-Draft                    SQRL                     February 2018
+
+
    only on trusted devices.  DNS could only be spoofed on these devices
    using malware, but malware can compromise any security feature.
 
-   A SQRL client MAY have an additional protection from such an attack
+   A SQRL client MAY employ an additional protection from such an attack
    in the form of an internal DNS resolver, bypassing the attacker's
    spoofing.  However, such a feature may not be desired on enterprise
-   networks running their own internal DNS systems, so it should be an
-   option the user can configure or turn off.
+   networks running their own internal DNS systems, so the SQRL client
+   MUST give the user a configuration option to disable the internal
+   resolver and use the OS resolver as per normal.
 
 8.2.  Shoulder-Surfing
-
-   Shoulder-surfing is when an attacker reads or scans the display,
-   keyboard, and other components of the target's device directly,
-   allowing the attacker to see sensitive information, including
-   information entered into forms.
 
    In the context of SQRL, the danger is of an attacker scanning the QR
    code of a SQRL-enabled website.  With good timing, the attacker could
@@ -1598,6 +1980,11 @@ Internet-Draft                    SQRL                     February 2018
    he's authenticated to an account controlled by the attacker.  The
    attacker could then get anything the user enters into that web site,
    including credit card numbers and other sensitive information.
+
+   Shoulder-surfing is when an attacker reads or scans the display,
+   keyboard, and other components of the target's device directly,
+   allowing the attacker to see sensitive information, including
+   information entered into forms.
 
    However, in such a case the user's authentication would fail as the
    nut is no longer valid.  The SQRL client MUST deliver an error
@@ -1607,7 +1994,7 @@ Internet-Draft                    SQRL                     February 2018
    worked.
 
    Care should be taken when authenticating to a website in a public
-   area, or any other place where others could see the QR code, or watch
+   area, or any other place where others could see the QR code or watch
    the user type the Master Password on the keyboard.  Keep in mind that
    these can be picked up using binoculars or seen on a CCTV camera.
 
@@ -1616,16 +2003,6 @@ Internet-Draft                    SQRL                     February 2018
    resolve the screen and keyboard can get the Master Password, the full
    identity backup, AND the Rescue Code.
 
-
-
-
-
-
-Comley & Killian         Expires August 31, 2018               [Page 29]
-
-Internet-Draft                    SQRL                     February 2018
-
-
 8.3.  Evil Router
 
    In this context, the router in consideration is the one connecting
@@ -1633,6 +2010,13 @@ Internet-Draft                    SQRL                     February 2018
    have been shown to be lacking in security, and even a well-supported
    router must be updated when new firmware versions are released,
    something most users aren't aware of.
+
+
+
+Comley & Killian         Expires August 5, 2018                [Page 36]
+
+Internet-Draft                    SQRL                     February 2018
+
 
    It is also increasingly the case that users connect to Wi-Fi hotspots
    when travelling, relying on routers whose security they could not
@@ -1658,7 +2042,7 @@ Internet-Draft                    SQRL                     February 2018
 
    In the case of SQRL there is less critical data for the attacker to
    get.  There are no passwords or other secrets sent to the server that
-   have to be hashed and protected.  The attacker can only get the SSPK,
+   have to be hashed and protected.  The attacker can only get the IDK,
    SUK, and VUK, which are useless to him.
 
    If the attacker obtained write access, he could conceivably generate
@@ -1667,7 +2051,7 @@ Internet-Draft                    SQRL                     February 2018
    already has write access there would be little more to gain by doing
    so in most situations.
 
-   If the attacker has gained access to more than one site, the SSPK
+   If the attacker has gained access to more than one site, the IDK
    would be different, meaning that the attacker could not correlate
    user data between websites (unless, of course, there was other
    identifying information in common such as an email address).
@@ -1675,19 +2059,20 @@ Internet-Draft                    SQRL                     February 2018
    All the same, once authenticated the user is subject to all of the
    harms that can occur regardless of the form of authentication.
 
-
-
-Comley & Killian         Expires August 31, 2018               [Page 30]
-
-Internet-Draft                    SQRL                     February 2018
-
-
 8.5.  CPU Flooding
 
    CPU flooding is where the attacker is able to cause one or more
    processes to run that take up significant CPU time.  It also can
-   happen without a malicious attacker, when a normal CPU-intensive
-   process starts running in the background.
+   happen absent a malicious attack, when a normal CPU-intensive process
+   starts running in the background.
+
+
+
+
+Comley & Killian         Expires August 5, 2018                [Page 37]
+
+Internet-Draft                    SQRL                     February 2018
+
 
    With SQRL, this can be a vulnerability when running EnScrypt
    (Section 2.4) in Timer Mode.  After 5 seconds (by default), the timer
@@ -1731,19 +2116,20 @@ Internet-Draft                    SQRL                     February 2018
    stores for Android and iOS.  A malicious SQRL app, sadly, is not out
    of the question.
 
-
-
-Comley & Killian         Expires August 31, 2018               [Page 31]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    This issue can be somewhat mitigated by requiring that SQRL apps be
    certified by trusted authorities.  The reference implementation from
    GRC not only checks the certificate on every update, but checks the
    fingerprint on the DigiCert root certificate as well to help ensure
    that there was no improper substitution.  However, the ultimate
    protection can only come from complete SQRL integration into web
+
+
+
+Comley & Killian         Expires August 5, 2018                [Page 38]
+
+Internet-Draft                    SQRL                     February 2018
+
+
    browsers and operating systems, which will refuse to let any other
    software hijack the sqrl:// protocol and eliminate the need for a
    localhost connection on port 25519.
@@ -1785,18 +2171,20 @@ Internet-Draft                    SQRL                     February 2018
               RFC 3986, DOI 10.17487/RFC3986, January 2005,
               <https://www.rfc-editor.org/info/rfc3986>.
 
-
-
-
-
-Comley & Killian         Expires August 31, 2018               [Page 32]
-
-Internet-Draft                    SQRL                     February 2018
-
-
    [RFC7914]  Percival, C. and S. Josefsson, "The scrypt Password-Based
               Key Derivation Function", RFC 7914, DOI 10.17487/RFC7914,
               August 2016, <https://www.rfc-editor.org/info/rfc7914>.
+
+
+
+
+
+
+
+Comley & Killian         Expires August 5, 2018                [Page 39]
+
+Internet-Draft                    SQRL                     February 2018
+
 
    [RFC8031]  Nir, Y. and S. Josefsson, "Curve25519 and Curve448 for the
               Internet Key Exchange Protocol Version 2 (IKEv2) Key
@@ -1822,6 +2210,9 @@ Internet-Draft                    SQRL                     February 2018
    [Shamir]   Shamir, A., "How to share a secret",
               DOI 10.1145/359168.359176, November 1979.
 
+   [Zheng]    Zheng, X., "Phishing with Unicode Domains", April 2017,
+              <https://www.xudongz.com/blog/2017/idn-phishing/>.
+
 Appendix A.  Recommendations and Best Practices
 
 A.1.  Logo
@@ -1836,7 +2227,7 @@ A.1.  Logo
 
 A.2.  Font
 
-   Museo Slab can be used by client and server developers desiring a
+   Museo Slab MAY be used by client and server developers desiring a
    consistent look across disparate SQRL implementations.
    <https://www.exljbris.com/museoslab.html>
 
@@ -1845,7 +2236,8 @@ A.2.  Font
 
 
 
-Comley & Killian         Expires August 31, 2018               [Page 33]
+
+Comley & Killian         Expires August 5, 2018                [Page 40]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1874,7 +2266,7 @@ A.5.1.  Master Password
    compromised will not threaten others.  However, in the case of a
    single SQRL identity copied to multiple devices, a compromise of any
    of these identities would give an attacker full access to all SQRL-
-   enabled logins, so the user gains nothing from protecting his SQRL
+   enabled logins, so the user gains nothing from protecting their SQRL
    identity on different devices with different passwords.  But when
    users are asked to create different passwords, they generally pick
    weaker, formulaic passwords that are easier to remember.
@@ -1885,14 +2277,14 @@ A.5.1.  Master Password
 A.5.2.  Identity Backup
 
    It is crucial that the user not lose his or her identity, as that
-   would lock him out of any and all needed resources.  Keeping a secure
-   backup is essential.
+   would lock them out of any and all needed resources.  Keeping a
+   secure backup is essential.
 
-   SQRL clients do not distinguish between exporting and backing up an
-   identity, whether done by file, QR code, or text.  But conceptually,
-   exporting an identity is done with the intent to import it into
-   another client in a timely manner.  Therefore, exporting generally
-   includes the identity encrypted with the Master Password.
+   SQRL clients generally do not distinguish between exporting and
+   backing up an identity, whether done by file, QR code, or text.  But
+   conceptually, exporting an identity is done with the intent to import
+   it into another client in a timely manner.  Therefore, exporting
+   generally includes the identity encrypted with the Master Password.
 
    Backups, on the other hand, are intended for longer-term storage.
    The encryption on them therefore needs to be more secure than perhaps
@@ -1901,7 +2293,7 @@ A.5.2.  Identity Backup
 
 
 
-Comley & Killian         Expires August 31, 2018               [Page 34]
+Comley & Killian         Expires August 5, 2018                [Page 41]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -1911,19 +2303,18 @@ Internet-Draft                    SQRL                     February 2018
    can be regenerated.  The user would therefore need the Rescue Code to
    restore the backup.
 
-   Note that text backup MUST NOT be exported without the Master
-   Password.
+   Note that text backup MUST NOT be exported with the Master Password.
 
 A.5.3.  Disaster Recovery
 
-   A user putting together his Last Will and Testament will want the
-   executor(s) of his estate to be able to easily access all important
-   assets.  Since probate attorneys consider the security of all of this
-   information to be paramount, it is recommended that they be given a
-   hard copy of the SQRL client, exported without password, using the
-   "data entry" method.  The Rescue Code must also be included.  The
-   information must be updated whenever the user creates a new SQRL
-   identity or rekeys an existing one.
+   A user putting together his or her Last Will and Testament will want
+   the executor(s) of their estate to be able to easily access all
+   important assets.  Since probate attorneys consider the security of
+   all of this information to be paramount, it is recommended that they
+   be given a hard copy of the SQRL client, exported without password,
+   using the "data entry" method.  The Rescue Code must also be
+   included.  The information must be updated whenever the user creates
+   a new SQRL identity or rekeys an existing one.
 
    If the use of a probate attorney isn't desirable (e.g., the user
    lives in a country with no recognition of attorney-client privilege),
@@ -1957,7 +2348,8 @@ Appendix C.  Harvesting Entropy
 
 
 
-Comley & Killian         Expires August 31, 2018               [Page 35]
+
+Comley & Killian         Expires August 5, 2018                [Page 42]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -2013,7 +2405,7 @@ C.1.2.  Hardware
 
 
 
-Comley & Killian         Expires August 31, 2018               [Page 36]
+Comley & Killian         Expires August 5, 2018                [Page 43]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -2069,7 +2461,7 @@ C.1.3.  User
 
 
 
-Comley & Killian         Expires August 31, 2018               [Page 37]
+Comley & Killian         Expires August 5, 2018                [Page 44]
 
 Internet-Draft                    SQRL                     February 2018
 
@@ -2125,4 +2517,4 @@ Authors' Addresses
 
 
 
-Comley & Killian         Expires August 31, 2018               [Page 38]
+Comley & Killian         Expires August 5, 2018                [Page 45]
