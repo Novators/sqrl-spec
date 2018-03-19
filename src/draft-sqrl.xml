@@ -1135,7 +1135,7 @@ VUK = ed25519_public_key( curve25519_key_agreement( ILK, RLK ));]]></artwork>
         <t>For ease of user understanding and recognition, a SQRL logo has been designed and released into the public domain. Clients SHOULD use this as the program logo, and servers SHOULD use this for the clickable link. The standard colors are a white SQRL figure against a background color of #007CC3 (CMYK: 100/20/0/0). Clients and servers MAY recolor the logo to suit the look of themes and skins. <eref target="https://www.grc.com/sqrl/logo.htm"></eref></t>
       </section>
       <section title="Font">
-        <t>Museo Slab can be used by client and server developers desiring a consistent look across disparate SQRL implementations. <eref target="https://www.exljbris.com/museoslab.html"></eref></t>
+        <t>Museo Slab MAY be used by client and server developers desiring a consistent look across disparate SQRL implementations. <eref target="https://www.exljbris.com/museoslab.html"></eref></t>
       </section>
       <section anchor="app-client" title="For Clients">
         <t>TODO</t>
@@ -1146,17 +1146,17 @@ VUK = ed25519_public_key( curve25519_key_agreement( ILK, RLK ));]]></artwork>
       <section anchor="app-user" title="For Users">
         <t>Disclaimer: None of this is intended to be any sort of legal advice, or indeed any guarantee that problems involving SQRL clients and identities will be minimized. They are designed to apply to most SQRL users in most situations most of the time. It should be up to each individual's discretion to determine whether or not particular recommendations make sense to their situation.</t>
         <section title="Master Password">
-          <t>Traditionally, security experts have advised having unique passwords for every resource. The reason why is so that one resource being compromised will not threaten others. However, in the case of a single SQRL identity copied to multiple devices, a compromise of any of these identities would give an attacker full access to all SQRL-enabled logins, so the user gains nothing from protecting his SQRL identity on different devices with different passwords. But when users are asked to create different passwords, they generally pick weaker, formulaic passwords that are easier to remember.</t>
+          <t>Traditionally, security experts have advised having unique passwords for every resource. The reason why is so that one resource being compromised will not threaten others. However, in the case of a single SQRL identity copied to multiple devices, a compromise of any of these identities would give an attacker full access to all SQRL-enabled logins, so the user gains nothing from protecting their SQRL identity on different devices with different passwords. But when users are asked to create different passwords, they generally pick weaker, formulaic passwords that are easier to remember.</t>
           <t>For this reason, it makes sense to have a single strong password protecting all copies of the user's SQRL identity.</t>
         </section>
         <section title="Identity Backup">
-          <t>It is crucial that the user not lose his or her identity, as that would lock him out of any and all needed resources. Keeping a secure backup is essential.</t>
-          <t>SQRL clients do not distinguish between exporting and backing up an identity, whether done by file, QR code, or text. But conceptually, exporting an identity is done with the intent to import it into another client in a timely manner. Therefore, exporting generally includes the identity encrypted with the Master Password.</t>
+          <t>It is crucial that the user not lose his or her identity, as that would lock them out of any and all needed resources. Keeping a secure backup is essential.</t>
+          <t>SQRL clients generally do not distinguish between exporting and backing up an identity, whether done by file, QR code, or text. But conceptually, exporting an identity is done with the intent to import it into another client in a timely manner. Therefore, exporting generally includes the identity encrypted with the Master Password.</t>
           <t>Backups, on the other hand, are intended for longer-term storage. The encryption on them therefore needs to be more secure than perhaps will be the case with the user's Master Password, which may be forgotten in the interim anyway. Therefore, when making a backup of an identity, it should be made without the Master Password, containing only a copy of the encrypted IUK from which the identity can be regenerated. The user would therefore need the Rescue Code to restore the backup.</t>
-          <t>Note that text backup MUST NOT be exported without the Master Password.</t>
+          <t>Note that text backup MUST NOT be exported with the Master Password.</t>
         </section>
         <section title="Disaster Recovery">
-          <t>A user putting together his Last Will and Testament will want the executor(s) of his estate to be able to easily access all important assets. Since probate attorneys consider the security of all of this information to be paramount, it is recommended that they be given a hard copy of the SQRL client, exported without password, using the "data entry" method. The Rescue Code must also be included. The information must be updated whenever the user creates a new SQRL identity or rekeys an existing one.</t>
+          <t>A user putting together his or her Last Will and Testament will want the executor(s) of their estate to be able to easily access all important assets. Since probate attorneys consider the security of all of this information to be paramount, it is recommended that they be given a hard copy of the SQRL client, exported without password, using the "data entry" method. The Rescue Code must also be included. The information must be updated whenever the user creates a new SQRL identity or rekeys an existing one.</t>
           <t>If the use of a probate attorney isn't desirable (e.g., the user lives in a country with no recognition of attorney-client privilege), SQRL's "data entry" export and the associated Rescue Code could be distributed through the person's heirs via <xref target="Shamir">Shamir's Secret Sharing.</xref></t>
         </section>
       </section>
